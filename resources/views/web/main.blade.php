@@ -5,7 +5,7 @@
     <meta charset="utf-8">
     <meta content="width=device-width, initial-scale=1.0" name="viewport">
 
-    <title>Arsha Bootstrap Template - Index</title>
+    <title>{{ $title ?? "Aplikasi Lelang" }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
 
@@ -30,12 +30,8 @@
     <!-- Template Main CSS File -->
     <link href="/components/css/style.css" rel="stylesheet">
 
-    <!-- =======================================================
-  * Template Name: Arsha - v4.10.0
-  * Template URL: https://bootstrapmade.com/arsha-free-bootstrap-html-template-corporate/
-  * Author: BootstrapMade.com
-  * License: https://bootstrapmade.com/license/
-  ======================================================== -->
+    {{-- BoxIcon Component --}}
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
 </head>
 
 <body>
@@ -44,7 +40,7 @@
     <header id="header" class="fixed-top ">
         <div class="container d-flex align-items-center">
 
-            <h1 class="logo me-auto"><a href="index.html">Arsha</a></h1>
+            <h1 class="logo me-auto"><a href="{{ asset('/') }}">Aplikasi Lelang</a></h1>
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo me-auto"><img src="/components/img/logo.png" alt="" class="img-fluid"></a>-->
 
@@ -53,28 +49,25 @@
                     <li><a class="nav-link scrollto active" href="#hero">Home</a></li>
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
-                    <li><a class="nav-link   scrollto" href="#portfolio">Portfolio</a></li>
+                    <li><a class="nav-link scrollto" href="#portfolio">Portfolio</a></li>
                     <li><a class="nav-link scrollto" href="#team">Team</a></li>
-                    <li class="dropdown"><a href="#"><span>Drop Down</span> <i class="bi bi-chevron-down"></i></a>
-                        <ul>
-                            <li><a href="#">Drop Down 1</a></li>
-                            <li class="dropdown"><a href="#"><span>Deep Drop Down</span> <i
-                                        class="bi bi-chevron-right"></i></a>
-                                <ul>
-                                    <li><a href="#">Deep Drop Down 1</a></li>
-                                    <li><a href="#">Deep Drop Down 2</a></li>
-                                    <li><a href="#">Deep Drop Down 3</a></li>
-                                    <li><a href="#">Deep Drop Down 4</a></li>
-                                    <li><a href="#">Deep Drop Down 5</a></li>
-                                </ul>
-                            </li>
-                            <li><a href="#">Drop Down 2</a></li>
-                            <li><a href="#">Drop Down 3</a></li>
-                            <li><a href="#">Drop Down 4</a></li>
-                        </ul>
-                    </li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                    <li><a class="getstarted scrollto" href="#about">Get Started</a></li>
+                    <li><a class="nav-link" href="{{ asset('auth') }}">Login</a></li>
+                    <li><a class="nav-link" href="{{ asset('register') }}">Register</a></li>
+                    @auth('web')
+                        <li class="dropdown">
+                            <a href="#">
+                                <i class="bi bi-chevron-down"></i>
+                                <span>{{ Auth::user()->nama_lengkap }}</span>
+                            </a>
+                            <ul>
+                                <li><a href="#">My Profile</a></li>
+                                <li><a href="#">Setting</a></li>
+                                <li><a href="{{ asset('logout') }}">Logout</a></li>
+                            </ul>
+                        </li>
+                    @else
+                    @endauth
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
             </nav><!-- .navbar -->
@@ -411,8 +404,8 @@
                 <div class="row portfolio-container" data-aos="fade-up" data-aos-delay="200">
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-1.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-1.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>App 1</h4>
                             <p>App</p>
@@ -424,8 +417,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-2.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-2.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Web 3</h4>
                             <p>Web</p>
@@ -437,8 +430,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-3.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-3.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>App 2</h4>
                             <p>App</p>
@@ -450,8 +443,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-4.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-4.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Card 2</h4>
                             <p>Card</p>
@@ -463,8 +456,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-5.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-5.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Web 2</h4>
                             <p>Web</p>
@@ -476,8 +469,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-app">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-6.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-6.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>App 3</h4>
                             <p>App</p>
@@ -489,8 +482,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-7.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-7.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Card 1</h4>
                             <p>Card</p>
@@ -502,8 +495,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-card">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-8.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-8.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Card 3</h4>
                             <p>Card</p>
@@ -515,8 +508,8 @@
                     </div>
 
                     <div class="col-lg-4 col-md-6 portfolio-item filter-web">
-                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-9.jpg" class="img-fluid"
-                                alt=""></div>
+                        <div class="portfolio-img"><img src="/components/img/portfolio/portfolio-9.jpg"
+                                class="img-fluid" alt=""></div>
                         <div class="portfolio-info">
                             <h4>Web 3</h4>
                             <p>Web</p>

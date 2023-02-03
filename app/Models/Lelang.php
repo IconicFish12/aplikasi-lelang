@@ -10,7 +10,5 @@ class Lelang extends Model
     use HasFactory;
 
     protected $table = "tb_lelang";
-    protected $primaryKey = 'id_lelang';
-    public $timestamps = false;
     protected $guarded = [];
 }

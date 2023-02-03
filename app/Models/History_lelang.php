@@ -10,7 +10,5 @@ class History_lelang extends Model
     use HasFactory;
 
     protected $table = "histori_lelang";
-    protected $primaryKey = 'id_history';
-    public $timestamps = false;
     protected $guarded = [];
 }

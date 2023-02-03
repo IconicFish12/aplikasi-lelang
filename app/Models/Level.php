@@ -10,7 +10,10 @@ class Level extends Model
     use HasFactory;
 
     protected $table = "tb_level";
-    protected $primaryKey = 'id_level';
-    public $timestamps = false;
     protected $guarded = [];
+
+    public function petugas()
+    {
+        return $this->hasMany(Petugas::class, 'level_id');
+    }
 }

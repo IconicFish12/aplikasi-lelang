@@ -1,5 +1,8 @@
 <?php
 
+use App\Models\User;
+use App\Models\Barang;
+use App\Models\Lelang;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -13,8 +16,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('history_lelangs', function (Blueprint $table) {
+        Schema::create('history_lelang', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Lelang::class, 'lelang_id');
+            $table->foreignIdFor(Barang::class, 'barang_id');
+            $table->foreignIdFor(User::class, 'user_id');
             $table->timestamps();
         });
     }
@@ -26,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('history_lelangs');
+        Schema::dropIfExists('history_lelang');
     }
 };

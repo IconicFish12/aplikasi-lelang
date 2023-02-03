@@ -2,8 +2,10 @@
 
 namespace Database\Seeders;
 
-use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+use App\Models\Petugas;
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 class PetugasSeeder extends Seeder
 {
@@ -14,6 +16,17 @@ class PetugasSeeder extends Seeder
      */
     public function run()
     {
-        //
+        $data = [
+            [
+                'nama_petugas' => "Fattan Rizky Adrian",
+                'email' => 'LetnanFattan@gmail.com',
+                'username' => 'TestData',
+                'password' => Hash::make('Password'),
+                'telp' => "082162941198",
+                'level_id' => "1"
+            ],
+        ];
+
+        Petugas::insert($data);
     }
 }

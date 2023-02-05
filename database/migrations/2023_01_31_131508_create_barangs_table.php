@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Kategori;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -15,11 +16,13 @@ return new class extends Migration
     {
         Schema::create('tb_barang', function (Blueprint $table) {
             $table->id();
+            $table->foreignIdFor(Kategori::class, 'kategori_id');
             $table->string('nama_barang');
             $table->date('tgl_pelelangan');
             $table->string('harga_barang');
             $table->longText('deskripsi_barang');
             $table->string('foto');
+            $table->enum('status_lelang', ["belum", "sedang", 'sudah'])->default('belum');
             $table->timestamps();
         });
     }

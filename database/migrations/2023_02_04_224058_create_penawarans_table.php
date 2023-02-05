@@ -1,7 +1,6 @@
 <?php
 
 use App\Models\Barang;
-use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
@@ -16,14 +15,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_lelang', function (Blueprint $table) {
+        Schema::create('tb_penawaran', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Barang::class, 'barang_id');
-            $table->foreignIdFor(User::class, 'user_id')->nullable();
-            $table->foreignIdFor(Petugas::class, 'petugas_id');
-            $table->date('tgl_lelang')->nullable();
-            $table->string('harga_lelang');
-            $table->enum('status_lelang', ['dibuka', 'ditutup'])->default('ditutup');
+            $table->foreignIdFor(User::class, 'user_id');
+            $table->string('harga_penawaran');
             $table->timestamps();
         });
     }
@@ -35,6 +31,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_lelang');
+        Schema::dropIfExists('tb_penawaran');
     }
 };

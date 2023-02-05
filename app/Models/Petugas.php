@@ -39,4 +39,9 @@ class Petugas extends Authenticatable
     {
         return $this->belongsTo(Level::class);
     }
+
+    public function lelang()
+    {
+        return $this->belongsTo(Lelang::class);
+    }
 }

@@ -44,4 +44,20 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function lelang()
+    {
+        return $this->belongsTo(Lelang::class, 'user_id');
+    }
+
+    public function history_lelang()
+    {
+        return $this->belongsTo(History_lelang::class, 'user_id');
+    }
+
+    public function penawaran()
+    {
+        return $this->belongsTo(Penawaran::class, 'user_id');
+    }
 }

@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class History_lelang extends Model
+class Penawaran extends Model
 {
     use HasFactory;
 
-    protected $table = "histori_lelang";
+    protected $table = "tb_barang";
     protected $guarded = [];
-
-    public function lelang()
-    {
-        return $this->belongsTo(Lelang::class);
-    }
 
     public function barang()
     {

@@ -26,8 +26,12 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies();
 
-        Gate::define('isPetugas', function(){
-            return auth('petugas')->check();
+        Gate::define('isAdmin', function($petugas){
+            return $petugas->level_id == 1;
+        });
+
+        Gate::define('isPetugas', function($petugas){
+            return $petugas->level_id == 2;
         });
     }
 }

@@ -1,9 +1,11 @@
 <?php
 
-use Illuminate\Auth\Events\Login;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\BarangController;
+use App\Http\Controllers\LelangController;
+use App\Http\Controllers\KategoriController;
 
 /*
 |--------------------------------------------------------------------------
@@ -49,8 +51,25 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:petug
 
 // Admin and Petugas panel
 Route::prefix('/admin')->group(function(){
-    Route::get('/', [BaseController::class, 'adminView'])->middleware('petugasAuth');
-})->middleware(['auth:petugas']);
+    Route::get('/', [BaseController::class, 'adminView'])->middleware(['auth:petugas', 'petugasAuth']);
+
+    Route::prefix('kategori')->group(function(){
+        Route::get('/', [KategoriController::class, 'index']);
+    })->middleware(['auth:petugas']);
+
+    Route::prefix('barang')->group(function(){
+        Route::get('/', [BarangController::class, 'index']);
+    })->middleware(['auth:petugas']);
+
+    Route::prefix('daftar-lelang')->group(function(){
+        Route::get('/', [LelangController::class, 'index']);
+    })->middleware(['auth:petugas']);
+
+    //Pegawai Profile
+    Route::prefix('/me')->group(function(){
+        Route::get('/', [BaseController::class, 'pegawaiProfile']);
+    });
+});
 
 // User Web View
 Route::prefix('/')->group(function(){

@@ -8,13 +8,17 @@ class BaseController extends Controller
 {
     public function adminView()
     {
-        
+
         return view('admin.home');
     }
 
     public function webView()
     {
-        // dd(auth('petugas')->check());
         return view('web.main');
+    }
+
+    public function pegawaiProfile()
+    {
+        return view('admin.profile_pegawai');
     }
 }

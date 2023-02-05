@@ -2,11 +2,11 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
-use App\Http\Requests\StoreBarangRequest;
-use App\Http\Requests\UpdateBarangRequest;
+use App\Models\Kategori;
+use App\Http\Requests\StoreKategoriRequest;
+use App\Http\Requests\UpdateKategoriRequest;
 
-class BarangController extends Controller
+class KategoriController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,7 @@ class BarangController extends Controller
      */
     public function index()
     {
-        return view('admin.daftar_barang', [
-            'dataArr' => Barang::with('kategori')->get()
-        ]);
+        //
     }
 
     /**
@@ -33,10 +31,10 @@ class BarangController extends Controller
     /**
      * Store a newly created resource in storage.
      *
-     * @param  \App\Http\Requests\StoreBarangRequest  $request
+     * @param  \App\Http\Requests\StoreKategoriRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBarangRequest $request)
+    public function store(StoreKategoriRequest $request)
     {
         //
     }
@@ -44,10 +42,10 @@ class BarangController extends Controller
     /**
      * Display the specified resource.
      *
-     * @param  \App\Models\Barang  $barang
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function show(Barang $barang)
+    public function show(Kategori $kategori)
     {
         //
     }
@@ -55,10 +53,10 @@ class BarangController extends Controller
     /**
      * Show the form for editing the specified resource.
      *
-     * @param  \App\Models\Barang  $barang
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function edit(Barang $barang)
+    public function edit(Kategori $kategori)
     {
         //
     }
@@ -66,11 +64,11 @@ class BarangController extends Controller
     /**
      * Update the specified resource in storage.
      *
-     * @param  \App\Http\Requests\UpdateBarangRequest  $request
-     * @param  \App\Models\Barang  $barang
+     * @param  \App\Http\Requests\UpdateKategoriRequest  $request
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBarangRequest $request, Barang $barang)
+    public function update(UpdateKategoriRequest $request, Kategori $kategori)
     {
         //
     }
@@ -78,10 +76,10 @@ class BarangController extends Controller
     /**
      * Remove the specified resource from storage.
      *
-     * @param  \App\Models\Barang  $barang
+     * @param  \App\Models\Kategori  $kategori
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Barang $barang)
+    public function destroy(Kategori $kategori)
     {
         //
     }

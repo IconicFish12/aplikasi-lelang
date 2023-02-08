@@ -36,12 +36,12 @@ Route::prefix('login')->name('login')->group(function () {
 })->middleware('guest');
 
 //Register Account
-Route::prefix('register')->group(function (){
+Route::prefix('register')->group(function () {
     Route::get('/', [AuthController::class, 'userRegisterview']);
     Route::post('/action', [AuthController::class, 'registerAction']);
 })->middleware('guest');
 
-Route::prefix('/registration')->group(function (){
+Route::prefix('/registration')->group(function () {
     Route::get('/', [AuthController::class, 'petugasRegisterview']);
     Route::post('/action', [AuthController::class, 'registerAction']);
 })->middleware('guest');
@@ -50,28 +50,36 @@ Route::prefix('/registration')->group(function (){
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:petugas,web');
 
 // Admin and Petugas panel
-Route::prefix('/admin')->group(function(){
+Route::prefix('/admin')->group(function () {
     Route::get('/', [BaseController::class, 'adminView'])->middleware(['auth:petugas', 'petugasAuth']);
 
-    Route::prefix('kategori')->group(function(){
+    Route::prefix('/kategori')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
         Route::get('/', [KategoriController::class, 'index']);
-    })->middleware(['auth:petugas']);
+        Route::post('/', [KategoriController::class, 'store']);
+        Route::post('/show', [KategoriController::class, 'show']);
+        Route::put('/{kategori:id}', [KategoriController::class, 'update']);
+        Route::delete('/{kategori:id}', [KategoriController::class, 'destroy']);
+    });
 
-    Route::prefix('barang')->group(function(){
+    Route::prefix('daftar-barang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
         Route::get('/', [BarangController::class, 'index']);
-    })->middleware(['auth:petugas']);
+        Route::post('/', [BarangController::class, 'store']);
+        Route::post('/show', [BarangController::class, 'show']);
+        Route::put('/{barang:id}', [BarangController::class, 'update']);
+        Route::delete('/{barang:id}', [BarangController::class, 'destroy']);
+    });
 
-    Route::prefix('daftar-lelang')->group(function(){
+    Route::prefix('daftar-lelang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
         Route::get('/', [LelangController::class, 'index']);
-    })->middleware(['auth:petugas']);
+    });
 
     //Pegawai Profile
-    Route::prefix('/me')->group(function(){
+    Route::prefix('/me')->group(function () {
         Route::get('/', [BaseController::class, 'pegawaiProfile']);
     });
 });
 
 // User Web View
-Route::prefix('/')->group(function(){
+Route::prefix('/')->group(function () {
     Route::get('/', [BaseController::class, 'webView']);
 });

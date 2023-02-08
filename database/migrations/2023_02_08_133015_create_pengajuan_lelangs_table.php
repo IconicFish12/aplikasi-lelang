@@ -13,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('tb_kategori', function (Blueprint $table) {
+        Schema::create('tb_pengajuan_lelangs', function (Blueprint $table) {
             $table->id();
-            $table->string('nama_kategori');
+            $table->string("nama_pengguna");
+            $table->string("nama_barang");
+            $table->enum("status_pengajuan", ["disetujui", "tidak_setujui"]);
+            $table->enum("jenis_transaksi", ["jual", "sewa"]);
             $table->timestamps();
         });
     }
@@ -27,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('tb_kategori');
+        Schema::dropIfExists('pengajuan_lelangs');
     }
 };

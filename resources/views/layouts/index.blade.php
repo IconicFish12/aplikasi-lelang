@@ -8,6 +8,7 @@
     <title>{{ $title ?? 'Aplikasi Lelang' }}</title>
     <meta content="" name="description">
     <meta content="" name="keywords">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
 
     <!-- Favicons -->
     <link href="/assets/img/favicon.png" rel="icon">
@@ -39,11 +40,7 @@
     <script src="https://cdn.datatables.net/1.13.2/js/dataTables.bootstrap5.min.js"></script>
 
     {{-- DataTable --}}
-    <script>
-        $(document).ready(function() {
-            $('#example').DataTable();
-        });
-    </script>
+    <script src="/assets/js/datatable.js"></script>
 </head>
 
 <body class="d-flex flex-column h-100">
@@ -74,9 +71,10 @@
     <script src="/assets/vendor/tinymce/tinymce.min.js"></script>
     <script src="/assets/vendor/php-email-form/validate.js"></script>
 
+
     <!-- Template Main JS File -->
     <script src="/assets/js/main.js"></script>
-
+    @yield('script')
 </body>
 
 </html>

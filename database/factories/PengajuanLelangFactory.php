@@ -5,9 +5,9 @@ namespace Database\Factories;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
- * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Kategori>
+ * @extends \Illuminate\Database\Eloquent\Factories\Factory<\App\Models\Pengajuan_lelang>
  */
-class KategoriFactory extends Factory
+class PengajuanLelangFactory extends Factory
 {
     /**
      * Define the model's default state.
@@ -17,7 +17,7 @@ class KategoriFactory extends Factory
     public function definition()
     {
         return [
-            "nama_kategori" => $this->faker->sentence()
+            //
         ];
     }
 }

@@ -16,14 +16,14 @@
         <li class="nav-heading">Komponen Sistem</li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
+            <a class="nav-link collapsed" href="/admin/daftar-barang">
                 <i class="bi bi-box2"></i>
                 <span>Pengelolaan Barang</span>
             </a>
         </li>
 
         <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
+            <a class="nav-link collapsed" href="/admin/kategori">
                 <i class="bi bi-grid"></i>
                 <span>Kategori Barang</span>
             </a>

@@ -5,6 +5,10 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
+use App\Models\Kategori;
+use Flasher\Prime\FlasherInterface;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class BarangController extends Controller
 {
@@ -16,7 +20,9 @@ class BarangController extends Controller
     public function index()
     {
         return view('admin.daftar_barang', [
-            'dataArr' => Barang::with('kategori')->get()
+            'page_header' => "Daftar Barang Pelelang",
+            'dataArr' => Barang::with('kategori')->paginate(request("paginate") ?? 10),
+            'kategori' => Kategori::all()
         ]);
     }
 
@@ -36,9 +42,17 @@ class BarangController extends Controller
      * @param  \App\Http\Requests\StoreBarangRequest  $request
      * @return \Illuminate\Http\Response
      */
-    public function store(StoreBarangRequest $request)
+    public function store(StoreBarangRequest $request, FlasherInterface $flasher)
     {
-        //
+        if ($request->validated()) {
+            $data = $request->all();
+            $data['foto'] = $request->file('foto')->store('/images', "public_path");
+
+            Barang::create($data);
+
+            $flasher->addSuccess("Berhasil Menambah Data Barang");
+            return back();
+        }
     }
 
     /**
@@ -47,9 +61,11 @@ class BarangController extends Controller
      * @param  \App\Models\Barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function show(Barang $barang)
+    public function show(Barang $barang, Request $request)
     {
-        //
+        if ($request->has('getData') && $request->getData) {
+            return response()->json($barang->find($request->data), 200);
+        }
     }
 
     /**
@@ -70,9 +86,28 @@ class BarangController extends Controller
      * @param  \App\Models\Barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateBarangRequest $request, Barang $barang)
+    public function update(UpdateBarangRequest $request, Barang $barang, FlasherInterface $flasher)
     {
-        //
+        // dd($request->all());
+        if ($request->validated()) {
+            $data = $request->all();
+
+            if ($request->hasFile('foto')) {
+                if (Storage::disk("public_path")->exists($barang->foto)) {
+                    Storage::disk("public_path")->delete($barang->foto);
+                }
+                $data['foto'] = $request->file('foto')->store('images', "public_path");
+            }
+
+            if ($barang->update($data)) {
+                $flasher->addSuccess("Berhasil Merubah Data Barang");
+
+                return back();
+            }
+            $flasher->addError("Gagal Merubah Data Barang");
+
+            return back();
+        }
     }
 
     /**
@@ -81,8 +116,21 @@ class BarangController extends Controller
      * @param  \App\Models\Barang  $barang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Barang $barang)
+    public function destroy(Barang $barang, FlasherInterface $flasher)
     {
-        //
+        if ($barang->destroy($barang->id)) {
+            Storage::disk("public_path")->delete($barang->foto);
+
+            $flasher->addSuccess("Berhasil Menghapus Data Barang");
+
+            return back();
+        }
+        $flasher->addError("Gagal Menghapus Data Barang");
+
+        return back();
+    }
+
+    public function tambah_lelang()
+    {
     }
 }

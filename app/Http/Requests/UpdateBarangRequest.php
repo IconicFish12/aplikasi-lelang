@@ -13,7 +13,7 @@ class UpdateBarangRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,33 @@ class UpdateBarangRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'nama_barang' => ["required"],
+            'tgl_pelelangan' => ["required", "date_format:Y-m-d"],
+            "kategori_id" => ["integer"],
+            'harga_barang' => ["required", "integer"],
+            "deskripsi_barang" => ["required"],
+            "foto" => ["image", "max:10000", "mimes:png,jpg,jpeg"]
+        ];
+    }
+
+    /**
+     * Get the error messages for the defined validation rules.
+     *
+     * @return array
+     */
+    public function messages()
+    {
+        return [
+            'nama_barang.required' => 'Nama Barang Harus diisi',
+            'tgl_pelelangan.required' => 'Tanggal Lelang Harus diisi',
+            'harga_barang.required' => 'Harga Barang Harus diisi',
+            'deskripsi_barang.required' => 'Deskripsi Barang Harus diisi',
+            'tgl_pelelangan' => 'Format Tanggal Harus Sesuai',
+            'kategori_id' => "Value harus valid",
+            'foto.image' => "File Harus Berupa Gambar",
+            'foto.max' => 'Ukuran File Maksimal 10 MB',
+            'foto.mimes' => 'format yang diper bolehkan png, jpg, dan jpeg',
+            'harga_barang.integer' => 'Harga Barang Harus berupa angka',
         ];
     }
 }

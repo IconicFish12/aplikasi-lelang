@@ -187,6 +187,7 @@ return [
          */
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
+        Yajra\DataTables\DataTablesServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -214,6 +215,7 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
+        'DataTables' => Yajra\DataTables\DataTablesServiceProvider::class,
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

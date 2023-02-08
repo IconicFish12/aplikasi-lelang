@@ -4,6 +4,8 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Kategori;
+use App\Models\Petugas;
 use App\Models\User;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Casts\AsArrayObject;
@@ -24,6 +26,9 @@ class DatabaseSeeder extends Seeder
         //     'name' => 'Test User',
         //     'email' => 'test@example.com',
         // ]);
+
+        Petugas::factory(10)->create();
+        Kategori::factory(15)->create();
 
         $data = [
             [
@@ -46,7 +51,6 @@ class DatabaseSeeder extends Seeder
 
         $this->call([
             LevelSeeder::class,
-            PetugasSeeder::class
         ]);
     }
 }

@@ -25,6 +25,14 @@ class PetugasSeeder extends Seeder
                 'telp' => "082162941198",
                 'level_id' => "1"
             ],
+            [
+                'nama_petugas' => "Guardian Haidar",
+                'email' => 'LetnanFattan@gmail.com',
+                'username' => 'TestData',
+                'password' => Hash::make('Password'),
+                'telp' => "082162941198",
+                'level_id' => "1"
+            ],
         ];
 
         Petugas::insert($data);

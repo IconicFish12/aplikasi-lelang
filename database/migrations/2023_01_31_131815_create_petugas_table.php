@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('username', 25)->unique();
             $table->string('password');
             $table->string('telp', 25);
-            $table->foreignIdFor(Level::class, 'level_id');
+            $table->foreignIdFor(Level::class, 'level_id')->default(1);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();
             $table->timestamps();

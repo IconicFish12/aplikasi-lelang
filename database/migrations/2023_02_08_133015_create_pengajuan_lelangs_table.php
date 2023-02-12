@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('pengajuan_lelangs');
+        Schema::dropIfExists('tb_pengajuan_lelangs');
     }
 };

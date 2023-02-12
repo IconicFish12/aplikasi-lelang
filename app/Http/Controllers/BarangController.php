@@ -3,12 +3,17 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
-use App\Http\Requests\StoreBarangRequest;
-use App\Http\Requests\UpdateBarangRequest;
 use App\Models\Kategori;
-use Flasher\Prime\FlasherInterface;
 use Illuminate\Http\Request;
+use Illuminate\Validation\Rule;
+use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreBarangRequest;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UpdateBarangRequest;
+use App\Models\Lelang;
+use App\Models\Petugas;
+use Illuminate\Support\Facades\Auth;
 
 class BarangController extends Controller
 {
@@ -22,7 +27,7 @@ class BarangController extends Controller
         return view('admin.daftar_barang', [
             'page_header' => "Daftar Barang Pelelang",
             'dataArr' => Barang::with('kategori')->paginate(request("paginate") ?? 10),
-            'kategori' => Kategori::all()
+            'kategori' => Kategori::all(),
         ]);
     }
 
@@ -48,7 +53,7 @@ class BarangController extends Controller
             $data = $request->all();
             $data['foto'] = $request->file('foto')->store('/images', "public_path");
 
-            Barang::create($data);
+            $barang = Barang::create($data);
 
             $flasher->addSuccess("Berhasil Menambah Data Barang");
             return back();
@@ -89,8 +94,37 @@ class BarangController extends Controller
     public function update(UpdateBarangRequest $request, Barang $barang, FlasherInterface $flasher)
     {
         // dd($request->all());
-        if ($request->validated()) {
+        $validate = $request->validated();
+
+        if ($validate) {
             $data = $request->all();
+
+            if ($request->has('status_lelang')) {
+                $input = $barang->find($data['barang_id']);
+
+                if ($data['status_lelang'] == 'ditutup') {
+                    $barang->update(['status_lelang' => $data['status_lelang']]);
+
+                    $barang->destroy($input->id);
+
+                    Storage::disk('public_path')->delete($input->foto);
+
+                    $flasher->addSuccess("Pelelangan Ditutup, Data terhapus");
+
+                    return back();
+                }
+
+                $barang->update(['status_lelang' => $data['status_lelang']]);
+
+                $lelang = Lelang::create([
+                    'barang_id' => $input->id,
+                    'harga_awal' => $input->harga_barang
+                ]);
+
+                $flasher->addSuccess("Pelelangan Dibuka");
+
+                return back();
+            }
 
             if ($request->hasFile('foto')) {
                 if (Storage::disk("public_path")->exists($barang->foto)) {
@@ -107,6 +141,10 @@ class BarangController extends Controller
             $flasher->addError("Gagal Merubah Data Barang");
 
             return back();
+        } else {
+            $flasher->addError("Gagal Merubah Data Barang");
+
+            return back()->withErrors($validate)->withInput();
         }
     }
 
@@ -128,9 +166,5 @@ class BarangController extends Controller
         $flasher->addError("Gagal Menghapus Data Barang");
 
         return back();
-    }
-
-    public function tambah_lelang()
-    {
     }
 }

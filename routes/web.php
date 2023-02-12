@@ -69,6 +69,10 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{barang:id}', [BarangController::class, 'destroy']);
     });
 
+    Route::prefix('outlet')->group(function () {
+        Route::get('/', []);
+    });
+
     Route::prefix('daftar-lelang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
         Route::get('/', [LelangController::class, 'index']);
     });

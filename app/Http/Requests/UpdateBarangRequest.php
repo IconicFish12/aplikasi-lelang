@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use Illuminate\Validation\Rule;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateBarangRequest extends FormRequest
@@ -24,11 +25,12 @@ class UpdateBarangRequest extends FormRequest
     public function rules()
     {
         return [
-            'nama_barang' => ["required"],
-            'tgl_pelelangan' => ["required", "date_format:Y-m-d"],
-            "kategori_id" => ["integer"],
-            'harga_barang' => ["required", "integer"],
-            "deskripsi_barang" => ["required"],
+            'nama_barang' => [Rule::requiredIf(request()->has("nama_barang"))],
+            'tgl_pelelangan' => [Rule::requiredIf(request()->has("tgl_pelelangan")), "date_format:Y-m-d"],
+            "kategori_id" => [Rule::requiredIf(request()->has("kategori_id")), 'integer'],
+            'harga_barang' => [Rule::requiredIf(request()->has("harga_barang")), "integer"],
+            "deskripsi_barang" => [Rule::requiredIf(request()->has("deskripsi_barang"))],
+            "status_lelang" => [Rule::requiredIf(request()->has("status_lelang"))],
             "foto" => ["image", "max:10000", "mimes:png,jpg,jpeg"]
         ];
     }
@@ -41,10 +43,6 @@ class UpdateBarangRequest extends FormRequest
     public function messages()
     {
         return [
-            'nama_barang.required' => 'Nama Barang Harus diisi',
-            'tgl_pelelangan.required' => 'Tanggal Lelang Harus diisi',
-            'harga_barang.required' => 'Harga Barang Harus diisi',
-            'deskripsi_barang.required' => 'Deskripsi Barang Harus diisi',
             'tgl_pelelangan' => 'Format Tanggal Harus Sesuai',
             'kategori_id' => "Value harus valid",
             'foto.image' => "File Harus Berupa Gambar",

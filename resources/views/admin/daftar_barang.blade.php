@@ -90,7 +90,8 @@
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                <button type="submit" class="btn btn-primary">Save changes</button>
+                                <button type="submit" class="btn btn-primary" data-bs-toggle="modal"
+                                    data-bs-target="#modalPetugas ">Create</button>
                             </div>
                         </div>
                     </form>
@@ -150,10 +151,62 @@
                                         <span>Image Not Found</span>
                                     @endif
                                 </td>
-                                <td>{{ $item->status_lelang }}</td>
+                                <td>
+                                    @if ($item->status_lelang == 'ditutup')
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#basicModal"
+                                            class="badge text-bg-danger mx-auto">
+                                            Pelelangan Ditutup
+                                        </button>
+                                    @else
+                                        <button type="button" data-bs-toggle="modal" data-bs-target="#basicModal"
+                                            class="badge text-bg-success mx-auto">
+                                            Pelelangan Dibuka
+                                        </button>
+                                    @endif
+                                    <div class="modal fade" id="basicModal" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Perubahan Status</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ asset('/admin/daftar-barang/' . $item->id) }}"
+                                                    method="post">
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        @method('put')
+                                                        <input type="hidden" name="barang_id"
+                                                            value="{{ $item->id }}">
+                                                        <div class="mb-3">
+                                                            <label for="status_lelang" class="form-label">Status
+                                                                Pelelangan</label>
+                                                            <select class="form-select form-control" name="status_lelang"
+                                                                id="status_lelang" aria-label="Default select example">
+                                                                <option selected>-- Pilih Status --</option>
+                                                                <option value="dibuka">Pelelangan Dibuka</option>
+                                                                <option value="ditutup">Pelelangan Ditutup</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
-                                        <button type="button" class="badge text-bg-warning mx-3 getData"
+                                        {{-- <button type="button" class="badge text-bg-info" data-bs-toggle="modal"
+                                            data-bs-target="#modalPetugas  ">
+                                            <i class="bi bi-file-earmark-plus"></i>
+                                        </button> --}}
+                                        <button type="button" class="badge text-bg-warning me-2 getData"
                                             value="{{ $item->id }}" data-bs-toggle="modal"
                                             data-bs-target="#editModal">
                                             <i class="bi bi-pencil-square"></i>
@@ -166,6 +219,42 @@
                                             </button>
                                         </form>
                                     </div>
+                                    {{-- <div class="modal fade" id="modalPetugas" tabindex="-1">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h5 class="modal-title">Petugas Pelelang</h5>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form action="{{ asset('admin/daftar-barang/tambah') }}" method="POST">
+                                                    <div class="modal-body">
+                                                        @csrf
+                                                        <input type="hidden" name="barang_id"
+                                                            value="{{ $item->id }}">
+                                                        <div class="mb-3">
+                                                            <label for="petugas_id" class="form-label">Petugas
+                                                                Pelelang</label>
+                                                            <select class="form-select form-control" name="petugas_id"
+                                                                id="petugas_id" aria-label="Default select example">
+                                                                <option selected>-- Pilih Petugas --</option>
+                                                                @foreach ($petugas as $item)
+                                                                    <option value="{{ $item->id }}">
+                                                                        {{ $item->nama_petugas }}</option>
+                                                                @endforeach
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" class="btn btn-primary">Save
+                                                            changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div> --}}
                                 </td>
                             </tr>
                         </tbody>
@@ -188,7 +277,7 @@
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <div class="modal-header">
-                                <h5 class="modal-title">Buat Nama Kategori</h5>
+                                <h5 class="modal-title">Rubah data Barang</h5>
                                 <button type="button" class="btn-close" data-bs-dismiss="modal"
                                     aria-label="Close"></button>
                             </div>
@@ -240,16 +329,6 @@
                                                 {{ $message }}
                                             </div>
                                         @enderror
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="status_lelang" class="form-label">Status Pelelangan</label>
-                                        <select class="form-select form-control" name="status_lelang"
-                                            id="edit_status_lelang" aria-label="Default select example">
-                                            <option selected>-- Pilih Status --</option>
-                                            <option value="belum">Belum Dilelang</option>
-                                            <option value="sedang">Sedang Dilelang</option>
-                                            <option value="sudah">Sudah Dilelang</option>
-                                        </select>
                                     </div>
                                     <div class="mb-3">
                                         <label for="deskripsi_barang" class="form-label">Deskripsi Barang</label>

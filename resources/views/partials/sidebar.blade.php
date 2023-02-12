@@ -18,7 +18,7 @@
         <li class="nav-item">
             <a class="nav-link collapsed" href="/admin/daftar-barang">
                 <i class="bi bi-box2"></i>
-                <span>Pengelolaan Barang</span>
+                <span>Daftar Barang</span>
             </a>
         </li>
 

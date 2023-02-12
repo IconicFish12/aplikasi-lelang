@@ -38,33 +38,43 @@ class AuthController extends Controller
 
     public function loginAction(Request $request, FlasherInterface $flasher)
     {
-        $validate = $request->validate([
-            'email' => ['required', 'max:25', 'min:4', 'email'],
+        $validate = Validator::make($request->all(), [
+            'email' => ['required', 'min:4', 'email'],
             'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
+        ], [
+            'email.required' => "Input ini harus diisi",
+            'password.required' => "Input ini harus diisi",
+            'email.min' => "Panjang Minimal 4 karakter",
+            'email.email' => "Email Harus Valid",
+            "password.max" => "Panjang Maksimal 20 Karakter"
         ]);
 
-        $user = User::where('email', $request->email)->first();
-        $petugas = Petugas::where('email', $request->email)->first();
+        if (!$validate->fails()) {
+            $user = User::where('email', $request->email)->first();
+            $petugas = Petugas::where('email', $request->email)->first();
 
-        if (Auth::guard('petugas')->attempt($validate, $request->remember)) {
+            if (Auth::guard('petugas')->attempt($request->only(['email', 'password']), $request->remember)) {
 
-            $request->session()->regenerate();
+                $request->session()->regenerate();
 
-            $flasher->addSuccess("Selamat Datang $petugas->nama_petugas");
+                $flasher->addSuccess("Selamat Datang $petugas->nama_petugas");
 
-            return redirect()->to("/admin");
-        } elseif (Auth::guard('web')->attempt($validate, $request->remember)) {
+                return redirect()->to("/admin");
+            } elseif (Auth::guard('web')->attempt($request->only(['email', 'password']), $request->remember)) {
 
-            $request->session()->regenerate();
+                $request->session()->regenerate();
 
-            $flasher->addSuccess("Selamat Datang $user->nama_petugas");
+                $flasher->addSuccess("Selamat Datang $user->nama_petugas");
 
-            return redirect()->to('/');
+                return redirect()->to('/');
+            }
+
+            $flasher->addError("Email Atau Password Tidak Ditemukan");
+
+            return back();
         }
 
-        $flasher->addError("Email Atau Password Tidak Ditemukan");
-
-        return back();
+        return back()->withErrors($validate->errors())->withInput();
     }
 
     public function registerAction(Request $request, FlasherInterface $flasher)
@@ -108,10 +118,10 @@ class AuthController extends Controller
                 $flasher->addSuccess("Registrasi Berhasil");
                 return redirect()->to('auth');
             }
-        }else{
+        } else {
             return back()
-            ->withErrors($validate->errors())
-            ->withInput($request->all());
+                ->withErrors($validate->errors())
+                ->withInput($request->all());
         }
     }
 

@@ -20,15 +20,15 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Barang::class, 'barang_id');
             $table->foreignIdFor(User::class, 'user_id')->nullable();
-            $table->foreignIdFor(Petugas::class, 'petugas_id');
+            $table->foreignIdFor(Petugas::class, 'petugas_id')->nullable();
             $table->date('tgl_lelang')->nullable();
-            $table->string('harga_lelang');
-            $table->enum('status_lelang', ['dibuka', 'ditutup'])->default('ditutup');
+            $table->string('harga_awal');
+            $table->string('harga_lelang')->nullable();
             $table->timestamps();
         });
     }
 
-    /**
+    /** pen
      * Reverse the migrations.
      *
      * @return void

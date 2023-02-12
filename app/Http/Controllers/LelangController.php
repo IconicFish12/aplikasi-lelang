@@ -5,7 +5,6 @@ namespace App\Http\Controllers;
 use App\Models\Lelang;
 use App\Http\Requests\StoreLelangRequest;
 use App\Http\Requests\UpdateLelangRequest;
-
 class LelangController extends Controller
 {
     /**
@@ -15,7 +14,9 @@ class LelangController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.daftar_lelang', [
+            "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(request('paginate') ?? 10)  
+        ]);
     }
 
     /**

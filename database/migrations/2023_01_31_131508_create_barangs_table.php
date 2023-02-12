@@ -22,7 +22,7 @@ return new class extends Migration
             $table->string('harga_barang');
             $table->longText('deskripsi_barang');
             $table->string('foto');
-            $table->enum('status_lelang', ["belum", "sedang", 'sudah'])->default('belum');
+            $table->enum('status_lelang', ["ditutup", "dibuka"])->default('ditutup');
             $table->timestamps();
         });
     }

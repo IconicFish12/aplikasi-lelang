@@ -1,17 +1,14 @@
-@extends('layouts.auth')
-@section('auth')
+@extends('layouts.main')
+@section('web')
     <section class="section register min-vh-100 d-flex flex-column align-items-center justify-content-center py-4">
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-lg-4 col-md-6 d-flex flex-column align-items-center justify-content-center">
 
-                    <div class="d-flex justify-content-center py-4">
-                        <a href="index.html" class="logo d-flex align-items-center w-auto">
-                            <img src="assets/img/logo.png" alt="">
-                            <span class="d-none d-lg-block">Aplikasi Lelang</span>
-                        </a>
-                    </div><!-- End Logo -->
-
+                    <div class="d-flex justify-content-center py-4 fs-2">
+                        <span class="d-none d-lg-block fw-semibold">Aplikasi Lelang</span>
+                    </div>
+                    <!-- End Logo -->
                     <div class="card mb-3">
 
                         <div class="card-body">
@@ -55,9 +52,6 @@
                                 <div class="col-12">
                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                 </div>
-                                <div class="col-12 text-center">
-                                    <p class="small mb-0">Don't have account? <a href="{{ asset('register') }}">Create an account</a></p>
-                                  </div>
                             </form>
 
                         </div>

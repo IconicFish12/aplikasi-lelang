@@ -9,7 +9,7 @@ class Penawaran extends Model
 {
     use HasFactory;
 
-    protected $table = "tb_barang";
+    protected $table = "tb_penawaran";
     protected $guarded = [];
 
     public function barang()

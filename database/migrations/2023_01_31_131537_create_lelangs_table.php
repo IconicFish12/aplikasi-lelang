@@ -1,5 +1,6 @@
 <?php
 
+use App\Models\Backup_barang;
 use App\Models\Barang;
 use App\Models\Petugas;
 use App\Models\User;
@@ -18,10 +19,11 @@ return new class extends Migration
     {
         Schema::create('tb_lelang', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Barang::class, 'barang_id');
+            $table->foreignIdFor(Barang::class, 'barang_id')->nullable();
             $table->foreignIdFor(User::class, 'user_id')->nullable();
             $table->foreignIdFor(Petugas::class, 'petugas_id')->nullable();
-            $table->date('tgl_lelang')->nullable();
+            $table->date('tgl_mulai');
+            $table->date('tgl_selesai');
             $table->string('harga_awal');
             $table->string('harga_lelang')->nullable();
             $table->timestamps();

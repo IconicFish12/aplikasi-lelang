@@ -5,15 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
-use Illuminate\Validation\Rule;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBarangRequest;
-use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateBarangRequest;
 use App\Models\Lelang;
-use App\Models\Petugas;
-use Illuminate\Support\Facades\Auth;
 
 class BarangController extends Controller
 {
@@ -114,14 +110,21 @@ class BarangController extends Controller
                     return back();
                 }
 
-                $barang->update(['status_lelang' => $data['status_lelang']]);
-
                 $lelang = Lelang::create([
                     'barang_id' => $input->id,
-                    'harga_awal' => $input->harga_barang
+                    'harga_awal' => $input->harga_barang,
+                    'tgl_mulai' => $request->tgl_mulai,
+                    'tgl_selesai' => $request->tgl_selesai,
                 ]);
 
-                $flasher->addSuccess("Pelelangan Dibuka");
+                if ($lelang) {
+                    $barang->update(['status_lelang' => $data['status_lelang']]);
+
+                    $flasher->addSuccess("Pelelangan Dibuka");
+
+                    return back();
+                }
+                $flasher->addError("Pelelangan Gagal dibuka");
 
                 return back();
             }

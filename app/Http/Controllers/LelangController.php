@@ -5,6 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Lelang;
 use App\Http\Requests\StoreLelangRequest;
 use App\Http\Requests\UpdateLelangRequest;
+use App\Models\Barang;
+use App\Models\Penawaran;
+use Flasher\Prime\FlasherInterface;
+use Illuminate\Http\Request;
+
 class LelangController extends Controller
 {
     /**
@@ -15,7 +20,8 @@ class LelangController extends Controller
     public function index()
     {
         return view('admin.daftar_lelang', [
-            "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(request('paginate') ?? 10)  
+            "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(12),
+            "page_header" => "Daftar Lelang"
         ]);
     }
 
@@ -24,9 +30,11 @@ class LelangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function show_penawaran(Request $request)
     {
-        //
+        if ($request->has('getData') && $request->getData) {
+            return response()->json(Penawaran::where("barang_id", $request->data), 200);
+        }
     }
 
     /**
@@ -37,7 +45,6 @@ class LelangController extends Controller
      */
     public function store(StoreLelangRequest $request)
     {
-        //
     }
 
     /**
@@ -46,9 +53,11 @@ class LelangController extends Controller
      * @param  \App\Models\Lelang  $lelang
      * @return \Illuminate\Http\Response
      */
-    public function show(Lelang $lelang)
+    public function show(Lelang $lelang, Request $request)
     {
-        //
+        if ($request->has('getData') && $request->getData) {
+            return response()->json($lelang->find($request->data), 200);
+        }
     }
 
     /**
@@ -80,8 +89,29 @@ class LelangController extends Controller
      * @param  \App\Models\Lelang  $lelang
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Lelang $lelang)
+    public function destroy(Lelang $lelang, FlasherInterface $flasher)
     {
-        //
+        if ($lelang->destroy($lelang->id)) {
+            $barang = Barang::find($lelang->barang_id)->update([
+                'status_lelang' => "ditutup"
+            ]);
+
+            $flasher->addSuccess("Berhasil Menghapus Data Lelang");
+
+            return back();
+        }
+        $flasher->addError("Gagal Menghapus Data Lelang");
+
+        return back();
+    }
+
+    public function daftar()
+    {
+        if (request()->has("getData")) {
+            return response()->json(Penawaran::with(["barang", "user"])->where("barang_id", request()->get("data"))->paginate(3), 200);
+        }
+        return view('admin.barang_lelang', [
+            'dataArr' => Lelang::with(['petugas', 'user', 'barang'])->paginate(10)
+        ]);
     }
 }

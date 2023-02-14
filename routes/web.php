@@ -69,12 +69,12 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{barang:id}', [BarangController::class, 'destroy']);
     });
 
-    Route::prefix('outlet')->group(function () {
-        Route::get('/', []);
-    });
-
     Route::prefix('daftar-lelang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
         Route::get('/', [LelangController::class, 'index']);
+        Route::get('/barang', [LelangController::class, 'daftar']);
+        Route::post('/show', [LelangController::class, 'show']);
+        Route::put('/{lelang:id}', [LelangController::class, 'update']);
+        Route::delete('/{lelang:id}', [LelangController::class, 'destroy']);
     });
 
     //Pegawai Profile

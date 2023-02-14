@@ -35,23 +35,23 @@
             </a>
             <ul id="pelelanagn-nav" class="nav-content collapse " data-bs-parent="#sidebar-nav">
                 <li>
-                    <a href="components-alerts.html">
+                    <a href="/admin/daftar-lelang">
                         <i class="bi bi-circle"></i>
                         <span>Daftar Pelelangan</span>
                     </a>
                 </li>
                 <li>
-                    <a href="components-accordion.html">
+                    <a href="/admin/riwayat">
                         <i class="bi bi-circle"></i>
                         <span>Hasil Pelelangan</span>
                     </a>
                 </li>
-                <li>
+                {{-- <li>
                     <a href="components-accordion.html">
                         <i class="bi bi-circle"></i>
                         <span>Laporan Pelelangan Pelelangan</span>
                     </a>
-                </li>
+                </li> --}}
             </ul>
         </li>
 
@@ -65,13 +65,13 @@
                 <li>
                     <a href="/">
                         <i class="bi bi-circle"></i>
-                        <span>Petugas Dan Admin</span>
+                        <span>Daftar Petugas</span>
                     </a>
                 </li>
                 <li>
                     <a href="/">
                         <i class="bi bi-circle"></i>
-                        <span>User</span>
+                        <span>Daftar User</span>
                     </a>
                 </li>
             </ul>

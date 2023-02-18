@@ -45,6 +45,20 @@ class DatabaseSeeder extends Seeder
                 'password' => Hash::make('Password'),
                 'telp' => "082162941194"
             ],
+            [
+                'nama_lengkap' => "Muhammad sholeh",
+                'email' => 'VArlotte@gmail.com',
+                'username' => 'SholehCuy',
+                'password' => Hash::make('Password'),
+                'telp' => "082162941192"
+            ],
+            [
+                'nama_lengkap' => "Muhammad Rezzqi Rabbani",
+                'email' => 'VanStrong@gmail.com',
+                'username' => 'BaniGanteng',
+                'password' => Hash::make('Password'),
+                'telp' => "082162941193"
+            ],
         ];
 
         User::insert($data);

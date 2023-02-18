@@ -26,10 +26,10 @@
                                 @csrf
                                 <div class="col-12">
                                     <label for="yourName" class="form-label">Nama Lengkap</label>
-                                    <input type="text" name="nama"
-                                        class="form-control @error('nama') is-invalid @enderror" id="yourName"
-                                        placeholder="Fulan atau Fulanah" value="{{ old('nama') }}">
-                                    @error('nama')
+                                    <input type="text" name="nama_petugas"
+                                        class="form-control @error('nama_petugas') is-invalid @enderror" id="yourName"
+                                        placeholder="Fulan atau Fulanah" value="{{ old('nama_petugas') }}">
+                                    @error('nama_petugas')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

@@ -12,7 +12,7 @@
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
                         @foreach ($dataArr as $item)
                             <div class="col">
-                                <div class="card shadow-sm" >
+                                <div class="card shadow-sm">
                                     <img src="{{ asset($item->barang->foto) }}" alt="Gambar">
                                     <div class="card-body">
                                         <div class="card-title">
@@ -28,9 +28,9 @@
                                             <div class="btn-group">
                                                 <button type="submit" class="btn btn-sm btn-outline-secondary getData"
                                                     value="{{ $item->barang->id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Penawaran</button>
+                                                    data-bs-target="#exampleModal">Penawaran Tertingi</button>
                                                 <button type="button"
-                                                    class="btn btn-sm btn-outline-secondary">Edit</button>
+                                                    class="btn btn-sm btn-outline-secondary">Lainnya</button>
                                             </div>
                                             <small
                                                 class="text-muted">{{ $item->barang->created_at->diffForHumans() }}</small>
@@ -40,123 +40,114 @@
                                             <div class="modal-dialog modal-lg">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Data Penawaran</h1>
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Penawaran
+                                                            Tertinggi</h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
                                                     <div class="modal-body">
-                                                        <div class="accordion accordion-flush" id="accordionFlushExample">
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header" id="flush-headingOne">
-                                                                    <button class="accordion-button collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseOne"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseOne">
-                                                                        Accordion Item #1
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseOne"
-                                                                    class="accordion-collapse collapse"
-                                                                    aria-labelledby="flush-headingOne"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body">
-                                                                        <form action="" method="post">
-                                                                            @csrf
-                                                                            <div class="row">
-                                                                                <div class="col">
-                                                                                    <label class="form-label"
-                                                                                        for="barang_id">Nama
-                                                                                        Barang</label>
-                                                                                    <input type="text" name="barang_id"
-                                                                                        id="barang_id" class="form-control"
-                                                                                        placeholder="Nama Barang"
-                                                                                        aria-label="Nama Barang">
-                                                                                </div>
-                                                                                <div class="col">
-                                                                                    <label class="form-label"
-                                                                                        for="user_id">Nama
-                                                                                        Pengguna</label>
-                                                                                    <input type="text" name="user_id"
-                                                                                        id="pengguna_id"
-                                                                                        class="form-control"
-                                                                                        placeholder="Nama pengguna"
-                                                                                        aria-label="Nama Pengguna">
-                                                                                </div>
-                                                                            </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="harga_penawaran"
-                                                                                    class="form-label">Harga
-                                                                                    Penawaran</label>
-                                                                                <input type="number"class="form-control"
-                                                                                    placeholder="Harga Penawaran"
-                                                                                    aria-label="Harga Penawaran"
-                                                                                    name="harga_penawaran"
-                                                                                    id="harga_penawaran">
-                                                                            </div>
-                                                                            <div class="d-grid gap-2 col-6 mx-auto">
-                                                                                <button class="btn btn-primary"
-                                                                                    type="submit">Button</button>
-                                                                            </div>
-                                                                        </form>
+                                                        <div class="card">
+                                                            <div class="card-body">
+                                                                <form action="" method="post" id="post_penawaran"
+                                                                    class="needs-validation mt-3" novalidate>
+                                                                    @csrf
+                                                                    <input type="hidden" name="lelang_id" id="post_lelang">
+                                                                    <input type="hidden" name="user_id" id="post_user">
+                                                                    <input type="hidden" name="barang_id" id="post_barang_id">
+                                                                    <div class="row">
+                                                                        <div class="col">
+                                                                            <label for="nama_user" class="form-label">Nama
+                                                                                Penawar</label>
+                                                                            <input type="text" class="form-control"
+                                                                                placeholder="Nama Penawar" id="post_nama"
+                                                                                aria-label="Nama Penawar" disabled>
+                                                                        </div>
+                                                                        <div class="col">
+                                                                            <label for="harga_penawaran"
+                                                                                class="form-label">Harga
+                                                                                Penawaran</label>
+                                                                            <input type="number" class="form-control"
+                                                                                placeholder="Harga Penawaran"
+                                                                                name="harga_penawaran"
+                                                                                aria-label="Harga Penawaran" id="post_harga"
+                                                                                readonly>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                            </div>
-                                                            <div class="accordion-item">
-                                                                <h2 class="accordion-header" id="flush-headingOne">
-                                                                    <button class="accordion-button collapsed"
-                                                                        type="button" data-bs-toggle="collapse"
-                                                                        data-bs-target="#flush-collapseTwo"
-                                                                        aria-expanded="false"
-                                                                        aria-controls="flush-collapseTwo">
-                                                                        Accordion Item #1
-                                                                    </button>
-                                                                </h2>
-                                                                <div id="flush-collapseTwo"
-                                                                    class="accordion-collapse collapse"
-                                                                    aria-labelledby="flush-headingOne"
-                                                                    data-bs-parent="#accordionFlushExample">
-                                                                    <div class="accordion-body">
-                                                                        <form action="" method="post">
-                                                                            @csrf
-                                                                            <div class="row">
-                                                                                <div class="col">
-                                                                                    <label class="form-label"
-                                                                                        for="barang_id">Nama
-                                                                                        Barang</label>
-                                                                                    <input type="text" name="barang_id"
-                                                                                        id="barang_id" class="form-control"
-                                                                                        placeholder="Nama Barang"
-                                                                                        aria-label="Nama Barang">
+                                                                    <div class="accordion my-3" id="accordionExample">
+                                                                        <div class="accordion-item">
+                                                                            <h2 class="accordion-header" id="headingOne">
+                                                                                <button class="accordion-button"
+                                                                                    type="button" data-bs-toggle="collapse"
+                                                                                    data-bs-target="#collapseOne"
+                                                                                    aria-expanded="true"
+                                                                                    aria-controls="collapseOne">
+                                                                                    Penawaran Tertinggi
+                                                                                </button>
+                                                                            </h2>
+                                                                            <div id="collapseOne"
+                                                                                class="accordion-collapse collapse show"
+                                                                                aria-labelledby="headingOne"
+                                                                                data-bs-parent="#accordionExample">
+                                                                                <div class="accordion-body">
+                                                                                    <div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for="staticEmail"
+                                                                                                class="col-lg-4 col-form-label">Nama
+                                                                                                Penawar</label>
+                                                                                            <div class="col-sm-5">
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    id="post_nama_user"
+                                                                                                    placeholder="Nama Penawar"
+                                                                                                    readonly>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for="inputPassword"
+                                                                                                class="col-lg-4 col-form-label">Nama
+                                                                                                Barang</label>
+                                                                                            <div class="col-sm-5">
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    id="post_barang"
+                                                                                                    placeholder="Nama Barang"
+                                                                                                    readonly>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for="inputPassword"
+                                                                                                class="col-lg-4 col-form-label">Kategori
+                                                                                                Barang</label>
+                                                                                            <div class="col-sm-5">
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    id="post_kategori"
+                                                                                                    placeholder="Kategori Barang"
+                                                                                                    readonly>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                        <div class="mb-3 row">
+                                                                                            <label for="inputPassword"
+                                                                                                class="col-lg-4 col-form-label">Harga
+                                                                                                Barang</label>
+                                                                                            <div class="col-sm-5">
+                                                                                                <input type="text"
+                                                                                                    class="form-control"
+                                                                                                    id="post_harga_barang"
+                                                                                                    placeholder="Harga Barang"
+                                                                                                    readonly>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </div>
                                                                                 </div>
-                                                                                <div class="col">
-                                                                                    <label class="form-label"
-                                                                                        for="user_id">Nama
-                                                                                        Pengguna</label>
-                                                                                    <input type="text" name="user_id"
-                                                                                        id="pengguna_id"
-                                                                                        class="form-control"
-                                                                                        placeholder="Nama pengguna"
-                                                                                        aria-label="Nama Pengguna">
-                                                                                </div>
                                                                             </div>
-                                                                            <div class="mb-3">
-                                                                                <label for="harga_penawaran"
-                                                                                    class="form-label">Harga
-                                                                                    Penawaran</label>
-                                                                                <input type="number"class="form-control"
-                                                                                    placeholder="Harga Penawaran"
-                                                                                    aria-label="Harga Penawaran"
-                                                                                    name="harga_penawaran"
-                                                                                    id="harga_penawaran">
-                                                                            </div>
-                                                                            <div class="d-grid gap-2 col-6 mx-auto">
-                                                                                <button class="btn btn-primary"
-                                                                                    type="submit">Button</button>
-                                                                            </div>
-                                                                        </form>
+                                                                        </div>
                                                                     </div>
-                                                                </div>
+                                                                    <div class="d-grid gap-2 col-6 mx-auto mt-3">
+                                                                        <button class="btn btn-primary"
+                                                                            type="submit">Lelang</button>
+                                                                    </div>
+                                                                </form>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -194,7 +185,6 @@
             });
 
             let getData = e => {
-                console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('admin/daftar-lelang/barang') }}`,
                     method: "GET",
@@ -205,20 +195,67 @@
                     dataType: "json",
                     success: resp => {
                         console.log(resp);
-                        let text = "";
+                        // console.log(resp[0] != undefined);
+                        if (resp[0] != undefined) {
+                            if (resp[0].user != undefined) {
+                                // console.log('ada');
 
-                        resp.forEach(v => {
-                            text +=
-                        });
+                                $("#post_penawaran").attr("action",
+                                    `{{ asset('admin/daftar-lelang/action') }}`);
+                                $("#post_user").val(resp[0].user.id);
+                                $("#post_barang_id").val(resp[0].barang.id);
+                                $("#post_lelang").val(resp[1].id);
+                                $("#post_nama").val(resp[0].user.nama_lengkap);
+                                $("#post_harga").val(resp[0].harga_penawaran);
+                                $("#post_nama_user").val(resp[0].user.nama_lengkap);
+                                $("#post_barang").val(resp[0].barang.nama_barang);
+                                $("#post_kategori").val(resp[0].barang.kategori.nama_kategori);
+                                $("#post_harga_barang").val(resp[0].barang.harga_barang);
 
-                        // $("#edit_form").attr("action",
-                        //     `{{ asset('admin/daftar-barang/${resp.id}') }}`);
-                        // $("#edit_nama_barang").val(resp.nama_barang);
-                        // $("#edit_kategori_id").val(resp.kategori_id);
-                        // $("#edit_tgl_pelelangan").val(resp.tgl_pelelangan);
-                        // $("#edit_harga_barang").val(resp.harga_barang);
-                        // $("#edit_status_lelangan").val(resp.status_lelangan);
-                        // $("#edit_deskripsi_barang").val(resp.deskripsi_barang);
+                                // $("#test").change(function(){
+                                //     console.log("berubash");
+                                // });
+
+                                resp[2].forEach(element => {
+                                    console.log(element);
+
+                                    $("#nama").val(element.user.nama_lengkap);
+                                    $("#harga").val(element.harga_penawaran);
+
+                                });
+
+                            } else {
+                                // console.log("gak ada");
+
+                                $("#post_penawaran").attr("action",
+                                    `{{ asset('admin/daftar-lelang/action') }}`);
+                                $("#post_user_id").val(null);
+                                $("#post_barang_id").val(null);
+                                $("#post_lelang").val(null);
+                                $("#post_nama").val(null);
+                                $("#post_harga").val(null);
+                                $("#post_nama_user").val(null);
+                                $("#post_barang").val(null);
+                                $("#post_kategori").val(null);
+                                $("#post_harga_barang").val(null);
+
+                            }
+                        } else {
+
+                            $("#post_penawaran").attr("action",
+                                `{{ asset('admin/daftar-lelang/action') }}`);
+                            $("#post_user").val(null);
+                            $("#post_barang_id").val(null);
+                            $("#post_lelang").val(null);
+                            $("#post_nama").val(null);
+                            $("#post_harga").val(null);
+                            $("#post_nama_user").val(null);
+                            $("#post_barang").val(null);
+                            $("#post_kategori").val(null);
+                            $("#post_harga_barang").val(null);
+
+                        }
+
                     },
                     error: err => {
                         console.log(err);

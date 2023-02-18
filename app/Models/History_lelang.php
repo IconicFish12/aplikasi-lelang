@@ -9,7 +9,7 @@ class History_lelang extends Model
 {
     use HasFactory;
 
-    protected $table = "histori_lelang";
+    protected $table = "tb_history_lelang";
     protected $guarded = [];
 
     public function lelang()
@@ -17,9 +17,9 @@ class History_lelang extends Model
         return $this->belongsTo(Lelang::class);
     }
 
-    public function barang()
+    public function backup()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Backup_barang::class);
     }
 
     public function user()

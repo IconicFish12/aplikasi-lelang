@@ -24,7 +24,12 @@ class Lelang extends Model
 
     public function barang()
     {
-        return $this->belongsTo(Barang::class);
+        return $this->belongsTo(Barang::class, "barang_id");
+    }
+
+    public function backup()
+    {
+        return $this->belongsTo(Backup_barang::class, "backup_id");
     }
 
     public function history_lelang()

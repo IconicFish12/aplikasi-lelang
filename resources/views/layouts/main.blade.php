@@ -26,6 +26,7 @@
     <link href="/components/vendor/glightbox/css/glightbox.min.css" rel="stylesheet">
     <link href="/components/vendor/remixicon/remixicon.css" rel="stylesheet">
     <link href="/components/vendor/swiper/swiper-bundle.min.css" rel="stylesheet">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.3/jquery.min.js"></script>
 
     <!-- Template Main CSS File -->
     <link href="/components/css/style.css" rel="stylesheet">
@@ -102,8 +103,6 @@
                     <li><a class="nav-link scrollto" href="#about">About</a></li>
                     <li><a class="nav-link scrollto" href="#services">Services</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
-                    <li><a class="nav-link" href="{{ asset('auth') }}">Login</a></li>
-                    <li><a class="nav-link" href="{{ asset('register') }}">Register</a></li>
                     @auth('web')
                         <li class="dropdown">
                             <a href="#">
@@ -117,6 +116,8 @@
                             </ul>
                         </li>
                     @else
+                        <li><a class="nav-link" href="{{ asset('auth') }}">Login</a></li>
+                        <li><a class="nav-link" href="{{ asset('register') }}">Register</a></li>
                     @endauth
                 </ul>
                 <i class="bi bi-list mobile-nav-toggle"></i>
@@ -187,6 +188,7 @@
 
     <!-- Template Main JS File -->
     <script src="/components/js/main.js"></script>
+    @yield('script')
 
 </body>
 

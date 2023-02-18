@@ -6,6 +6,7 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LelangController;
 use App\Http\Controllers\KategoriController;
+use App\Models\Barang;
 
 /*
 |--------------------------------------------------------------------------
@@ -36,12 +37,12 @@ Route::prefix('login')->name('login')->group(function () {
 })->middleware('guest');
 
 //Register Account
-Route::prefix('register')->group(function () {
+Route::prefix('register')->name('register')->group(function () {
     Route::get('/', [AuthController::class, 'userRegisterview']);
     Route::post('/action', [AuthController::class, 'registerAction']);
 })->middleware('guest');
 
-Route::prefix('/registration')->group(function () {
+Route::prefix('/registration')->name('registration')->group(function () {
     Route::get('/', [AuthController::class, 'petugasRegisterview']);
     Route::post('/action', [AuthController::class, 'registerAction']);
 })->middleware('guest');
@@ -51,9 +52,9 @@ Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:petug
 
 // Admin and Petugas panel
 Route::prefix('/admin')->group(function () {
-    Route::get('/', [BaseController::class, 'adminView'])->middleware(['auth:petugas', 'petugasAuth']);
+    Route::get('/', [BaseController::class, 'adminView'])->middleware(['auth:petugas', 'petugas']);
 
-    Route::prefix('/kategori')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
+    Route::prefix('/kategori')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [KategoriController::class, 'index']);
         Route::post('/', [KategoriController::class, 'store']);
         Route::post('/show', [KategoriController::class, 'show']);
@@ -61,7 +62,7 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{kategori:id}', [KategoriController::class, 'destroy']);
     });
 
-    Route::prefix('daftar-barang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
+    Route::prefix('daftar-barang')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [BarangController::class, 'index']);
         Route::post('/', [BarangController::class, 'store']);
         Route::post('/show', [BarangController::class, 'show']);
@@ -69,16 +70,17 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{barang:id}', [BarangController::class, 'destroy']);
     });
 
-    Route::prefix('daftar-lelang')->middleware(['auth:petugas', 'petugasAuth'])->group(function () {
+    Route::prefix('daftar-lelang')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [LelangController::class, 'index']);
         Route::get('/barang', [LelangController::class, 'daftar']);
         Route::post('/show', [LelangController::class, 'show']);
+        Route::post('/action', [LelangController::class, 'eksekusi_pelelangan']);
         Route::put('/{lelang:id}', [LelangController::class, 'update']);
         Route::delete('/{lelang:id}', [LelangController::class, 'destroy']);
     });
 
     //Pegawai Profile
-    Route::prefix('/me')->group(function () {
+    Route::prefix('/me')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [BaseController::class, 'pegawaiProfile']);
     });
 });
@@ -86,4 +88,9 @@ Route::prefix('/admin')->group(function () {
 // User Web View
 Route::prefix('/')->group(function () {
     Route::get('/', [BaseController::class, 'webView']);
+
+    Route::prefix('penawaran')->group(function () {
+        Route::post('/show', [BarangController::class, 'show']);
+        Route::post('/action', [LelangController::class, 'tambah_penawaran'])->middleware('user');
+    });
 });

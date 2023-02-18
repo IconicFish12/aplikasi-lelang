@@ -64,7 +64,7 @@ class AuthController extends Controller
 
                 $request->session()->regenerate();
 
-                $flasher->addSuccess("Selamat Datang $user->nama_petugas");
+                $flasher->addSuccess("Selamat Datang $user->nama_lengkap");
 
                 return redirect()->to('/');
             }
@@ -79,50 +79,84 @@ class AuthController extends Controller
 
     public function registerAction(Request $request, FlasherInterface $flasher)
     {
-        $validate = Validator::make($request->all(), [
-            'nama' => ['required'],
-            'username' => ['required', 'max:25', 'min:4'],
-            'email' => ['required', 'email:dns', 'min:4'],
-            'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
-            'telp' => ['required', 'max:15', 'min:4']
-        ], [
-            'nama.required' => "Input ini harus diisi",
-            'username.required' => "Input ini harus diisi",
-            'password.required' => "Input ini harus diisi",
-            'telp.required' => "Input ini harus diisi",
-            'email.required' => "Input ini harus diisi",
-        ]);
+        $data =  $request->all();
 
-        if (!$validate->fails()) {
-            if ($request->has('level_id')) {
+        if ($request->nama_petugas) {
+
+            $validate = Validator::make($request->all(), [
+                'nama_petugas' => ['required'],
+                'username' => ['required', 'max:25', 'min:4'],
+                'email' => ['required', 'email', 'min:4'],
+                'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
+                'telp' => ['required', 'max:15', 'min:4']
+            ], [
+                'nama_petugas.required' => "Input ini harus diisi",
+                'username.required' => "Input ini harus diisi",
+                'password.required' => "Input ini harus diisi",
+                'telp.required' => "Input ini harus diisi",
+                'email.required' => "Input ini harus diisi",
+                'username.max' => "Panjang Maksimal 25 Karakter",
+                'username.max' => "Panjang Maksimal 15 Karakter",
+                'username.min' => "Panjang Maksimal 4 Karakter",
+                'email.min' => "Panjang Maksimal 4 Karakter",
+                'telp.min' => "Panjang Maksimal 4 Karakter",
+            ]);
+
+            if (!$validate->fails()) {
                 Petugas::create([
-                    'nama_petugas' => $request->nama,
-                    'username' => $request->username,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'telp' => $request->telp,
-                    'level_id' => $request->level_id
+                    'nama_petugas' => $data['nama_petugas'],
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'telp' => $data['telp'],
                 ]);
 
                 $flasher->addSuccess("Registrasi Berhasil");
                 return redirect()->to('login');
             } else {
+
+                return back()->withErrors($validate->errors())->withInput();
+            }
+        }else {
+
+            $validate = Validator::make($request->all(), [
+                'nama' => ['required'],
+                'username' => ['required', 'max:25', 'min:4'],
+                'email' => ['required', 'email', 'min:4'],
+                'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
+                'telp' => ['required', 'max:15', 'min:4']
+            ], [
+                'nama.required' => "Input ini harus diisi",
+                'username.required' => "Input ini harus diisi",
+                'password.required' => "Input ini harus diisi",
+                'telp.required' => "Input ini harus diisi",
+                'email.required' => "Input ini harus diisi",
+                'username.max' => "Panjang Maksimal 25 Karakter",
+                'username.max' => "Panjang Maksimal 15 Karakter",
+                'username.min' => "Panjang Maksimal 4 Karakter",
+                'email.min' => "Panjang Maksimal 4 Karakter",
+                'telp.min' => "Panjang Maksimal 4 Karakter",
+            ]);
+
+            if(! $validate->fails()){
                 User::create([
-                    'nama_lengkap' => $request->nama,
-                    'username' => $request->username,
-                    'email' => $request->email,
-                    'password' => Hash::make($request->password),
-                    'telp' => $request->telp,
+                    'nama_lengkap' => $data['nama'],
+                    'username' => $data['username'],
+                    'email' => $data['email'],
+                    'password' => Hash::make($data['password']),
+                    'telp' => $data['telp'],
                 ]);
 
                 $flasher->addSuccess("Registrasi Berhasil");
                 return redirect()->to('auth');
+            }else{
+
+                return back()->withErrors($validate->errors())->withInput();
+
             }
-        } else {
-            return back()
-                ->withErrors($validate->errors())
-                ->withInput($request->all());
+
         }
+
     }
 
     public function logout(FlasherInterface $flasher, Request $request)

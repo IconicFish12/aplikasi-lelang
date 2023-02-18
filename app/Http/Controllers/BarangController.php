@@ -95,15 +95,22 @@ class BarangController extends Controller
         if ($validate) {
             $data = $request->all();
 
+            if ($request->has('proses')) {
+                $barang->update(['proses' => $data['proses']]);
+
+                $flasher->addSuccess("Proses Pelelangan Dirubah");
+
+                return back();
+            }
+
             if ($request->has('status_lelang')) {
-                $input = $barang->find($data['barang_id']);
 
                 if ($data['status_lelang'] == 'ditutup') {
                     $barang->update(['status_lelang' => $data['status_lelang']]);
 
-                    $barang->destroy($input->id);
+                    $barang->destroy($barang->id);
 
-                    Storage::disk('public_path')->delete($input->foto);
+                    Storage::disk('public_path')->delete($barang->foto);
 
                     $flasher->addSuccess("Pelelangan Ditutup, Data terhapus");
 
@@ -111,14 +118,17 @@ class BarangController extends Controller
                 }
 
                 $lelang = Lelang::create([
-                    'barang_id' => $input->id,
-                    'harga_awal' => $input->harga_barang,
+                    'barang_id' => $barang->id,
+                    'harga_awal' => $barang->harga_barang,
                     'tgl_mulai' => $request->tgl_mulai,
                     'tgl_selesai' => $request->tgl_selesai,
                 ]);
 
                 if ($lelang) {
-                    $barang->update(['status_lelang' => $data['status_lelang']]);
+                    $barang->update([
+                        'status_lelang' => $data['status_lelang'],
+                        'proses' => 'sedang'
+                    ]);
 
                     $flasher->addSuccess("Pelelangan Dibuka");
 

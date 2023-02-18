@@ -2,13 +2,16 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Lelang;
-use App\Http\Requests\StoreLelangRequest;
-use App\Http\Requests\UpdateLelangRequest;
 use App\Models\Barang;
+use App\Models\Lelang;
 use App\Models\Penawaran;
-use Flasher\Prime\FlasherInterface;
 use Illuminate\Http\Request;
+use Flasher\Prime\FlasherInterface;
+use Illuminate\Support\Facades\Storage;
+use App\Http\Requests\StoreLelangRequest;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\UpdateLelangRequest;
+use App\Models\Backup_barang;
 
 class LelangController extends Controller
 {
@@ -30,11 +33,57 @@ class LelangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function show_penawaran(Request $request)
+    public function eksekusi_pelelangan(Request $request, FlasherInterface $flasher)
     {
-        if ($request->has('getData') && $request->getData) {
-            return response()->json(Penawaran::where("barang_id", $request->data), 200);
+        dd(Penawaran::where('harga_penawaran', $request->harga_penawaran)->first());
+        $input =  $request->all();
+
+        $validate =  Validator::make($input, [
+            "lelang_id" => "required",
+            "user_id" => "required",
+            "barang_id" => "required",
+            "harga_penawaran" => "required",
+        ]);
+
+        if (!$validate->fails()) {
+
+            $update = Barang::where('id', $input['barang_id'])->update([
+                'status_lelang' => 'ditutup'
+            ]);
+
+            if ($update) {
+                $barang = Barang::findOrFail($input['barang_id']);
+
+                $backup = Backup_barang::create([
+                    'nama_barang' => $barang->nama_barang,
+                    'kategori_id' => $barang->kategori_id,
+                    'harga_barang' => $barang->harga_barang,
+                    'deskripsi_barang' => $barang->deskripsi_barang,
+                    'status_lelang' => $barang->status_lelang
+                ]);
+
+                if ($backup) {
+                    Storage::disk('public_path')->delete($barang->foto);
+
+                    Barang::destroy($barang->id);
+
+                    Lelang::where('id', $input['lelang_id'])->update([
+                        'backup_id' => $backup->id,
+                        'user_id' => $input['user_id'],
+                        'petugas_id' => auth('petugas')->user()->id,
+                        'harga_lelang' => $input['harga_penawaran']
+                    ]);
+                }
+            }
+
+            $flasher->addSuccess('Barang Telah Dilelang');
+
+            return redirect()->to('admin/daftar-lelang');
         }
+
+        $flasher->addError('Data Tidak Boleh Kosong');
+
+        return back();
     }
 
     /**
@@ -66,9 +115,29 @@ class LelangController extends Controller
      * @param  \App\Models\Lelang  $lelang
      * @return \Illuminate\Http\Response
      */
-    public function edit(Lelang $lelang)
+    public function tambah_penawaran(Request $request, FlasherInterface $flasher)
     {
-        //
+        // dd($request->all());
+        $data = Validator::make($request->all(), [
+            'user_id' => "required",
+            'barang_id' => "required",
+            "harga_penawaran" => "required|integer"
+        ], [
+            "user_id.required" => "Input Harus Diisi",
+            "barang_id.required" => "Input Harus Diisi",
+            "harga_penawaran.required" => "Input Harus Diisi",
+            "harga_penawaran.integer" => "input Harus berupa angka",
+        ]);
+
+        if (!$data->fails()) {
+            Penawaran::create($request->all());
+
+            $flasher->addSuccess('Penawaran Telah Diajukan');
+
+            return back();
+        }
+
+        return back()->withErrors($data->errors());
     }
 
     /**
@@ -92,9 +161,9 @@ class LelangController extends Controller
     public function destroy(Lelang $lelang, FlasherInterface $flasher)
     {
         if ($lelang->destroy($lelang->id)) {
-            $barang = Barang::find($lelang->barang_id)->update([
+            Barang::find($lelang->barang_id)->update([
                 'status_lelang' => "ditutup"
-            ]);
+            ])  ?? '';
 
             $flasher->addSuccess("Berhasil Menghapus Data Lelang");
 
@@ -108,10 +177,22 @@ class LelangController extends Controller
     public function daftar()
     {
         if (request()->has("getData")) {
-            return response()->json(Penawaran::with(["barang", "user"])->where("barang_id", request()->get("data"))->paginate(3), 200);
+            $data = Penawaran::with(["barang.kategori", "user"])
+                ->where("barang_id", request()->get("data"))
+                ->get();
+
+            $tertingi = Penawaran::with(["barang.kategori", "user"])
+                ->where("barang_id", request()->get("data"))
+                ->orderBy("harga_penawaran", "DESC")->first();
+
+            $lelang = Lelang::with(['barang.kategori', 'user', 'petugas'])
+                ->where("barang_id", request()->get('data'))->first();
+
+            return response()->json([$tertingi, $lelang, $data], 200);
         }
+
         return view('admin.barang_lelang', [
-            'dataArr' => Lelang::with(['petugas', 'user', 'barang'])->paginate(10)
+            'dataArr' => Lelang::with(['petugas', 'user', 'barang.kategori'])->paginate(10)
         ]);
     }
 }

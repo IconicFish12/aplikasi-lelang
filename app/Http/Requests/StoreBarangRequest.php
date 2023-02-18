@@ -25,7 +25,6 @@ class StoreBarangRequest extends FormRequest
     {
         return [
             'nama_barang' => ["required"],
-            'tgl_pelelangan' => ["required", "date_format:Y-m-d"],
             "kategori_id" => ["integer"],
             'harga_barang' => ["required", "integer"],
             "deskripsi_barang" => ["required"],
@@ -42,11 +41,9 @@ class StoreBarangRequest extends FormRequest
     {
         return [
             'nama_barang.required' => 'Nama Barang Harus diisi',
-            'tgl_pelelangan.required' => 'Tanggal Lelang Harus diisi',
             'harga_barang.required' => 'Harga Barang Harus diisi',
             'deskripsi_barang.required' => 'Deskripsi Barang Harus diisi',
             'foto.required' => 'Foto Barang Harus diisi',
-            'tgl_pelelangan' => 'Format Tanggal Harus Sesuai',
             'kategori_id' => "Value harus valid",
             'foto.image' => "File Harus Berupa Gambar",
             'foto.max' => 'Ukuran File Maksimal 10 MB',

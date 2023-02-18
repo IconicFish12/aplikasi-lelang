@@ -8,4 +8,8 @@ use Illuminate\Database\Eloquent\Model;
 class Pengajuan_lelang extends Model
 {
     use HasFactory;
+
+    protected $table = "tb_pengajuan_lelang";
+    protected $guarded = [];
+
 }

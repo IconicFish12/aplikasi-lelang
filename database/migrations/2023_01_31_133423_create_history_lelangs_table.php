@@ -22,7 +22,6 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Lelang::class, 'lelang_id');
             $table->foreignIdFor(Penawaran::class, 'penawaran_id');
-            $table->foreignIdFor(Backup_barang::class, 'backup_id');
             $table->timestamps();
         });
     }

@@ -16,10 +16,8 @@ class UserAuth
      */
     public function handle(Request $request, Closure $next)
     {
-        if(auth("")){
+        if(auth('web')->check()) return $next($request);
 
-        }
-
-        return $next($request);
+        return redirect()->to('auth');
     }
 }

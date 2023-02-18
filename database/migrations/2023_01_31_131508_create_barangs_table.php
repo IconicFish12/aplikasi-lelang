@@ -18,11 +18,11 @@ return new class extends Migration
             $table->id();
             $table->foreignIdFor(Kategori::class, 'kategori_id');
             $table->string('nama_barang');
-            $table->date('tgl_pelelangan');
             $table->string('harga_barang');
             $table->longText('deskripsi_barang');
             $table->string('foto');
             $table->enum('status_lelang', ["ditutup", "dibuka"])->default('ditutup');
+            $table->enum('proses', ["belum", "sedang", "sudah"])->default('belum');
             $table->timestamps();
         });
     }

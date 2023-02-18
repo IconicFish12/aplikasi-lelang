@@ -17,7 +17,7 @@ class KategoriFactory extends Factory
     public function definition()
     {
         return [
-            "nama_kategori" => $this->faker->sentence()
+            "nama_kategori" => $this->faker->sentence(2)
         ];
     }
 }

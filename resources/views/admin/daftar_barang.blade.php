@@ -46,17 +46,6 @@
                                 </select>
                             </div>
                             <div class="mb-3">
-                                <label for="tgl_pelelangan" class="form-label">Tanggal Pelelangan</label>
-                                <input type="date" name="tgl_pelelangan"
-                                    class="form-control @error('tgl_pelelangan') is-invalid  @enderror" id="tgl_pelelangan"
-                                    value="{{ old('tgl_pelelangan') }}">
-                                @error('tgl_pelelangan')
-                                    <div class="invalid-feedback">
-                                        {{ $message }}
-                                    </div>
-                                @enderror
-                            </div>
-                            <div class="mb-3">
                                 <label for="harga_barang" class="form-label">Harga Barang</label>
                                 <input type="number" name="harga_barang"
                                     class="form-control @error('harga_barang') is-invalid  @enderror" id="harga_barang"
@@ -125,11 +114,11 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Kategori Barang</th>
-                            <th>Tanggal Pelelangan</th>
                             <th>Harga Barang</th>
                             <th>Deskripsi Barang</th>
                             <th>Foto Barang</th>
                             <th>Status Pelelangan</th>
+                            <th>Proses Pelelangan</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -139,9 +128,8 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_barang }}</td>
                                 <td>{{ $item->kategori->nama_kategori }}</td>
-                                <td>{{ $item->tgl_pelelangan }}</td>
                                 <td>@money($item->harga_barang)</td>
-                                <td>{{ $item->deskripsi_barang }}</td>
+                                <td class="text-break">{{ $item->deskripsi_barang }}</td>
                                 <td>
                                     @if (Storage::disk('public_path')->exists($item->foto))
                                         <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block "
@@ -153,8 +141,9 @@
                                 </td>
                                 <td>
                                     @if ($item->status_lelang == 'ditutup')
-                                        <button type="button" name="status_lelang" data-bs-toggle="modal" value="{{ $item->id }}"
-                                            data-bs-target="#modalLelang" class="badge text-bg-danger mx-auto getData">
+                                        <button type="button" name="status_lelang" data-bs-toggle="modal"
+                                            value="{{ $item->id }}" data-bs-target="#modalLelang"
+                                            class="badge text-bg-danger mx-auto postLelang">
                                             Pelelangan Ditutup
                                         </button>
                                         <div class="modal fade" id="modalLelang" tabindex="-1"
@@ -162,18 +151,15 @@
                                             <div class="modal-dialog">
                                                 <div class="modal-content">
                                                     <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title
+                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Buka
+                                                            Pelelangan
                                                         </h1>
                                                         <button type="button" class="btn-close" data-bs-dismiss="modal"
                                                             aria-label="Close"></button>
                                                     </div>
-                                                    <form action="" id="edit_form"
-                                                        method="post">
+                                                    <form action="" id="post_lelang" method="post">
                                                         @method('put')
                                                         @csrf
-                                                        <input type="hidden" name="barang_id"
-                                                            id="edit_barang_id">
-
                                                         <div class="modal-body">
                                                             <div class="mb-3">
                                                                 <label for="tgl_mulai" class="form-label">Tanggal
@@ -211,6 +197,61 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if ($item->proses === 'belum')
+                                        <button class="badge text-bg-danger updateProses" type="button"
+                                            data-bs-toggle="modal" value="{{ $item->id }}"
+                                            data-bs-target="#modalProses">Belum
+                                            Dilelang</button>
+                                    @elseif ($item->proses === 'sedang')
+                                        <button class="badge text-bg-warning updateProses" type="button"
+                                            data-bs-toggle="modal" value="{{ $item->id }}"
+                                            data-bs-target="#modalProses">Sedang
+                                            Dilelang</button>
+                                    @else
+                                        <button class="badge text-bg-success updateProses" type="button"
+                                            data-bs-toggle="modal" value="{{ $item->id }}"
+                                            data-bs-target="#modalProses">Sudah
+                                            Dilelang</button>
+                                    @endif
+                                    <div class="modal fade" id="modalProses" tabindex="-1"
+                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                        <div class="modal-dialog">
+                                            <div class="modal-content">
+                                                <div class="modal-header">
+                                                    <h1 class="modal-title fs-5" id="exampleModalLabel">Proses Pelelangan
+                                                    </h1>
+                                                    <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                        aria-label="Close"></button>
+                                                </div>
+                                                <form action="" id="update_proses" method="post">
+                                                    @method('put')
+                                                    @csrf
+                                                    <div class="modal-body">
+                                                        <div class="mb-3">
+                                                            <label for="tgl_selesai" class="form-label">Proses
+                                                                Pelelangan</label>
+                                                            <select name="proses" id="proses"
+                                                                class="form-control form-select">
+                                                                <option selected>-- Pilih Proses --</option>
+                                                                <option value="belum">Belum Dilelang</option>
+                                                                <option value="sedang">Sedang Dilelang</option>
+                                                                <option value="sudah">Sudah Dilelang</option>
+                                                            </select>
+                                                        </div>
+                                                    </div>
+                                                    <div class="modal-footer">
+                                                        <button type="button" class="btn btn-secondary"
+                                                            data-bs-dismiss="modal">Close</button>
+                                                        <button type="submit" name="status_lelang" value="dibuka"
+                                                            class="btn btn-primary">Save
+                                                            changes</button>
+                                                    </div>
+                                                </form>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </td>
+                                <td>
                                     <div class="d-flex justify-content-center">
                                         {{-- <button type="button" class="badge text-bg-info" data-bs-toggle="modal"
                                             data-bs-target="#modalPetugas  ">
@@ -238,11 +279,11 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Kategori Barang</th>
-                            <th>Tanggal Pelelangan</th>
                             <th>Harga Barang</th>
                             <th>Deskripsi Barang</th>
                             <th>Foto Barang</th>
                             <th>Status Pelelangan</th>
+                            <th>Proses Pelelangan</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -280,17 +321,6 @@
                                                 <option value="{{ $i->id }}">{{ $i->nama_kategori }}</option>
                                             @endforeach
                                         </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="tgl_pelelangan" class="form-label">Tanggal Pelelangan</label>
-                                        <input type="date" name="tgl_pelelangan"
-                                            class="form-control @error('tgl_pelelangan') is-invalid  @enderror"
-                                            id="edit_tgl_pelelangan" value="{{ old('tgl_pelelangan') }}">
-                                        @error('tgl_pelelangan')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
                                     </div>
                                     <div class="mb-3">
                                         <label for="harga_barang" class="form-label">Harga Barang</label>
@@ -359,7 +389,8 @@
                 }
             });
 
-            let getData = e => {
+            let postLelang = e => {
+                console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('admin/daftar-barang/show') }}`,
                     method: "POST",
@@ -369,13 +400,50 @@
                     },
                     dataType: "json",
                     success: resp => {
-                        // console.log(resp);
+                        $("#post_lelang").attr("action",
+                            `{{ asset('admin/daftar-barang/${resp.id}') }}`);
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
+            }
+
+            let updateProses = e => {
+                console.log(e.currentTarget.value);
+                $.ajax({
+                    url: `{{ asset('admin/daftar-barang/show') }}`,
+                    method: "POST",
+                    data: {
+                        getData: true,
+                        data: e.currentTarget.value
+                    },
+                    dataType: "json",
+                    success: resp => {
+                        $("#update_proses").attr("action",
+                            `{{ asset('admin/daftar-barang/${resp.id}') }}`);
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
+            }
+
+            let getData = e => {
+                console.log(e.currentTarget.value);
+                $.ajax({
+                    url: `{{ asset('admin/daftar-barang/show') }}`,
+                    method: "POST",
+                    data: {
+                        getData: true,
+                        data: e.currentTarget.value
+                    },
+                    dataType: "json",
+                    success: resp => {
                         $("#edit_form").attr("action",
                             `{{ asset('admin/daftar-barang/${resp.id}') }}`);
-                        $("#edit_barang_id").val(resp.id);
                         $("#edit_nama_barang").val(resp.nama_barang);
                         $("#edit_kategori_id").val(resp.kategori_id);
-                        $("#edit_tgl_pelelangan").val(resp.tgl_pelelangan);
                         $("#edit_harga_barang").val(resp.harga_barang);
                         $("#edit_status_lelangan").val(resp.status_lelangan);
                         $("#edit_deskripsi_barang").val(resp.deskripsi_barang);
@@ -386,6 +454,8 @@
                 })
             }
 
+            $(".postLelang").on("click", postLelang);
+            $(".updateProses").on("click", updateProses);
             $(".getData").on("click", getData);
         })
     </script>

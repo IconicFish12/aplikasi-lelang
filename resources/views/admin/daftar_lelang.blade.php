@@ -53,7 +53,7 @@
                         <tbody>
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->barang->nama_barang ?? 'Barang Sudah Dilelang'}}</td>
+                                <td>{{ $item->barang->nama_barang ?? $item->backup->nama_barang}}</td>
                                 <td>{{ $item->user->nama_lengkap ?? 'Barang Belum Dilelang' }}</td>
                                 <td>{{ $item->petugas->nama_petugas ?? 'Barang Belum Dilelang' }}</td>
                                 <td>{{ $item->tgl_mulai }}</td>

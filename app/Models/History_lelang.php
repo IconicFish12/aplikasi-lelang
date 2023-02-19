@@ -21,9 +21,4 @@ class History_lelang extends Model
     {
         return $this->belongsTo(Backup_barang::class);
     }
-
-    public function user()
-    {
-        return $this->belongsTo(User::class);
-    }
 }

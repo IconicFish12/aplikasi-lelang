@@ -188,6 +188,7 @@ return [
         Anhskohbo\NoCaptcha\NoCaptchaServiceProvider::class,
         RealRashid\SweetAlert\SweetAlertServiceProvider::class,
         Yajra\DataTables\DataTablesServiceProvider::class,
+        Barryvdh\DomPDF\ServiceProvider::class,
 
         /*
          * Application Service Providers...
@@ -216,6 +217,7 @@ return [
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
         'DataTables' => Yajra\DataTables\DataTablesServiceProvider::class,
+        'PDF' => Barryvdh\DomPDF\Facade::class
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),
 

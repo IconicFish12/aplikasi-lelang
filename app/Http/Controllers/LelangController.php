@@ -12,6 +12,8 @@ use App\Http\Requests\StoreLelangRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateLelangRequest;
 use App\Models\Backup_barang;
+use App\Models\History_lelang;
+use Spatie\Backup\BackupDestination\Backup;
 
 class LelangController extends Controller
 {
@@ -35,8 +37,10 @@ class LelangController extends Controller
      */
     public function eksekusi_pelelangan(Request $request, FlasherInterface $flasher)
     {
-        dd(Penawaran::where('harga_penawaran', $request->harga_penawaran)->first());
+        // dd();
         $input =  $request->all();
+        $data = Penawaran::where('harga_penawaran', $request->harga_penawaran)->first();
+        // dd($data);
 
         $validate =  Validator::make($input, [
             "lelang_id" => "required",
@@ -48,18 +52,21 @@ class LelangController extends Controller
         if (!$validate->fails()) {
 
             $update = Barang::where('id', $input['barang_id'])->update([
-                'status_lelang' => 'ditutup'
+                'status_lelang' => 'ditutup',
+                'proses' => 'sudah',
             ]);
 
             if ($update) {
                 $barang = Barang::findOrFail($input['barang_id']);
+                $lelang = Lelang::findOrFail($input['lelang_id']);
 
                 $backup = Backup_barang::create([
                     'nama_barang' => $barang->nama_barang,
                     'kategori_id' => $barang->kategori_id,
                     'harga_barang' => $barang->harga_barang,
                     'deskripsi_barang' => $barang->deskripsi_barang,
-                    'status_lelang' => $barang->status_lelang
+                    'status_lelang' => $barang->status_lelang,
+                    'proses' => $barang->proses
                 ]);
 
                 if ($backup) {
@@ -71,7 +78,13 @@ class LelangController extends Controller
                         'backup_id' => $backup->id,
                         'user_id' => $input['user_id'],
                         'petugas_id' => auth('petugas')->user()->id,
-                        'harga_lelang' => $input['harga_penawaran']
+                        'harga_lelang' => $input['harga_penawaran'],
+                        'tgl_lelang' => date(now())
+                    ]);
+
+                    History_lelang::create([
+                        'lelang_id' => $lelang->id,
+                        'penawaran_id' => $data->id,
                     ]);
                 }
             }
@@ -160,12 +173,37 @@ class LelangController extends Controller
      */
     public function destroy(Lelang $lelang, FlasherInterface $flasher)
     {
-        if ($lelang->destroy($lelang->id)) {
-            Barang::find($lelang->barang_id)->update([
-                'status_lelang' => "ditutup"
-            ])  ?? '';
+        $data = $lelang->findOrFail($lelang->id);
 
-            $flasher->addSuccess("Berhasil Menghapus Data Lelang");
+        // dd($data->barang_id ==  Barang::find($data->barang_id));
+
+        if ($data->barang_id == Barang::find($data->barang_id)) {
+            Barang::find($data->barang_id)->update([
+                'status_lelang' => "ditutup",
+                'proses' => "belum"
+            ]);
+
+            $lelang->destroy($lelang->id);
+
+            $flasher->addSuccess("Data Lelang Berhasil Di Hapus");
+
+            return back();
+        } elseif ($data->barang_id != Barang::find($data->barang_id)) {
+            $backup = Backup_barang::findOrFail($lelang->backup_id);
+            Penawaran::where('barang_id', $lelang->barang_id)->delete();
+
+            Barang::create([
+                'nama_barang' => $backup->nama_barang,
+                'kategori_id' => $backup->kategori_id,
+                'harga_barang' => $backup->harga_barang,
+                'deskripsi_barang' => $backup->deskripsi_barang
+            ]);
+
+            Backup_barang::destroy($backup->id);
+
+            $lelang->destroy($lelang->id);
+
+            $flasher->addSuccess("Data Lelang Berhasil Di Hapus");
 
             return back();
         }

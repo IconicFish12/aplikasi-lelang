@@ -24,10 +24,6 @@ class BaseController extends Controller
     //Web logic
     public function webView()
     {
-        if (auth('web')->check()) {
-            $data = Penawaran::where('user_id', Auth::guard('web')->user()->id)->first();
-        }
-
         return view('web.home', [
             "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(12),
         ]);

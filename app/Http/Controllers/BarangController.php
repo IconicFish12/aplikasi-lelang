@@ -140,7 +140,7 @@ class BarangController extends Controller
             }
 
             if ($request->hasFile('foto')) {
-                if (Storage::disk("public_path")->exists($barang->foto)) {
+                if (!is_null($barang->foto) && Storage::disk("public_path")->exists($barang->foto)) {
                     Storage::disk("public_path")->delete($barang->foto);
                 }
                 $data['foto'] = $request->file('foto')->store('images', "public_path");

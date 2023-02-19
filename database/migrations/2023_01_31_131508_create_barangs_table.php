@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('nama_barang');
             $table->string('harga_barang');
             $table->longText('deskripsi_barang');
-            $table->string('foto');
+            $table->string('foto')->nullable();
             $table->enum('status_lelang', ["ditutup", "dibuka"])->default('ditutup');
             $table->enum('proses', ["belum", "sedang", "sudah"])->default('belum');
             $table->timestamps();

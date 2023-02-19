@@ -25,6 +25,7 @@ return new class extends Migration
             $table->foreignIdFor(Petugas::class, 'petugas_id')->nullable();
             $table->date('tgl_mulai');
             $table->date('tgl_selesai');
+            $table->date('tgl_lelang')->nullable();
             $table->string('harga_awal');
             $table->string('harga_lelang')->nullable();
             $table->timestamps();

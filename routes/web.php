@@ -6,7 +6,6 @@ use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\LelangController;
 use App\Http\Controllers\KategoriController;
-use App\Models\Barang;
 
 /*
 |--------------------------------------------------------------------------

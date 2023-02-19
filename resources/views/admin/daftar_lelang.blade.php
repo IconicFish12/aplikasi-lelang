@@ -42,8 +42,9 @@
                             <th>Nama Barang</th>
                             <th>Nama Pembeli</th>
                             <th>Petugas Pelelang</th>
-                            <th>Tanggal mulai</th>
-                            <th>Tanggal selesai</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
                             <th>Action</th>
@@ -53,15 +54,34 @@
                         <tbody>
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->barang->nama_barang ?? $item->backup->nama_barang}}</td>
-                                <td>{{ $item->user->nama_lengkap ?? 'Barang Belum Dilelang' }}</td>
-                                <td>{{ $item->petugas->nama_petugas ?? 'Barang Belum Dilelang' }}</td>
+                                <td>{{ $item->barang->nama_barang ?? $item->backup->nama_barang }}</td>
+                                <td>
+                                    @empty($item->user->nama_lengkap)
+                                        <div class="badge text-bg-danger mx-auto">Belum Dilelang</div>
+                                    @else
+                                        {{ $item->user->nama_lengkap }}
+                                    @endempty
+                                </td>
+                                <td>
+                                    @empty($item->petugas->nama_petugas)
+                                        <div class="badge text-bg-danger mx-auto">Belum Dilelang</div>
+                                    @else
+                                        {{ $item->petugas->nama_petugas }}
+                                    @endempty
+                                </td>
                                 <td>{{ $item->tgl_mulai }}</td>
                                 <td>{{ $item->tgl_selesai }}</td>
+                                <td>
+                                    @empty($item->tgl_lelang)
+                                        <div class="badge text-bg-danger mx-auto">Belum Dilelang</div>
+                                    @else
+                                        {{ $item->tgl_lelang }}
+                                    @endempty
+                                </td>
                                 <td>@money($item->harga_awal)</td>
                                 <td>
                                     @if (is_null($item->harga_lelang))
-                                        Barang Belum Dilelang
+                                        <div class="badge text-bg-danger mx-auto">Belum Dilelang</div>
                                     @else
                                         @money($item->harga_lelang)
                                     @endif
@@ -90,8 +110,9 @@
                             <th>Nama Barang</th>
                             <th>Nama Pembeli</th>
                             <th>Petugas Pelelang</th>
-                            <th>Tanggal mulai</th>
-                            <th>Tanggal selesai</th>
+                            <th>Tanggal Mulai</th>
+                            <th>Tanggal Selesai</th>
+                            <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
                             <th>Action</th>
@@ -145,4 +166,6 @@
             </div>
         @endif
     </div>
+@endsection
+@section('script')
 @endsection

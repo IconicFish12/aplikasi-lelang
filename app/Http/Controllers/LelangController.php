@@ -13,7 +13,6 @@ use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateLelangRequest;
 use App\Models\Backup_barang;
 use App\Models\History_lelang;
-use Spatie\Backup\BackupDestination\Backup;
 
 class LelangController extends Controller
 {
@@ -24,8 +23,9 @@ class LelangController extends Controller
      */
     public function index()
     {
+
         return view('admin.daftar_lelang', [
-            "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(12),
+            "dataArr" => Lelang::with(['user', 'petugas', 'barang'])->paginate(request('paginate') ?? 10),
             "page_header" => "Daftar Lelang"
         ]);
     }
@@ -37,10 +37,9 @@ class LelangController extends Controller
      */
     public function eksekusi_pelelangan(Request $request, FlasherInterface $flasher)
     {
-        // dd();
         $input =  $request->all();
         $data = Penawaran::where('harga_penawaran', $request->harga_penawaran)->first();
-        // dd($data);
+        // dd($input);
 
         $validate =  Validator::make($input, [
             "lelang_id" => "required",
@@ -58,7 +57,6 @@ class LelangController extends Controller
 
             if ($update) {
                 $barang = Barang::findOrFail($input['barang_id']);
-                $lelang = Lelang::findOrFail($input['lelang_id']);
 
                 $backup = Backup_barang::create([
                     'nama_barang' => $barang->nama_barang,
@@ -69,23 +67,34 @@ class LelangController extends Controller
                     'proses' => $barang->proses
                 ]);
 
-                if ($backup) {
+                $update = Lelang::where('id', $input['lelang_id'])->update([
+                    'user_id' => $input['user_id'],
+                    'petugas_id' => auth('petugas')->user()->id,
+                    'harga_lelang' => $input['harga_penawaran'],
+                    'tgl_lelang' => date(now())
+                ]);
+
+                if ($backup && $update) {
+                    $lelang = Lelang::findOrFail($input['lelang_id']);
+                    // dd($lelang->petugas_id);
+
                     Storage::disk('public_path')->delete($barang->foto);
+
+                    History_lelang::create([
+                        'kategori_id' => $backup->kategori_id,
+                        'petugas_id' => $lelang->petugas_id,
+                        'user_id' => $lelang->user_id,
+                        'nama_barang' => $backup->nama_barang,
+                        'harga_barang' => $backup->harga_barang,
+                        'harga_lelang' => $lelang->harga_lelang,
+                        'tgl_lelang' => $lelang->tgl_lelang,
+                        'jenis_transaksi' => $lelang->jenis_transaksi,
+                        'proses' => $backup->proses
+                    ]);
 
                     Barang::destroy($barang->id);
 
-                    Lelang::where('id', $input['lelang_id'])->update([
-                        'backup_id' => $backup->id,
-                        'user_id' => $input['user_id'],
-                        'petugas_id' => auth('petugas')->user()->id,
-                        'harga_lelang' => $input['harga_penawaran'],
-                        'tgl_lelang' => date(now())
-                    ]);
-
-                    History_lelang::create([
-                        'lelang_id' => $lelang->id,
-                        'penawaran_id' => $data->id,
-                    ]);
+                    Lelang::destroy($lelang->id);
                 }
             }
 
@@ -130,27 +139,56 @@ class LelangController extends Controller
      */
     public function tambah_penawaran(Request $request, FlasherInterface $flasher)
     {
-        // dd($request->all());
-        $data = Validator::make($request->all(), [
-            'user_id' => "required",
-            'barang_id' => "required",
-            "harga_penawaran" => "required|integer"
-        ], [
-            "user_id.required" => "Input Harus Diisi",
-            "barang_id.required" => "Input Harus Diisi",
-            "harga_penawaran.required" => "Input Harus Diisi",
-            "harga_penawaran.integer" => "input Harus berupa angka",
-        ]);
+        if ($request->has('harga_penawaran')) {
+            function rupiah($angka)
+            {
 
-        if (!$data->fails()) {
-            Penawaran::create($request->all());
+                $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
+                return $hasil_rupiah;
+            }
 
-            $flasher->addSuccess('Penawaran Telah Diajukan');
+            $harga = Penawaran::find($request->penawaran_id);
+            $barang = Barang::find($request->barang_id);
+
+            if (!is_null($harga) && $harga->harga_penawaran) {
+                if ($request->harga_penawaran <= $harga->harga_penawaran) {
+                    $flasher->addError("Harga Penawaran Harus Lebih dari" . ' ' . rupiah($harga->harga_penawaran));
+
+                    return back();
+                }
+            }
+
+            if ($request->harga_penawaran >= $barang->harga_barang) {
+                $data = Validator::make($request->all(), [
+                    'user_id' => "required",
+                    'barang_id' => "required",
+                    "harga_penawaran" => "required|integer"
+                ], [
+                    "user_id.required" => "Input Harus Diisi",
+                    "barang_id.required" => "Input Harus Diisi",
+                    "harga_penawaran.required" => "Input Harus Diisi",
+                    "harga_penawaran.integer" => "input Harus berupa angka",
+                ]);
+
+                if (!$data->fails()) {
+                    Penawaran::create([
+                        'barang_id' => $request->barang_id,
+                        'user_id' => $request->user_id,
+                        'harga_penawaran' => $request->harga_penawaran
+                    ]);
+
+                    $flasher->addSuccess('Penawaran Telah Diajukan');
+
+                    return back();
+                }
+
+                return back()->withErrors($data->errors());
+            }
+
+            $flasher->addError("Harga Penawaran Harus Lebih dari Harga Barang");
 
             return back();
         }
-
-        return back()->withErrors($data->errors());
     }
 
     /**
@@ -189,8 +227,9 @@ class LelangController extends Controller
 
             return back();
         } elseif ($data->barang_id != Barang::find($data->barang_id)) {
-            $backup = Backup_barang::findOrFail($lelang->backup_id);
-            Penawaran::where('barang_id', $lelang->barang_id)->delete();
+            $backup = Backup_barang::find($data->backup_id);
+            Penawaran::where('barang_id', $data->barang_id)->delete();
+            History_lelang::where('lelang_id', $lelang->id)->delete();
 
             Barang::create([
                 'nama_barang' => $backup->nama_barang,
@@ -199,7 +238,7 @@ class LelangController extends Controller
                 'deskripsi_barang' => $backup->deskripsi_barang
             ]);
 
-            Backup_barang::destroy($backup->id);
+            Backup_barang::destroy($data->backup_id);
 
             $lelang->destroy($lelang->id);
 
@@ -229,8 +268,13 @@ class LelangController extends Controller
             return response()->json([$tertingi, $lelang, $data], 200);
         }
 
+        $mulai = Lelang::with(['petugas', 'user', 'barang'])
+            ->where('tgl_mulai', '<=', now())
+            ->where('tgl_selesai', '>=', now())
+            ->paginate(12);
+
         return view('admin.barang_lelang', [
-            'dataArr' => Lelang::with(['petugas', 'user', 'barang.kategori'])->paginate(10)
+            'dataArr' => $mulai
         ]);
     }
 }

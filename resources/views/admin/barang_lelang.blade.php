@@ -146,6 +146,18 @@
                                                                                                         readonly>
                                                                                                 </div>
                                                                                             </div>
+                                                                                            <div class="mb-3 row">
+                                                                                                <label for="inputPassword"
+                                                                                                    class="col-lg-4 col-form-label">Jenis
+                                                                                                    Transaksi</label>
+                                                                                                <div class="col-sm-5">
+                                                                                                    <input type="text"
+                                                                                                        class="form-control"
+                                                                                                        id="post_jenis_transaksi"
+                                                                                                        placeholder="Harga Barang"
+                                                                                                        readonly>
+                                                                                                </div>
+                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -166,7 +178,7 @@
                                     </div>
                                 </div>
                             @else
-                            {{ null }}
+                                {{ null }}
                             @endif
                         @endforeach
                     </div>
@@ -222,6 +234,7 @@
                                 $("#post_barang").val(resp[0].barang.nama_barang);
                                 $("#post_kategori").val(resp[0].barang.kategori.nama_kategori);
                                 $("#post_harga_barang").val(resp[0].barang.harga_barang);
+                                $("#post_jenis_transaksi").val(resp[1].jenis_transaksi);
 
                                 // $("#test").change(function(){
                                 //     console.log("berubash");

@@ -1,10 +1,8 @@
 <?php
 
-use App\Models\Backup_barang;
+use App\Models\Kategori;
+use App\Models\Petugas;
 use App\Models\User;
-// use App\Models\Barang;
-use App\Models\Lelang;
-use App\Models\Penawaran;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
@@ -20,8 +18,15 @@ return new class extends Migration
     {
         Schema::create('tb_history_lelang', function (Blueprint $table) {
             $table->id();
-            $table->foreignIdFor(Lelang::class, 'lelang_id');
-            $table->foreignIdFor(Penawaran::class, 'penawaran_id');
+            $table->foreignIdFor(Kategori::class, 'kategori_id');
+            $table->foreignIdFor(Petugas::class, 'petugas_id');
+            $table->foreignIdFor(User::class, 'user_id');
+            $table->string('nama_barang');
+            $table->string('harga_barang');
+            $table->string('harga_lelang');
+            $table->date('tgl_lelang');
+            $table->enum('jenis_transaksi', ['jual', 'sewa']);
+            $table->enum('proses', ["belum", "sedang", "sudah"])->default('belum');
             $table->timestamps();
         });
     }

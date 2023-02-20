@@ -173,6 +173,17 @@
                                                                 <input type="date" class="form-control"
                                                                     name="tgl_selesai" id="tgl_selesai">
                                                             </div>
+                                                            <div class="mb-3">
+                                                                <label for="jenis_transaksi" class="form-label">Jenis
+                                                                    Transaksi</label>
+                                                                <select name="jenis_transaksi"
+                                                                    class="form-control form-select"
+                                                                    id="jenis_transaksi">
+                                                                    <option selected>-- Pilih Jenis Transaksi --</option>
+                                                                    <option value="jual">Barang Dijual</option>
+                                                                    <option value="sewa">Barang Disewa</option>
+                                                                </select>
+                                                            </div>
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary"
@@ -401,7 +412,7 @@
                     dataType: "json",
                     success: resp => {
                         $("#post_lelang").attr("action",
-                            `{{ asset('admin/daftar-barang/${resp.id}') }}`);
+                            `{{ asset('admin/daftar-barang/${resp[0].id}') }}`);
                     },
                     error: err => {
                         console.log(err);
@@ -421,7 +432,7 @@
                     dataType: "json",
                     success: resp => {
                         $("#update_proses").attr("action",
-                            `{{ asset('admin/daftar-barang/${resp.id}') }}`);
+                            `{{ asset('admin/daftar-barang/${resp[0].id}') }}`);
                     },
                     error: err => {
                         console.log(err);
@@ -441,12 +452,12 @@
                     dataType: "json",
                     success: resp => {
                         $("#edit_form").attr("action",
-                            `{{ asset('admin/daftar-barang/${resp.id}') }}`);
-                        $("#edit_nama_barang").val(resp.nama_barang);
-                        $("#edit_kategori_id").val(resp.kategori_id);
-                        $("#edit_harga_barang").val(resp.harga_barang);
-                        $("#edit_status_lelangan").val(resp.status_lelangan);
-                        $("#edit_deskripsi_barang").val(resp.deskripsi_barang);
+                            `{{ asset('admin/daftar-barang/${resp[0].id}') }}`);
+                        $("#edit_nama_barang").val(resp[0].nama_barang);
+                        $("#edit_kategori_id").val(resp[0].kategori_id);
+                        $("#edit_harga_barang").val(resp[0].harga_barang);
+                        $("#edit_status_lelangan").val(resp[0].status_lelangan);
+                        $("#edit_deskripsi_barang").val(resp[0].deskripsi_barang);
                     },
                     error: err => {
                         console.log(err);

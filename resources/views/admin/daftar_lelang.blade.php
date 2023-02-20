@@ -47,6 +47,7 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
+                            <th>Jenis Transaksi</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -54,7 +55,13 @@
                         <tbody>
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->barang->nama_barang ?? $item->backup->nama_barang }}</td>
+                                <td>
+                                    @empty($item->barang->nama_barang)
+                                        <div class="badge text-bg-success mx-auto">Sudah Dilelang</div>
+                                    @else
+                                        {{ $item->barang->nama_barang }}
+                                    @endempty
+                                </td>
                                 <td>
                                     @empty($item->user->nama_lengkap)
                                         <div class="badge text-bg-danger mx-auto">Belum Dilelang</div>
@@ -87,6 +94,13 @@
                                     @endif
                                 </td>
                                 <td>
+                                    @if ($item->jenis_transaksi === 'jual')
+                                        <div class="badge text-bg-success mx-auto">Barang Dijual</div>
+                                    @else
+                                        <div class="badge text-bg-warning mx-auto">Barang Disewakan</div>
+                                    @endif
+                                </td>
+                                <td>
                                     <div class="d-flex justify-content-center">
                                         <button type="button" class="badge text-bg-warning me-2 getData"
                                             value="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#editModal">
@@ -115,6 +129,7 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
+                            <th>Jenis Transaksi</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>

@@ -20,7 +20,6 @@ return new class extends Migration
         Schema::create('tb_lelang', function (Blueprint $table) {
             $table->id();
             $table->foreignIdFor(Barang::class, 'barang_id')->nullable();
-            $table->foreignIdFor(Backup_barang::class, 'backup_id')->nullable();
             $table->foreignIdFor(User::class, 'user_id')->nullable();
             $table->foreignIdFor(Petugas::class, 'petugas_id')->nullable();
             $table->date('tgl_mulai');
@@ -28,6 +27,7 @@ return new class extends Migration
             $table->date('tgl_lelang')->nullable();
             $table->string('harga_awal');
             $table->string('harga_lelang')->nullable();
+            $table->enum('jenis_transaksi', ['jual', 'sewa']);
             $table->timestamps();
         });
     }

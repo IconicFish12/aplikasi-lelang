@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\BarangController;
+use App\Http\Controllers\HistoryLelangController;
 use App\Http\Controllers\LelangController;
 use App\Http\Controllers\KategoriController;
 
@@ -76,6 +77,10 @@ Route::prefix('/admin')->group(function () {
         Route::post('/action', [LelangController::class, 'eksekusi_pelelangan']);
         Route::put('/{lelang:id}', [LelangController::class, 'update']);
         Route::delete('/{lelang:id}', [LelangController::class, 'destroy']);
+    });
+
+    Route::prefix('riwayat')->middleware(['auth:petugas', 'petugas'])->group(function(){
+        Route::get('/', [HistoryLelangController::class, 'index']);
     });
 
     //Pegawai Profile

@@ -21,14 +21,14 @@
                                 <p class="text-center small">Enter your username & password to login</p>
                             </div>
 
-                            <form class="row g-3 needs-validation" method="post" action="{{ asset('login') }}"
-                                novalidate>
+                            <form class="row g-3 needs-validation" method="post" action="{{ asset('login') }}" novalidate>
                                 @csrf
                                 <div class="col-12">
                                     <label for="email" class="form-label">Email</label>
                                     <div class="input-group has-validation">
                                         <input type="" name="email"
-                                            class="form-control @error('email') is-invalid @enderror" id="email" placeholder="fernando@gmail.com">
+                                            class="form-control @error('email') is-invalid @enderror" id="email"
+                                            placeholder="fernando@gmail.com" value="{{ old('email') }}">
                                         @error('email')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -40,7 +40,8 @@
                                 <div class="col-12">
                                     <label for="password" class="form-label">Password</label>
                                     <input type="password" name="password"
-                                        class="form-control @error('password') is-invalid @enderror" id="password" placeholder="password">
+                                        class="form-control @error('password') is-invalid @enderror" id="password"
+                                        placeholder="password">
                                     @error('password')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -59,7 +60,8 @@
                                     <button class="btn btn-primary w-100" type="submit">Login</button>
                                 </div>
                                 <div class="col-12 text-center">
-                                    <p class="small mb-0">Don't have account? <a href="{{ asset('registration') }}">Create an
+                                    <p class="small mb-0">Don't have account? <a href="{{ asset('registration') }}">Create
+                                            an
                                             account</a></p>
                                 </div>
                             </form>

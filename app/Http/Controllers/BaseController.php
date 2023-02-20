@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Barang;
 use App\Models\Lelang;
 use App\Models\Penawaran;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -24,8 +25,15 @@ class BaseController extends Controller
     //Web logic
     public function webView()
     {
+        $mulai = Lelang::with(['petugas', 'user', 'barang'])
+        ->where('tgl_mulai', '<=', now())
+        ->where('tgl_selesai', '>=', now())
+        ->paginate(9);
+
+        // dd($mulai);
+
         return view('web.home', [
-            "dataArr" => Lelang::with(['petugas', 'user', 'barang'])->paginate(12),
+            "dataArr" => $mulai,
         ]);
     }
 }

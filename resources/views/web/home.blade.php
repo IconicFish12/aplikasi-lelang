@@ -39,6 +39,7 @@
                                                                 class="needs-validation" novalidate>
                                                                 @csrf
                                                                 <input type="hidden" name="barang_id" id="show_barang">
+                                                                <input type="hidden" name="penawaran_id" id="show_penawaran">
                                                                 <input type="hidden" name="user_id"
                                                                     value="{{ auth('web')->user()->id }}">
                                                                 <div class="modal-body">
@@ -178,6 +179,7 @@
             });
 
             let getData = e => {
+                // console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('penawaran/show') }}`,
                     method: "POST",
@@ -187,10 +189,13 @@
                     },
                     dataType: "json",
                     success: resp => {
-                        // console.log(resp);
+                        console.log(resp);
                         $("#show_form").attr("action",
                             `{{ asset('penawaran/action') }}`);
-                        $("#show_barang").val(resp.id);
+                        $("#show_barang").val(resp[0].id);
+                        if(resp[1] != null){
+                            $("#show_penawaran").val(resp[1].id);
+                        }
                     },
                     error: err => {
                         console.log(err);

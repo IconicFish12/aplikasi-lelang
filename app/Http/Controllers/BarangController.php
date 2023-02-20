@@ -3,13 +3,14 @@
 namespace App\Http\Controllers;
 
 use App\Models\Barang;
+use App\Models\Lelang;
 use App\Models\Kategori;
+use App\Models\Penawaran;
 use Illuminate\Http\Request;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
-use App\Models\Lelang;
 
 class BarangController extends Controller
 {
@@ -65,7 +66,10 @@ class BarangController extends Controller
     public function show(Barang $barang, Request $request)
     {
         if ($request->has('getData') && $request->getData) {
-            return response()->json($barang->find($request->data), 200);
+            $data = $barang->find($request->data);
+
+            $penawaran = Penawaran::where('barang_id', $request->data)->first();
+            return response()->json([$data, $penawaran], 200);
         }
     }
 
@@ -122,6 +126,7 @@ class BarangController extends Controller
                     'harga_awal' => $barang->harga_barang,
                     'tgl_mulai' => $request->tgl_mulai,
                     'tgl_selesai' => $request->tgl_selesai,
+                    'jenis_transaksi' => $request->jenis_transaksi
                 ]);
 
                 if ($lelang) {

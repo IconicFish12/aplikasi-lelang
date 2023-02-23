@@ -97,6 +97,7 @@
             <!-- Uncomment below if you prefer to use an image logo -->
             <!-- <a href="index.html" class="logo me-auto"><img src="/components/img/logo.png" alt="" class="img-fluid"></a>-->
 
+
             <nav id="navbar" class="navbar">
                 <ul>
                     <li><a class="nav-link scrollto" href="/">Home</a></li>
@@ -147,6 +148,7 @@
         </div>
 
     </section><!-- End Hero -->
+
 
     <main id="main">
 

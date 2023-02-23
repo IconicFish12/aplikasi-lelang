@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\History_lelang;
 use App\Http\Requests\StoreHistory_lelangRequest;
 use App\Http\Requests\UpdateHistory_lelangRequest;
+use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use PDF;
 
 class HistoryLelangController extends Controller
 {
@@ -15,7 +17,10 @@ class HistoryLelangController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.riwayat_lelang', [
+            'page_header' => 'Riwayat Pelelangan',
+            'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->paginate(request('paginate') ?? 25)
+        ]);
     }
 
     /**
@@ -23,9 +28,14 @@ class HistoryLelangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create_pdf()
     {
-        //
+        $pdf = FacadePdf::loadview('admin.laporan', [
+            'title' => 'Laporan Hasil Pelelangan',
+            'dataArr' => History_lelang::all()
+        ]);
+
+        return $pdf->stream('laporan.pdf');
     }
 
     /**

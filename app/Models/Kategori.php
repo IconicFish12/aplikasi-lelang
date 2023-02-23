@@ -16,4 +16,9 @@ class Kategori extends Model
     {
         return $this->hasMany(Barang::class, 'kategori_id');
     }
+
+    public function history_lelang()
+    {
+        return $this->hasMany(History_lelang::class, 'petugas_id');
+    }
 }

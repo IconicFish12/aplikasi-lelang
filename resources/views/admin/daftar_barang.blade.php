@@ -140,71 +140,85 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($item->status_lelang == 'ditutup')
-                                        <button type="button" name="status_lelang" data-bs-toggle="modal"
-                                            value="{{ $item->id }}" data-bs-target="#modalLelang"
-                                            class="badge text-bg-danger mx-auto postLelang">
-                                            Pelelangan Ditutup
-                                        </button>
-                                        <div class="modal fade" id="modalLelang" tabindex="-1"
-                                            aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                            <div class="modal-dialog">
-                                                <div class="modal-content">
-                                                    <div class="modal-header">
-                                                        <h1 class="modal-title fs-5" id="exampleModalLabel">Buka
-                                                            Pelelangan
-                                                        </h1>
-                                                        <button type="button" class="btn-close" data-bs-dismiss="modal"
-                                                            aria-label="Close"></button>
+                                    @if (auth('petugas')->user()->id === 2)
+                                        @if ($item->status_lelang == 'ditutup')
+                                            <button type="button" name="status_lelang" data-bs-toggle="modal"
+                                                value="{{ $item->id }}" data-bs-target="#modalLelang"
+                                                class="badge text-bg-danger mx-auto postLelang">
+                                                Pelelangan Ditutup
+                                            </button>
+                                            <div class="modal fade" id="modalLelang" tabindex="-1"
+                                                aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                <div class="modal-dialog">
+                                                    <div class="modal-content">
+                                                        <div class="modal-header">
+                                                            <h1 class="modal-title fs-5" id="exampleModalLabel">Buka
+                                                                Pelelangan
+                                                            </h1>
+                                                            <button type="button" class="btn-close"
+                                                                data-bs-dismiss="modal" aria-label="Close"></button>
+                                                        </div>
+                                                        <form action="" id="post_lelang" method="post">
+                                                            @method('put')
+                                                            @csrf
+                                                            <div class="modal-body">
+                                                                <div class="mb-3">
+                                                                    <label for="tgl_mulai" class="form-label">Tanggal
+                                                                        Mulai</label>
+                                                                    <input type="date" class="form-control"
+                                                                        name="tgl_mulai" id="tgl_mulai">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="tgl_selesai" class="form-label">Tanggal
+                                                                        Selesai</label>
+                                                                    <input type="date" class="form-control"
+                                                                        name="tgl_selesai" id="tgl_selesai">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="jenis_transaksi" class="form-label">Jenis
+                                                                        Transaksi</label>
+                                                                    <select name="jenis_transaksi"
+                                                                        class="form-control form-select"
+                                                                        id="jenis_transaksi">
+                                                                        <option selected>-- Pilih Jenis Transaksi --
+                                                                        </option>
+                                                                        <option value="jual">Barang Dijual</option>
+                                                                        <option value="sewa">Barang Disewa</option>
+                                                                    </select>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" name="status_lelang"
+                                                                    value="dibuka" class="btn btn-primary">Save
+                                                                    changes</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
-                                                    <form action="" id="post_lelang" method="post">
-                                                        @method('put')
-                                                        @csrf
-                                                        <div class="modal-body">
-                                                            <div class="mb-3">
-                                                                <label for="tgl_mulai" class="form-label">Tanggal
-                                                                    Mulai</label>
-                                                                <input type="date" class="form-control"
-                                                                    name="tgl_mulai" id="tgl_mulai">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="tgl_selesai" class="form-label">Tanggal
-                                                                    Selesai</label>
-                                                                <input type="date" class="form-control"
-                                                                    name="tgl_selesai" id="tgl_selesai">
-                                                            </div>
-                                                            <div class="mb-3">
-                                                                <label for="jenis_transaksi" class="form-label">Jenis
-                                                                    Transaksi</label>
-                                                                <select name="jenis_transaksi"
-                                                                    class="form-control form-select"
-                                                                    id="jenis_transaksi">
-                                                                    <option selected>-- Pilih Jenis Transaksi --</option>
-                                                                    <option value="jual">Barang Dijual</option>
-                                                                    <option value="sewa">Barang Disewa</option>
-                                                                </select>
-                                                            </div>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary"
-                                                                data-bs-dismiss="modal">Close</button>
-                                                            <button type="submit" name="status_lelang" value="dibuka"
-                                                                class="btn btn-primary">Save
-                                                                changes</button>
-                                                        </div>
-                                                    </form>
                                                 </div>
                                             </div>
-                                        </div>
+                                        @else
+                                            <form action="{{ asset('/admin/daftar-barang/' . $item->id) }}"
+                                                method="post">
+                                                @method('put')
+                                                @csrf
+                                                <button type="submit" name="status_lelang" value="ditutup"
+                                                    class="badge text-bg-success mx-auto">
+                                                    Pelelangan Dibuka
+                                                </button>
+                                            </form>
+                                        @endif
                                     @else
-                                        <form action="{{ asset('/admin/daftar-barang/' . $item->id) }}" method="post">
-                                            @method('put')
-                                            @csrf
-                                            <button type="submit" name="status_lelang" value="ditutup"
-                                                class="badge text-bg-success mx-auto">
+                                        @if ($item->status_lelang == 'ditutup')
+                                            <div class="badge text-bg-danger mx-auto">
+                                                Pelelangan Ditutup
+                                            </div>
+                                        @else
+                                            <div class="badge text-bg-success mx-auto">
                                                 Pelelangan Dibuka
-                                            </button>
-                                        </form>
+                                            </div>
+                                        @endif
                                     @endif
                                 </td>
                                 <td>
@@ -299,6 +313,7 @@
                         </tr>
                     </tfoot>
                 </table>
+                {{ $dataArr->links() }}
                 <div class="modal fade" id="editModal" tabindex="-1">
                     <div class="modal-dialog">
                         <div class="modal-content">

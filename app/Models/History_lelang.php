@@ -12,13 +12,18 @@ class History_lelang extends Model
     protected $table = "tb_history_lelang";
     protected $guarded = [];
 
-    public function lelang()
+    public function kategori()
     {
-        return $this->belongsTo(Lelang::class);
+        return $this->belongsTo(Kategori::class);
     }
 
-    public function backup()
+    public function petugas()
     {
-        return $this->belongsTo(Backup_barang::class);
+        return $this->belongsTo(Petugas::class);
+    }
+
+    public function user()
+    {
+        return $this->belongsTo(User::class);
     }
 }

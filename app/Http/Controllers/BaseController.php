@@ -2,12 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Barang;
 use App\Models\Lelang;
-use App\Models\Penawaran;
-use Carbon\Carbon;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class BaseController extends Controller
 {

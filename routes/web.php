@@ -81,6 +81,7 @@ Route::prefix('/admin')->group(function () {
 
     Route::prefix('riwayat')->middleware(['auth:petugas', 'petugas'])->group(function(){
         Route::get('/', [HistoryLelangController::class, 'index']);
+        Route::get('/generate', [HistoryLelangController::class, 'create_pdf']);
     });
 
     //Pegawai Profile

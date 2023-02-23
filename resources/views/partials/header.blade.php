@@ -2,16 +2,44 @@
 
     <div class="d-flex align-items-center justify-content-between">
         <a href="/admin" class="logo d-flex align-items-center">
-            <img src="{{ asset("assets/img/logo.png") }}" alt="">
-            <span class="d-none d-lg-block mx-2">Aplikasi Lelang</span>
+            <img src="{{ asset('assets/img/logo.png') }}" alt="">
+            <span class="d-none d-lg-block mx-2">pAplikasi Lelang</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
 
     <div class="ms-3">
-        @inject('carbon', 'Carbon\Carbon')
-        {{ $carbon::now()->format('l jS \of F Y h:i:s A') }}
+        <script>
+            function display_ct7() {
+                var x = new Date()
+                var ampm = x.getHours() >= 12 ? ' PM' : ' AM';
+                hours = x.getHours() % 12;
+                hours = hours ? hours : 12;
+                hours = hours.toString().length == 1 ? 0 + hours.toString() : hours;
+
+                var minutes = x.getMinutes().toString()
+                minutes = minutes.length == 1 ? 0 + minutes : minutes;
+
+                var seconds = x.getSeconds().toString()
+                seconds = seconds.length == 1 ? 0 + seconds : seconds;
+
+                var x1 = " - " + hours + ":" + minutes + ":" + seconds + " " + ampm;
+                document.getElementById('ct7').innerHTML = x1;
+                display_c7();
+            }
+
+            function display_c7() {
+                var refresh = 1000; // Refresh rate in milli seconds
+                mytime = setTimeout('display_ct7()', refresh)
+            }
+            display_c7()
+        </script>
+        <div onload="display_c7()">
+            @inject('carbon', 'Carbon\Carbon')
+            {{ $carbon->format('l jS \of F Y ') }} <span id="ct7"></span>
+        </div>
     </div>
+
 
     <nav class="header-nav ms-auto">
         <ul class="d-flex align-items-center">
@@ -26,7 +54,8 @@
 
                 <a class="nav-link nav-profile d-flex align-items-center pe-0" href="#" data-bs-toggle="dropdown">
                     <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
-                    <span class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::guard('petugas')->user()->nama_petugas }}</span>
+                    <span
+                        class="d-none d-md-block dropdown-toggle ps-2">{{ Auth::guard('petugas')->user()->nama_petugas }}</span>
                 </a><!-- End Profile Iamge Icon -->
 
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
@@ -69,10 +98,14 @@
                         </a>
                     </li>
 
-                </ul><!-- End Profile Dropdown Items -->
-            </li><!-- End Profile Nav -->
+                </ul>
+                <!-- End Profile Dropdown Items -->
+            </li>
+            <!-- End Profile Nav -->
 
         </ul>
-    </nav><!-- End Icons Navigation -->
+    </nav>
+    <!-- End Icons Navigation -->
 
-</header><!-- End Header -->
+</header>
+<!-- End Header -->

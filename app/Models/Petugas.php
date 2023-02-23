@@ -36,11 +36,16 @@ class Petugas extends Authenticatable
 
     public function level()
     {
-        return $this->belongsTo(Level::class);
+        return $this->belongsTo(Level::class, );
     }
 
     public function lelang()
     {
-        return $this->belongsTo(Lelang::class);
+        return $this->belongsTo(Lelang::class, 'petugas_id');
+    }
+
+    public function history_lelang()
+    {
+        return $this->hasMany(History_lelang::class, 'petugas_id');
     }
 }

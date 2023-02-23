@@ -142,7 +142,6 @@ class LelangController extends Controller
         if ($request->has('harga_penawaran')) {
             function rupiah($angka)
             {
-
                 $hasil_rupiah = "Rp " . number_format($angka, 2, ',', '.');
                 return $hasil_rupiah;
             }
@@ -150,15 +149,27 @@ class LelangController extends Controller
             $harga = Penawaran::find($request->penawaran_id);
             $barang = Barang::find($request->barang_id);
 
-            if (!is_null($harga) && $harga->harga_penawaran) {
-                if ($request->harga_penawaran <= $harga->harga_penawaran) {
+            // dd($request->harga_penawaran == $barang->harga_barang);
+
+            if ($harga != null && $harga->harga_penawaran) {
+                if ($request->harga_penawaran < $harga->harga_penawaran) {
                     $flasher->addError("Harga Penawaran Harus Lebih dari" . ' ' . rupiah($harga->harga_penawaran));
 
                     return back();
                 }
             }
 
-            if ($request->harga_penawaran >= $barang->harga_barang) {
+            if ($request->harga_penawaran < $barang->harga_barang) {
+                $flasher->addError("Harga Penawaran Tidak Boleh Kurang Dari Harga Barang");
+
+                return back();
+            } elseif ($request->harga_penawaran == $barang->harga_barang) {
+                $flasher->addError("Harga Penawaran Tidak Boleh Sama Dengan Harga Barang");
+
+                return back();
+            }
+
+            if ($request->harga_penawaran > $barang->harga_barang) {
                 $data = Validator::make($request->all(), [
                     'user_id' => "required",
                     'barang_id' => "required",

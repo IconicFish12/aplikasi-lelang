@@ -49,22 +49,6 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="yourUsername" class="form-label">Username</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                        <input type="text" name="username"
-                                            class="form-control @error('username') is-invalid @enderror" id="yourUsername"
-                                            aria-describedby="inputGroupPrepend" placeholder="My Username"
-                                            value="{{ old('username') }}">
-                                        @error('username')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
                                     <label for="yourPassword" class="form-label">Password</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="yourPassword"
@@ -82,22 +66,6 @@
                                         class="form-control @error('telp') is-invalid @enderror" id="yourPassword"
                                         placeholder="xxxx-xxxx-xxxx" value="{{ old('telp') }}">
                                     @error('telp')
-                                        <div class="invalid-feedback">
-                                            {{ $message }}
-                                        </div>
-                                    @enderror
-                                </div>
-
-                                <div class="col-12" id="select-level">
-                                    <label for="yourLevel" class="form-label">Pilih Level</label>
-                                    <select class="form-select form-control  @error('level_id') is-invalid @enderror"
-                                        name="level_id" id="yourLevel">
-                                        <option selected>-- Pilih Level --</option>
-                                        @foreach ($dataLevel as $item)
-                                            <option value="{{ $item->id }}">{{ $item->level }}</option>
-                                        @endforeach
-                                    </select>
-                                    @error('level_id')
                                         <div class="invalid-feedback">
                                             {{ $message }}
                                         </div>

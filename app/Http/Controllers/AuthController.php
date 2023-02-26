@@ -2,7 +2,6 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Level;
 use App\Models\Petugas;
 use App\Models\User;
 use Flasher\Prime\FlasherInterface;
@@ -31,9 +30,7 @@ class AuthController extends Controller
 
     public function petugasRegisterview()
     {
-        return view('auth.petugasRegister', [
-            'dataLevel' => Level::all()
-        ]);
+        return view('auth.petugasRegister');
     }
 
     public function loginAction(Request $request, FlasherInterface $flasher)
@@ -83,29 +80,30 @@ class AuthController extends Controller
 
         if ($request->nama_petugas) {
 
-            $validate = Validator::make($request->all(), [
+            $validate = Validator::make($data, [
                 'nama_petugas' => ['required'],
-                'username' => ['required', 'max:25', 'min:4'],
                 'email' => ['required', 'email', 'min:4'],
                 'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
                 'telp' => ['required', 'max:15', 'min:4']
             ], [
                 'nama_petugas.required' => "Input ini harus diisi",
-                'username.required' => "Input ini harus diisi",
                 'password.required' => "Input ini harus diisi",
                 'telp.required' => "Input ini harus diisi",
                 'email.required' => "Input ini harus diisi",
-                'username.max' => "Panjang Maksimal 25 Karakter",
-                'username.max' => "Panjang Maksimal 15 Karakter",
-                'username.min' => "Panjang Maksimal 4 Karakter",
+                'password.max' => "Panjang Maksimal 20 Karakter",
                 'email.min' => "Panjang Maksimal 4 Karakter",
                 'telp.min' => "Panjang Maksimal 4 Karakter",
             ]);
 
             if (!$validate->fails()) {
+                if ($request->nama_petugas == Petugas::where('nama_petugas', $data['nama_petugas'])->first()->nama_petugas) {
+                    $flasher->addError('Petugas Sudah Terdaftar');
+
+                    return back();
+                }
+
                 Petugas::create([
                     'nama_petugas' => $data['nama_petugas'],
-                    'username' => $data['username'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
                     'telp' => $data['telp'],
@@ -117,31 +115,26 @@ class AuthController extends Controller
 
                 return back()->withErrors($validate->errors())->withInput();
             }
-        }else {
+        } else {
 
-            $validate = Validator::make($request->all(), [
+            $validate = Validator::make($data, [
                 'nama' => ['required'],
-                'username' => ['required', 'max:25', 'min:4'],
                 'email' => ['required', 'email', 'min:4'],
                 'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
                 'telp' => ['required', 'max:15', 'min:4']
             ], [
                 'nama.required' => "Input ini harus diisi",
-                'username.required' => "Input ini harus diisi",
                 'password.required' => "Input ini harus diisi",
                 'telp.required' => "Input ini harus diisi",
                 'email.required' => "Input ini harus diisi",
-                'username.max' => "Panjang Maksimal 25 Karakter",
-                'username.max' => "Panjang Maksimal 15 Karakter",
-                'username.min' => "Panjang Maksimal 4 Karakter",
+                'password.max' => "Panjang Maksimal 20 Karakter",
                 'email.min' => "Panjang Maksimal 4 Karakter",
                 'telp.min' => "Panjang Maksimal 4 Karakter",
             ]);
 
-            if(! $validate->fails()){
+            if (!$validate->fails()) {
                 User::create([
                     'nama_lengkap' => $data['nama'],
-                    'username' => $data['username'],
                     'email' => $data['email'],
                     'password' => Hash::make($data['password']),
                     'telp' => $data['telp'],
@@ -149,14 +142,11 @@ class AuthController extends Controller
 
                 $flasher->addSuccess("Registrasi Berhasil");
                 return redirect()->to('auth');
-            }else{
+            } else {
 
                 return back()->withErrors($validate->errors())->withInput();
-
             }
-
         }
-
     }
 
     public function logout(FlasherInterface $flasher, Request $request)

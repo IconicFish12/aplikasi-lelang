@@ -24,7 +24,7 @@ class LelangController extends Controller
     public function index()
     {
 
-        return view('admin.daftar_lelang', [
+        return view('admin.lelang.daftar_lelang', [
             "dataArr" => Lelang::with(['user', 'petugas', 'barang'])->paginate(request('paginate') ?? 10),
             "page_header" => "Daftar Lelang"
         ]);
@@ -209,9 +209,19 @@ class LelangController extends Controller
      * @param  \App\Models\Lelang  $lelang
      * @return \Illuminate\Http\Response
      */
-    public function update(UpdateLelangRequest $request, Lelang $lelang)
+    public function update(UpdateLelangRequest $request, Lelang $lelang, FlasherInterface $flasher)
     {
-        //
+        if($request->validated()){
+            $lelang->update([
+                'tgl_mulai' => $request->tgl_mulai,
+                'tgl_selesai' => $request->tgl_selesai,
+                'jenis_transaksi' => $request->jenis_transaksi
+            ]);
+
+            $flasher->addSuccess('Data Berhasil Diubah');
+
+            return back();
+        }
     }
 
     /**
@@ -282,9 +292,11 @@ class LelangController extends Controller
         $mulai = Lelang::with(['petugas', 'user', 'barang'])
             ->where('tgl_mulai', '<=', now())
             ->where('tgl_selesai', '>=', now())
-            ->paginate(12);
+            ->paginate(9);
 
-        return view('admin.barang_lelang', [
+        // dd($mulai);
+
+        return view('admin.barang.barang_lelang', [
             'dataArr' => $mulai
         ]);
     }

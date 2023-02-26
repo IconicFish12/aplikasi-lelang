@@ -47,22 +47,6 @@
                                 </div>
 
                                 <div class="col-12">
-                                    <label for="yourUsername" class="form-label">Username</label>
-                                    <div class="input-group has-validation">
-                                        <span class="input-group-text" id="inputGroupPrepend">@</span>
-                                        <input type="text" name="username"
-                                            class="form-control @error('username') is-invalid @enderror" id="yourUsername"
-                                            aria-describedby="inputGroupPrepend" placeholder="My Username"
-                                            value="{{ old('username') }}">
-                                        @error('username')
-                                            <div class="invalid-feedback">
-                                                {{ $message }}
-                                            </div>
-                                        @enderror
-                                    </div>
-                                </div>
-
-                                <div class="col-12">
                                     <label for="yourPassword" class="form-label">Password</label>
                                     <input type="password" name="password"
                                         class="form-control @error('password') is-invalid @enderror" id="yourPassword"

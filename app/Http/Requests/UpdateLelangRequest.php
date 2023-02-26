@@ -13,7 +13,7 @@ class UpdateLelangRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**
@@ -24,7 +24,9 @@ class UpdateLelangRequest extends FormRequest
     public function rules()
     {
         return [
-            //
+            'tgl_mulai' => ['required', 'date'],
+            'tgl_selesai' => ['required', 'date'],
+            'jenis_transaksi' => ['required']
         ];
     }
 }

@@ -2,7 +2,7 @@
 @section('web')
     @if ($dataArr->count())
         <section>
-            <div class="album py-5 bg-light">
+            <div class="album py-5 bg-light" data-aos="fade-up">
                 <div class="container">
 
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -79,9 +79,11 @@
                         @endforeach
                     </div>
 
+                    <div class="mt-3">
+                        {{ $dataArr->links() }}
+                    </div>
                 </div>
             </div>
-
         </section>
     @else
         <div class="mt-4 col-md-6 mx-auto">

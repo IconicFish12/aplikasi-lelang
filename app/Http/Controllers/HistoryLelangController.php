@@ -17,7 +17,7 @@ class HistoryLelangController extends Controller
      */
     public function index()
     {
-        return view('admin.riwayat_lelang', [
+        return view('admin.lelang.riwayat_lelang', [
             'page_header' => 'Riwayat Pelelangan',
             'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->paginate(request('paginate') ?? 25)
         ]);
@@ -30,12 +30,17 @@ class HistoryLelangController extends Controller
      */
     public function create_pdf()
     {
-        $pdf = FacadePdf::loadview('admin.laporan', [
+        // $pdf = FacadePdf::loadview('admin.laporan', [
+        //     'title' => 'Laporan Hasil Pelelangan',
+        //     'dataArr' => History_lelang::all()
+        // ]);
+
+        // return $pdf->stream('laporan.pdf');
+
+        return view('admin.lelang.laporan', [
             'title' => 'Laporan Hasil Pelelangan',
             'dataArr' => History_lelang::all()
         ]);
-
-        return $pdf->stream('laporan.pdf');
     }
 
     /**

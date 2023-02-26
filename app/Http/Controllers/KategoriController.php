@@ -17,7 +17,7 @@ class KategoriController extends Controller
      */
     public function index()
     {
-        return view('admin.kategori_barang', [
+        return view('admin.barang.kategori_barang', [
             'dataArr' => Kategori::paginate(request("paginate") ?? 10),
             'page_header' => 'Kagetori Barang'
         ]);

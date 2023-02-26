@@ -3,7 +3,7 @@
     <div class="d-flex align-items-center justify-content-between">
         <a href="/admin" class="logo d-flex align-items-center">
             <img src="{{ asset('assets/img/logo.png') }}" alt="">
-            <span class="d-none d-lg-block mx-2">pAplikasi Lelang</span>
+            <span class="d-none d-lg-block mx-2">Aplikasi Lelang</span>
         </a>
         <i class="bi bi-list toggle-sidebar-btn"></i>
     </div><!-- End Logo -->
@@ -61,7 +61,7 @@
                 <ul class="dropdown-menu dropdown-menu-end dropdown-menu-arrow profile">
                     <li class="dropdown-header">
                         <h6>{{ Auth::guard('petugas')->user()->nama_petugas }}</h6>
-                        <span>{{ Auth::guard('petugas')->user()->level->level }}</span>
+                        <span>{{ Auth::guard('petugas')->user()->role }}</span>
                     </li>
                     <li>
                         <hr class="dropdown-divider">

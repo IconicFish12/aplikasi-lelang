@@ -17,7 +17,11 @@ class BarangFactory extends Factory
     public function definition()
     {
         return [
-            //
+            'nama_barang' => $this->faker->sentence(5),
+            'harga_barang' => $this->faker->randomNumber(6, true),
+            'kategori_id' => $this->faker->numberBetween(1, 15),
+            'deskripsi_barang' => $this->faker->paragraph(3),
+            'foto' => $this->faker->imageUrl(1918, 819, 'electronics'),
         ];
     }
 }

@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Barang;
 use App\Models\Kategori;
 use App\Models\Petugas;
 use App\Models\User;
@@ -29,33 +30,30 @@ class DatabaseSeeder extends Seeder
 
         Petugas::factory(10)->create();
         Kategori::factory(15)->create();
+        Barang::factory(30)->create();
 
         $data = [
             [
                 'nama_lengkap' => "Ibnu Syawal Aliefian",
                 'email' => 'ibnuSyawal@gmail.com',
-                'username' => 'TestData',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941198"
             ],
             [
                 'nama_lengkap' => "Akhmad Alwan Rabbani",
                 'email' => 'AlwanCoding@gmail.com',
-                'username' => 'ARRCoding',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941194"
             ],
             [
                 'nama_lengkap' => "Muhammad sholeh",
                 'email' => 'VArlotte@gmail.com',
-                'username' => 'SholehCuy',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941192"
             ],
             [
                 'nama_lengkap' => "Muhammad Rezzqi Rabbani",
                 'email' => 'VanStrong@gmail.com',
-                'username' => 'BaniGanteng',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941193"
             ],
@@ -63,8 +61,5 @@ class DatabaseSeeder extends Seeder
 
         User::insert($data);
 
-        $this->call([
-            LevelSeeder::class,
-        ]);
     }
 }

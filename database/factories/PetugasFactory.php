@@ -20,10 +20,9 @@ class PetugasFactory extends Factory
         return [
             'nama_petugas' => $this->faker->name(),
             'email' => $this->faker->freeEmail(),
-            'username' => $this->faker->word(),
             'password' => Hash::make('Password'),
+            'role' => $this->faker->randomElement(['admin', 'petugas']),
             'telp' => $this->faker->phoneNumber(15),
-            'level_id' => $this->faker->numberBetween(1,2)
         ];
     }
 }

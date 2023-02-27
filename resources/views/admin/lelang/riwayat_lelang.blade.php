@@ -56,7 +56,7 @@
                                 <td>{{ $item->nama_barang }}</td>
                                 <td>{{ $item->user->nama_lengkap }}</td>
                                 <td>{{ $item->petugas->nama_petugas }}</td>
-                                <td>{{ $item->tgl_lelang }}</td>
+                                <td>{{ date('d-m-Y', strtotime($item->tgl_lelang)) }}</td>
                                 <td>@money($item->harga_barang)</td>
                                 <td>@money($item->harga_lelang)</td>
                                 <td>

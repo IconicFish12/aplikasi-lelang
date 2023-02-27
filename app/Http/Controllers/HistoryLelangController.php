@@ -30,17 +30,17 @@ class HistoryLelangController extends Controller
      */
     public function create_pdf()
     {
-        // $pdf = FacadePdf::loadview('admin.laporan', [
+        $pdf = FacadePdf::loadview('admin.lelang.laporan', [
+            'title' => 'Laporan Hasil Pelelangan',
+            'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->get()
+        ]);
+
+        return $pdf->stream('laporan-pelelangan.pdf');
+
+        // return view('admin.lelang.laporan', [
         //     'title' => 'Laporan Hasil Pelelangan',
         //     'dataArr' => History_lelang::all()
         // ]);
-
-        // return $pdf->stream('laporan.pdf');
-
-        return view('admin.lelang.laporan', [
-            'title' => 'Laporan Hasil Pelelangan',
-            'dataArr' => History_lelang::all()
-        ]);
     }
 
     /**

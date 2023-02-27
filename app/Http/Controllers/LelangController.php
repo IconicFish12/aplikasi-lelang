@@ -23,6 +23,12 @@ class LelangController extends Controller
      */
     public function index()
     {
+        // dd(Lelang::where('tgl_selesai', '<', now())->get());
+        if(Lelang::where('tgl_selesai', '<', now())->get()){
+            $lelang = Lelang::where('tgl_selesai', '<', now())->pluck('barang_id');
+
+            Barang::whereIn('id', $lelang)->delete();
+        }
 
         return view('admin.lelang.daftar_lelang', [
             "dataArr" => Lelang::with(['user', 'petugas', 'barang'])->paginate(request('paginate') ?? 10),
@@ -89,7 +95,6 @@ class LelangController extends Controller
                         'harga_lelang' => $lelang->harga_lelang,
                         'tgl_lelang' => $lelang->tgl_lelang,
                         'jenis_transaksi' => $lelang->jenis_transaksi,
-                        'proses' => $backup->proses
                     ]);
 
                     Barang::destroy($barang->id);
@@ -149,24 +154,28 @@ class LelangController extends Controller
             $harga = Penawaran::find($request->penawaran_id);
             $barang = Barang::find($request->barang_id);
 
-            // dd($request->harga_penawaran == $barang->harga_barang);
+            // dd($request->harga_penawaran == $harga->harga_penawaran);
 
             if ($harga != null && $harga->harga_penawaran) {
-                if ($request->harga_penawaran < $harga->harga_penawaran) {
-                    $flasher->addError("Harga Penawaran Harus Lebih dari" . ' ' . rupiah($harga->harga_penawaran));
+                $total = Penawaran::find($request->penawaran_id)->latest()->first();
 
-                    return back();
+                if ($request->harga_penawaran < $total->harga_penawaran) {
+                    $flasher->addError("Harga Penawaran Harus Lebih dari" . ' ' . rupiah($total->harga_penawaran));
+
+                    return back()->withInput();
+                } elseif ($request->harga_penawaran < $barang->harga_barang) {
+                    $flasher->addError("Harga Penawaran Tidak Boleh Kurang Dari Harga Barang");
+
+                    return back()->withInput();
+                } elseif ($request->harga_penawaran == $barang->harga_barang) {
+                    $flasher->addError("Harga Penawaran Tidak Boleh Sama Dengan Harga Barang");
+
+                    return back()->withInput();
+                } elseif ($request->harga_penawaran == $total->harga_penawaran) {
+                    $flasher->addError("Harga Penawaran Tidak Boleh Sama Dengan" . ' ' . rupiah($total->harga_penawaran));
+
+                    return back()->withInput();
                 }
-            }
-
-            if ($request->harga_penawaran < $barang->harga_barang) {
-                $flasher->addError("Harga Penawaran Tidak Boleh Kurang Dari Harga Barang");
-
-                return back();
-            } elseif ($request->harga_penawaran == $barang->harga_barang) {
-                $flasher->addError("Harga Penawaran Tidak Boleh Sama Dengan Harga Barang");
-
-                return back();
             }
 
             if ($request->harga_penawaran > $barang->harga_barang) {
@@ -211,7 +220,7 @@ class LelangController extends Controller
      */
     public function update(UpdateLelangRequest $request, Lelang $lelang, FlasherInterface $flasher)
     {
-        if($request->validated()){
+        if ($request->validated()) {
             $lelang->update([
                 'tgl_mulai' => $request->tgl_mulai,
                 'tgl_selesai' => $request->tgl_selesai,
@@ -293,8 +302,6 @@ class LelangController extends Controller
             ->where('tgl_mulai', '<=', now())
             ->where('tgl_selesai', '>=', now())
             ->paginate(9);
-
-        // dd($mulai);
 
         return view('admin.barang.barang_lelang', [
             'dataArr' => $mulai

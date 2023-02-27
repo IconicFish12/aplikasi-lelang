@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Lelang;
+use App\Models\Penawaran;
 
 class BaseController extends Controller
 {
@@ -25,7 +26,9 @@ class BaseController extends Controller
         ->where('tgl_selesai', '>=', now())
         ->paginate(9);
 
-        // dd($mulai);
+        if(request()->has('showData')){
+            return response()->json('cek', 200);
+        }
 
         return view('web.home', [
             "dataArr" => $mulai,

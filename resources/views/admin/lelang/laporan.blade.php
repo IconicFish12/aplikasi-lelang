@@ -13,34 +13,66 @@
             font-family: sans-serif;
         }
 
-        .container {
-            margin: 20px;
-            padding: 20px;
-        }
-
         .heading {
-            padding: 25px
+            padding: 15px
         }
 
-        .heading .title{
-            display: flex;
-            justify-content: center;
-            position: relative;
+        .heading .title {
+            text-align: center;
             font-size: 2.4rem;
-            text-decoration: none;
-            font-weight: 600;
-            text-transform: uppercase
+            text-transform: uppercase;
         }
 
-        .table-wrapper {
+        .heading .subtitle {
+            margin-top: 5px;
+            text-align: center;
+
+        }
+
+        .heading-content {
+            display: flex
+        }
+
+        .content-left {
+            float: left
+        }
+
+        .content-right {
+            float: right
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        h1 {
+            font-size: 24px;
+            font-weight: bold;
+            margin-bottom: 20px;
+        }
+
+        table {
             border-collapse: collapse;
-            display: flex;
-            justify-content: center
+            width: 100%;
+            margin-bottom: 20px;
         }
 
-        .table-wrapper th, td {
-            border: 1px #000000 solid;
-            padding: 10px;
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+        }
+
+        th {
+            background-color: #f2f2f2;
+        }
+
+        .container {
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 20px;
         }
     </style>
 </head>
@@ -52,212 +84,43 @@
                 Laporan Hasil Pelelangan
             </div>
             <div class="subtitle">
-                
+                Aplikasi Lelang Ibnu Syawal Aliefian - {{ \Carbon\Carbon::now()->format('d-m-Y') }}
             </div>
         </div>
 
-        <div class="table-wrapper">
-            <table cellspacing="0" cellpadding="5">
-                <tr>
-                    <th>No</th>
-                    <th>Nama Barang</th>
-                    <th>Nama Pembeli</th>
-                    <th>Petugas Pelelang</th>
-                    <th>Tanggal Lelang</th>
-                    <th>Harga Barang</th>
-                    <th>Harga Lelang</th>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
-                <tr>
-                    <td>1</td>
-                    <td>Chitato</td>
-                    <td>Agus</td>
-                    <td>Firman</td>
-                    <td>{{ \Carbon\Carbon::now()->format('d-m-Y') }}</td>
-                    <td>@money(200000)</td>
-                    <td>@money(350000)</td>
-                </tr>
+        @if ($dataArr->count())
+            <table>
+                <thead>
+                    <tr>
+                        <th>No</th>
+                        <th>Nama Barang</th>
+                        <th>Nama Pembeli</th>
+                        <th>Petugas Pelelang</th>
+                        <th>Tanggal Lelang</th>
+                        <th>Harga Barang</th>
+                        <th>Harga Lelang</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach ($dataArr as $item)
+                        <tr>
+                            <td>{{ $loop->iteration }}</td>
+                            <td>{{ $item->nama_barang }}</td>
+                            <td>{{ $item->user->nama_lengkap }}</td>
+                            <td>{{ $item->petugas->nama_petugas }}</td>
+                            <td>{{ \Carbon\Carbon::create($item->tgl_lelang)->format('d-m-Y') }}</td>
+                            <td>@money($item->harga_barang)</td>
+                            <td>@money($item->harga_lelang)</td>
+                        </tr>
+                    @endforeach
+                </tbody>
             </table>
-        </div>
+        @else
+            <div style="text-align: center; font-size: 17px; margin-top: 5px;">
+                No Data Available
+            </div>
+        @endif
+
     </div>
 </body>
 

@@ -2,7 +2,7 @@
 @section('web')
     @if ($dataArr->count())
         <section>
-            <div class="album py-5 bg-light" data-aos="fade-up">
+            <div class="album py-5 bg-light">
                 <div class="container">
 
                     <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
@@ -20,18 +20,21 @@
                                         <p class="card-text">
                                             {{ $item->barang->deskripsi_barang }}
                                         </p>
-                                        <div class="d-flex justify-content-between align-items-center">
+                                        <div class="d-flex align-items-center">
                                             @if (Auth::guard('web')->check())
                                                 <button type="button" class="btn btn-sm btn-outline-secondary getData"
                                                     value="{{ $item->id }}" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal">Penawaran</button>
+                                                <button type="button" class="btn btn-sm btn-secondary show mx-3"
+                                                    value="{{ $item->barang->id }}" data-bs-toggle="modal"
+                                                    data-bs-target="#showModal">Data</button>
                                                 <div class="modal fade" id="exampleModal" tabindex="-1"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog ">
                                                         <div class="modal-content">
                                                             <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal
-                                                                    title</h1>
+                                                                <h1 class="modal-title fs-4" id="exampleModalLabel">Tawar
+                                                                    Barang</h1>
                                                                 <button type="button" class="btn-close"
                                                                     data-bs-dismiss="modal" aria-label="Close"></button>
                                                             </div>
@@ -39,7 +42,8 @@
                                                                 class="needs-validation" novalidate>
                                                                 @csrf
                                                                 <input type="hidden" name="barang_id" id="show_barang">
-                                                                <input type="hidden" name="penawaran_id" id="show_penawaran">
+                                                                <input type="hidden" name="penawaran_id"
+                                                                    id="show_penawaran">
                                                                 <input type="hidden" name="user_id"
                                                                     value="{{ auth('web')->user()->id }}">
                                                                 <div class="modal-body">
@@ -51,7 +55,8 @@
                                                                             type="number"class="form-control @error('harga_penawaran') is-invalid @enderror"
                                                                             placeholder="Harga Penawaran"
                                                                             aria-label="Harga Penawaran"
-                                                                            name="harga_penawaran" id="harga_penawaran">
+                                                                            name="harga_penawaran" id="harga_penawaran"
+                                                                            value="{{ old('harga_penawaran') }}">
                                                                         @error('harga_penawaran')
                                                                             <div class="invalid-feedback">
                                                                                 {{ $message }}
@@ -66,6 +71,28 @@
                                                                         class="btn btn-primary">Tawar</button>
                                                                 </div>
                                                             </form>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="modal fade" id="showModal" tabindex="-1"
+                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                    <div class="modal-dialog">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal
+                                                                    title</h1>
+                                                                <button type="button" class="btn-close"
+                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                ...
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary"
+                                                                    data-bs-dismiss="modal">Close</button>
+                                                                <button type="button" class="btn btn-primary">Save
+                                                                    changes</button>
+                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -195,7 +222,7 @@
                         $("#show_form").attr("action",
                             `{{ asset('penawaran/action') }}`);
                         $("#show_barang").val(resp[0].id);
-                        if(resp[1] != null){
+                        if (resp[1] != null) {
                             $("#show_penawaran").val(resp[1].id);
                         }
                     },
@@ -205,7 +232,27 @@
                 })
             }
 
+            let ShowData = e => {
+                $.ajax({
+                    url: `{{ asset('/') }}`,
+                    method: 'GET',
+                    data: {
+                        showData: true,
+                        data: e.currentTarget.value
+                    },
+                    dataType: "json",
+                    success: resp => {
+                        console.log(resp);
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
+            }
+
+
             $(".getData").on("click", getData);
+            $(".show").on("click", ShowData);
         })
     </script>
 @endsection

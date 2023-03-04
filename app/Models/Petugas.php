@@ -43,4 +43,9 @@ class Petugas extends Authenticatable
     {
         return $this->hasMany(History_lelang::class, 'petugas_id');
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

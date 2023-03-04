@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Lelang;
 use App\Models\Penawaran;
+use Illuminate\Http\Request;
 
 class BaseController extends Controller
 {
@@ -18,6 +19,11 @@ class BaseController extends Controller
         return view('admin.profile_pegawai');
     }
 
+    public function updateProfile(Request $request)
+    {
+        dd($request->all());
+    }
+
     //Web logic
     public function webView()
     {
@@ -25,10 +31,6 @@ class BaseController extends Controller
         ->where('tgl_mulai', '<=', now())
         ->where('tgl_selesai', '>=', now())
         ->paginate(9);
-
-        if(request()->has('showData')){
-            return response()->json('cek', 200);
-        }
 
         return view('web.home', [
             "dataArr" => $mulai,

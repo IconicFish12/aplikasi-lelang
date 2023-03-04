@@ -175,18 +175,6 @@
                                                                     <input type="date" class="form-control"
                                                                         name="tgl_selesai" id="tgl_selesai">
                                                                 </div>
-                                                                <div class="mb-3">
-                                                                    <label for="jenis_transaksi" class="form-label">Jenis
-                                                                        Transaksi</label>
-                                                                    <select name="jenis_transaksi"
-                                                                        class="form-control form-select"
-                                                                        id="jenis_transaksi">
-                                                                        <option selected>-- Pilih Jenis Transaksi --
-                                                                        </option>
-                                                                        <option value="jual">Barang Dijual</option>
-                                                                        <option value="sewa">Barang Disewa</option>
-                                                                    </select>
-                                                                </div>
                                                             </div>
                                                             <div class="modal-footer">
                                                                 <button type="button" class="btn btn-secondary"

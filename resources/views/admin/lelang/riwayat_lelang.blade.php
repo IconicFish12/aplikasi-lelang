@@ -45,8 +45,6 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Barang</th>
                             <th>Harga Lelang</th>
-                            <th>Jenis Transaksi</th>
-                            <th>Proses Pelelangan</th>
                         </tr>
                     </thead>
                     @foreach ($dataArr as $item)
@@ -60,15 +58,6 @@
                                 <td>@money($item->harga_barang)</td>
                                 <td>@money($item->harga_lelang)</td>
                                 <td>
-                                    @if ($item->jenis_transaksi === 'jual')
-                                        <div class="badge text-bg-success mx-auto">Barang Dijual</div>
-                                    @else
-                                        <div class="badge text-bg-warning mx-auto">Barang Disewakan</div>
-                                    @endif
-                                </td>
-                                <td>
-                                    <div class="badge text-bg-success mx-auto">Sudah Dijual</div>
-                                </td>
                             </tr>
                         </tbody>
                     @endforeach
@@ -81,8 +70,6 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Barang</th>
                             <th>Harga Lelang</th>
-                            <th>Jenis Transaksi</th>
-                            <th>Proses Pelelangan</th>
                         </tr>
                     </tfoot>
                 </table>

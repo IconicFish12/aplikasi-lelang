@@ -3,10 +3,13 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BaseController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
-use App\Http\Controllers\HistoryLelangController;
 use App\Http\Controllers\LelangController;
+use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\KategoriController;
+use App\Http\Controllers\PenawaranController;
+use App\Http\Controllers\HistoryLelangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,9 +87,26 @@ Route::prefix('/admin')->group(function () {
         Route::get('/generate', [HistoryLelangController::class, 'create_pdf']);
     });
 
+    Route::prefix('petugas-lelang')->middleware(['auth:petugas', 'petugas'])->group(function(){
+        Route::get('/', [PetugasController::class, 'index']);
+        Route::post('/', [PetugasController::class, 'store']);
+        Route::post('/show', [PetugasController::class, 'show']);
+        Route::put('/{petugas:id}', [PetugasController::class, 'update']);
+        Route::delete('/{petugas:id}', [PetugasController::class, 'destroy']);
+    });
+
+    Route::prefix('konsumen')->middleware(['auth:petugas', 'petugas'])->group(function(){
+        Route::get('/', [UserController::class, 'index']);
+        Route::post('/', [UserController::class, 'store']);
+        Route::post('/show', [UserController::class, 'show']);
+        Route::put('/{user:id}', [UserController::class, 'update']);
+        Route::delete('/{user:id}', [UserController::class, 'destroy']);
+    });
+
     //Pegawai Profile
     Route::prefix('/me')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [BaseController::class, 'pegawaiProfile']);
+        Route::put('/update/{id}', [BaseController::class, 'pegawaiProfile']);
     });
 });
 
@@ -95,6 +115,8 @@ Route::prefix('/')->group(function () {
     Route::get('/', [BaseController::class, 'webView']);
 
     Route::prefix('penawaran')->group(function () {
+        Route::get('/', [PenawaranController::class, 'index']);
+        Route::post('/data', [PenawaranController::class, 'getNextPage']);
         Route::post('/show', [BarangController::class, 'show']);
         Route::post('/action', [LelangController::class, 'tambah_penawaran'])->middleware('user');
     });

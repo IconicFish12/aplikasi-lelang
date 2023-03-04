@@ -21,4 +21,9 @@ class Kategori extends Model
     {
         return $this->hasMany(History_lelang::class, 'petugas_id');
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

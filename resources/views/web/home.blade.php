@@ -14,20 +14,45 @@
                                         <div class="card-title">
                                             {{ $item->barang->nama_barang }}
                                         </div>
-                                        <div class="card-subtitle mb-2 text-muted">
-                                            @money($item->barang->harga_barang)
+                                        <div class="card-subtitle fw-bold">
+                                            Harga Barang : @money($item->barang->harga_barang)
+                                        </div>
+                                        <div class="card-subtitle fw-bold text-danger">
+                                            <?php
+                                            $penawaranIni = DB::table('tb_penawaran')
+                                                ->where('barang_id', $item->barang->id)
+                                                ->max('harga_penawaran');
+                                            ?>
+                                            Penawaran Tertinggi : @money($penawaranIni)
+                                        </div>
+                                        <div class="card-subtitle mb-2 fw-bold ">
+                                            <?php
+                                            $penawar = DB::table('tb_penawaran')
+                                                ->where('barang_id', $item->barang->id)
+                                                ->orderBy('harga_penawaran', 'DESC')
+                                                ->get();
+                                            // dd($penawar->user_id);
+                                            ?>
+                                            @foreach ($penawar as $i)
+                                                {{-- @dd(is_null($i->user_id)) --}}
+                                                @empty($i->user_id)
+                                                    Nama Penawar : ----
+                                                @else
+                                                    <?php
+                                                    $user = DB::table('tb_masyarakat')->find($i->user_id);
+                                                    ?>
+                                                    Nama Penawar : {{ $user->nama_lengkap }}
+                                                @endempty
+                                            @endforeach
                                         </div>
                                         <p class="card-text">
                                             {{ $item->barang->deskripsi_barang }}
                                         </p>
-                                        <div class="d-flex align-items-center">
+                                        <div class="d-flex justify-content-between align-items-center">
                                             @if (Auth::guard('web')->check())
                                                 <button type="button" class="btn btn-sm btn-outline-secondary getData"
-                                                    value="{{ $item->id }}" data-bs-toggle="modal"
+                                                    value="{{ $item->barang_id }}" data-bs-toggle="modal"
                                                     data-bs-target="#exampleModal">Penawaran</button>
-                                                <button type="button" class="btn btn-sm btn-secondary show mx-3"
-                                                    value="{{ $item->barang->id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#showModal">Data</button>
                                                 <div class="modal fade" id="exampleModal" tabindex="-1"
                                                     aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                     <div class="modal-dialog ">
@@ -71,28 +96,6 @@
                                                                         class="btn btn-primary">Tawar</button>
                                                                 </div>
                                                             </form>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="modal fade" id="showModal" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-5" id="exampleModalLabel">Modal
-                                                                    title</h1>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <div class="modal-body">
-                                                                ...
-                                                            </div>
-                                                            <div class="modal-footer">
-                                                                <button type="button" class="btn btn-secondary"
-                                                                    data-bs-dismiss="modal">Close</button>
-                                                                <button type="button" class="btn btn-primary">Save
-                                                                    changes</button>
-                                                            </div>
                                                         </div>
                                                     </div>
                                                 </div>
@@ -232,27 +235,7 @@
                 })
             }
 
-            let ShowData = e => {
-                $.ajax({
-                    url: `{{ asset('/') }}`,
-                    method: 'GET',
-                    data: {
-                        showData: true,
-                        data: e.currentTarget.value
-                    },
-                    dataType: "json",
-                    success: resp => {
-                        console.log(resp);
-                    },
-                    error: err => {
-                        console.log(err);
-                    }
-                })
-            }
-
-
             $(".getData").on("click", getData);
-            $(".show").on("click", ShowData);
         })
     </script>
 @endsection

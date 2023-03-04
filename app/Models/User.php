@@ -60,4 +60,9 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Penawaran::class, 'user_id');
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

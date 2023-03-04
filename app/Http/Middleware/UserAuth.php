@@ -18,6 +18,8 @@ class UserAuth
     {
         if(auth('web')->check()) return $next($request);
 
+        if(auth('petugas')->check()) abort(403);
+
         return redirect()->to('auth');
     }
 }

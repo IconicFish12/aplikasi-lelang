@@ -3,8 +3,10 @@
 namespace App\Http\Controllers;
 
 use App\Models\Penawaran;
+use Illuminate\Http\Request;
 use App\Http\Requests\StorePenawaranRequest;
 use App\Http\Requests\UpdatePenawaranRequest;
+use Illuminate\Support\Facades\Auth;
 
 class PenawaranController extends Controller
 {
@@ -13,9 +15,12 @@ class PenawaranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return view('admin.penawaran.data_penawaran', [
+            'page_header' => "Data Penawaran Kosumen",
+            'dataArr' => Penawaran::with(['barang', 'user'])->paginate(request('paginate') ?? 10)
+        ]);
     }
 
     /**
@@ -23,9 +28,13 @@ class PenawaranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function getNextPage(Request $request)
     {
-        //
+        if($request->has('showData') && $request->showData){
+            $data = Penawaran::where('barang_id', $request->data)->orderBy('harga_penawaran', 'DESC')->get();
+
+            return response()->json($data, 200);
+        }
     }
 
     /**
@@ -58,7 +67,11 @@ class PenawaranController extends Controller
      */
     public function edit(Penawaran $penawaran)
     {
-        //
+        return view('web.detail_penawaran', [
+            'dataArr' => $penawaran->with(['barang', 'user'])
+            ->where('user_id', Auth::guard('web')->user()->id)
+            ->paginate(15)
+        ]);
     }
 
     /**

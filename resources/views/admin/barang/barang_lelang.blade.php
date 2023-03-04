@@ -209,6 +209,7 @@
             });
 
             let getData = e => {
+                console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('admin/daftar-lelang/barang') }}`,
                     method: "GET",

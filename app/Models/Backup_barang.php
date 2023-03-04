@@ -16,4 +16,9 @@ class Backup_barang extends Model
     {
         return $this->hasMany(Backup_barang::class, "backup_id");
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

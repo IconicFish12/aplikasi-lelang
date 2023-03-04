@@ -47,7 +47,6 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
-                            <th>Jenis Transaksi</th>
                             <th>Action</th>
                         </tr>
                     </thead>
@@ -94,12 +93,6 @@
                                     @endif
                                 </td>
                                 <td>
-                                    @if ($item->jenis_transaksi === 'jual')
-                                        <div class="badge text-bg-success mx-auto">Barang Dijual</div>
-                                    @else
-                                        <div class="badge text-bg-warning mx-auto">Barang Disewakan</div>
-                                    @endif
-                                </td>
                                 <td>
                                     <div class="d-flex justify-content-center">
                                         <button type="button" class="badge text-bg-warning me-2 getData"
@@ -129,7 +122,6 @@
                             <th>Tanggal Lelang</th>
                             <th>Harga Awal</th>
                             <th>Harga Lelang</th>
-                            <th>Jenis Transaksi</th>
                             <th>Action</th>
                         </tr>
                     </tfoot>
@@ -156,17 +148,6 @@
                                         <label for="tgl_selesai" class="form-label">Tanggal
                                             Selesai</label>
                                         <input type="date" class="form-control" name="tgl_selesai" id="edit_tgl_selesai">
-                                    </div>
-                                    <div class="mb-3">
-                                        <label for="jenis_transaksi" class="form-label">Jenis
-                                            Transaksi</label>
-                                        <select name="jenis_transaksi" class="form-control form-select"
-                                            id="edit_jenis_transaksi">
-                                            <option selected>-- Pilih Jenis Transaksi --
-                                            </option>
-                                            <option value="jual">Barang Dijual</option>
-                                            <option value="sewa">Barang Disewa</option>
-                                        </select>
                                     </div>
                                     <div class="modal-footer">
                                         <button type="button" class="btn btn-secondary"
@@ -216,7 +197,6 @@
                             `{{ asset('admin/daftar-lelang/${resp.id}') }}`);
                         $("#edit_tgl_mulai").val(resp.tgl_mulai);
                         $("#edit_tgl_selesai").val(resp.tgl_selesai);
-                        $("#edit_jenis_transaksi").val(resp.jenis_transaksi);
                     },
                     error: err => {
                         console.log(err);

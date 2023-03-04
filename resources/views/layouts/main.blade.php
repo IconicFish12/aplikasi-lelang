@@ -100,7 +100,7 @@
 
             <nav id="navbar" class="navbar">
                 <ul>
-                    <li><a class="nav-link scrollto" href="/">Home</a></li>
+                    <li><a class="nav-link " href="/">Home</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                     @auth('web')
                         <li class="dropdown">
@@ -110,7 +110,7 @@
                             </a>
                             <ul>
                                 <li><a href="#">My Profile</a></li>
-                                <li><a href="#">Setting</a></li>
+                                <li><a href="#">Penawaran Saya</a></li>
                                 <li><a href="{{ asset('logout') }}">Logout</a></li>
                             </ul>
                         </li>
@@ -147,10 +147,11 @@
             </div>
         </div>
 
-    </section><!-- End Hero -->
+    </section>
+    <!-- End Hero -->
 
 
-    <main id="main">
+    <main>
 
         @yield('web')
 

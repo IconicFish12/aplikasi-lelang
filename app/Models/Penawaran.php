@@ -22,5 +22,8 @@ class Penawaran extends Model
         return $this->belongsTo(User::class);
     }
 
-    
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

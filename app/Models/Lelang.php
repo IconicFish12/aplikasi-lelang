@@ -36,4 +36,9 @@ class Lelang extends Model
     {
         return $this->belongsTo(History_lelang::class, 'lelang_id');
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

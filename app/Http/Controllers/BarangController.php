@@ -11,7 +11,6 @@ use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
-use Illuminate\Support\Facades\Schema;
 
 class BarangController extends Controller
 {
@@ -109,11 +108,6 @@ class BarangController extends Controller
             }
 
             if ($request->has('status_lelang')) {
-                if($data['jenis_transaksi'] == '-- Pilih Jenis Transaksi --'){
-                    $flasher-> addError("Tolong masukan sesuai dengan pilihan Yang disediakan");
-
-                    return back();
-                }
 
                 if ($data['status_lelang'] == 'ditutup') {
                     $barang->update(['status_lelang' => $data['status_lelang']]);
@@ -132,7 +126,6 @@ class BarangController extends Controller
                     'harga_awal' => $barang->harga_barang,
                     'tgl_mulai' => $request->tgl_mulai,
                     'tgl_selesai' => $request->tgl_selesai,
-                    'jenis_transaksi' => $request->jenis_transaksi
                 ]);
 
                 if ($lelang) {

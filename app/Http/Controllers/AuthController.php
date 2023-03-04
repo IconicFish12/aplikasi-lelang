@@ -82,11 +82,12 @@ class AuthController extends Controller
 
             $validate = Validator::make($data, [
                 'nama_petugas' => ['required'],
-                'email' => ['required', 'email', 'min:4'],
+                'email' => ['required', 'email', 'min:4', 'unique:tb_petugas,email'],
                 'password' => ['required', Password::min(4)->mixedCase(), 'max:20'],
                 'telp' => ['required', 'max:15', 'min:4']
             ], [
                 'nama_petugas.required' => "Input ini harus diisi",
+                'email.unique' => 'Nilai Dari Input ini harus unik',
                 'password.required' => "Input ini harus diisi",
                 'telp.required' => "Input ini harus diisi",
                 'email.required' => "Input ini harus diisi",

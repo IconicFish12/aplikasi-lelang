@@ -22,12 +22,14 @@
             </a>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/admin/kategori">
-                <i class="bi bi-grid"></i>
-                <span>Kategori Barang</span>
-            </a>
-        </li>
+        @if (auth('petugas')->user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link collapsed" href="/admin/kategori">
+                    <i class="bi bi-grid"></i>
+                    <span>Kategori Barang</span>
+                </a>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link collapsed" data-bs-target="#pelelanagn-nav" data-bs-toggle="collapse" href="#">
@@ -46,36 +48,40 @@
                         <span>Hasil Pelelangan</span>
                     </a>
                 </li>
-                {{-- <li>
-                    <a href="components-accordion.html">
-                        <i class="bi bi-circle"></i>
-                        <span>Laporan Pelelangan Pelelangan</span>
-                    </a>
-                </li> --}}
+                @if (auth('petugas')->user()->role === 'admin')
+                    <li>
+                        <a href="/admin/daftar-lelang">
+                            <i class="bi bi-circle"></i>
+                            <span>Data Penawaran</span>
+                        </a>
+                    </li>
+                @endif
             </ul>
         </li>
 
-        <li class="nav-item">
-            <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
-                <i class="bi bi-people"></i>
-                <span>Pengelolan User</span>
-                <i class="bi bi-chevron-down ms-auto"></i>
-            </a>
-            <ul id="user-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
-                <li>
-                    <a href="/">
-                        <i class="bi bi-circle"></i>
-                        <span>Daftar Petugas</span>
-                    </a>
-                </li>
-                <li>
-                    <a href="/">
-                        <i class="bi bi-circle"></i>
-                        <span>Daftar User</span>
-                    </a>
-                </li>
-            </ul>
-        </li>
+        @if (auth('petugas')->user()->role === 'admin')
+            <li class="nav-item">
+                <a class="nav-link collapsed" data-bs-target="#user-nav" data-bs-toggle="collapse" href="#">
+                    <i class="bi bi-people"></i>
+                    <span>Pengelolan User</span>
+                    <i class="bi bi-chevron-down ms-auto"></i>
+                </a>
+                <ul id="user-nav" class="nav-content collapse" data-bs-parent="#sidebar-nav">
+                    <li>
+                        <a href="/admin/petugas-lelang">
+                            <i class="bi bi-circle"></i>
+                            <span>Daftar Petugas</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/konsumen">
+                            <i class="bi bi-circle"></i>
+                            <span>Daftar Konsumen</span>
+                        </a>
+                    </li>
+                </ul>
+            </li>
+        @endif
 
         <li class="nav-item">
             <a class="nav-link collapsed" href="/">

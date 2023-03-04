@@ -17,8 +17,11 @@ return new class extends Migration
         Schema::create('tb_petugas', function (Blueprint $table) {
             $table->id();
             $table->string('nama_petugas');
-            $table->string('email')->unique();
+            $table->date('tgl_lahir')->nullable();
+            $table->string('email');
             $table->string('password');
+            $table->longText('alamat')->nullable();
+            $table->string('foto')->nullable()->nullable();
             $table->string('telp', 25);
             $table->enum('role', ['admin', 'petugas'])->default('admin');
             $table->timestamp('email_verified_at')->nullable();

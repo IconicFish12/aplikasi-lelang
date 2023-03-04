@@ -26,4 +26,9 @@ class History_lelang extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

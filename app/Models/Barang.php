@@ -31,4 +31,9 @@ class Barang extends Model
     {
         return $this->belongsTo(Penawaran::class, 'barang_id');
     }
+
+    public function searsh(string $search)
+    {
+        # code...
+    } 
 }

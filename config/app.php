@@ -216,7 +216,6 @@ return [
     'aliases' => Facade::defaultAliases()->merge([
         'NoCaptcha' => Anhskohbo\NoCaptcha\Facades\NoCaptcha::class,
         'Alert' => RealRashid\SweetAlert\Facades\Alert::class,
-        'DataTables' => Yajra\DataTables\DataTablesServiceProvider::class,
         'PDF' => Barryvdh\DomPDF\Facade::class
         // 'ExampleClass' => App\Example\ExampleClass::class,
     ])->toArray(),

@@ -27,7 +27,6 @@ return new class extends Migration
             $table->date('tgl_lelang')->nullable();
             $table->string('harga_awal');
             $table->string('harga_lelang')->nullable();
-            $table->enum('jenis_transaksi', ['jual', 'sewa']);
             $table->timestamps();
         });
     }

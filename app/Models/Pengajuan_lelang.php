@@ -12,4 +12,8 @@ class Pengajuan_lelang extends Model
     protected $table = "tb_pengajuan_lelang";
     protected $guarded = [];
 
+    public function searsh(string $search)
+    {
+        # code...
+    }
 }

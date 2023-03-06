@@ -50,7 +50,9 @@
 
                                 <div class="row">
                                     <div class="col-lg-3 col-md-4 label">Tanggal Lahir</div>
-                                    <div class="col-lg-9 col-md-8">{{ \Carbon\Carbon::now()->format('d-m-Y') }}</div>
+                                    <div class="col-lg-9 col-md-8">
+                                        {{ \Carbon\Carbon::create(Auth::guard('petugas')->user()->tgl_lahir)->format('d-m-Y') }}
+                                    </div>
                                 </div>
 
                                 <div class="row">
@@ -78,9 +80,12 @@
                             <div class="tab-pane fade profile-edit pt-3" id="profile-edit">
 
                                 <!-- Profile Edit Form -->
-                                <form method="post" action="{{ asset('') }}" enctype="multipart/form-data">
+                                <form method="post" action="{{ asset('admin/me/update') }}" class="needs-validation"
+                                    enctype="multipart/form-data" novalidate>
                                     @csrf
                                     @method('put')
+                                    <input type="hidden" name="id" value="{{ Auth::guard('petugas')->user()->id }}"
+                                        id="id">
                                     <div class="row mb-3">
                                         <label for="profileImage" class="col-md-4 col-lg-3 col-form-label">Foto
                                             Profile</label>
@@ -90,15 +95,27 @@
                                                 <input type="file" name="foto"
                                                     class="form-control @error('foto') is-invalid  @enderror" id="foto"
                                                     placeholder="Masukan Nama Barang" value="{{ old('foto') }}">
+                                                @error('foto')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="fullName" class="col-md-4 col-lg-3 col-form-label">Nama
+                                            <label for="nama_petugas" class="col-md-4 col-lg-3 col-form-label">Nama
                                                 Petugas</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="fullName" type="text" class="form-control" id="fullName"
+                                                <input name="nama_petugas" type="text"
+                                                    class="form-control @error('nama_petugas') is-invalid  @enderror"
+                                                    id="nama_petugas"
                                                     value="{{ Auth::guard('petugas')->user()->nama_petugas }}">
+                                                @error('nama_petugas')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 
@@ -106,36 +123,60 @@
                                             <label for="tgl_lahir" class="col-md-4 col-lg-3 col-form-label">Tanggal
                                                 Lahir</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="tgl_lahir" type="date" class="form-control" id="tgl_lahir"
-                                                    value="{{ \Carbon\Carbon::now()->format('Y-m-d') }}">
+                                                <input name="tgl_lahir" type="date"
+                                                    class="form-control @error('tgl_lahir') is-invalid  @enderror"
+                                                    id="tgl_lahir" value="{{ Auth::guard('petugas')->user()->tgl_lahir }}">
+                                                @error('tgl_lahir')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
                                             <label for="Address" class="col-md-4 col-lg-3 col-form-label">Alamat</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <textarea name="alamat" id="alamat" class="form-control" rows="4" placeholder="Alamat Petugas">
+                                                <textarea name="alamat" id="alamat" class="form-control @error('alamat') is-invalid  @enderror" rows="4"
+                                                    placeholder="Alamat Petugas">
                                                     @if (Auth::guard('petugas')->user()->alamat != null)
                                                         {{ Auth::guard('petugas')->user()->alamat }}
                                                     @endif
                                                 </textarea>
+                                                @error('alamat')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Phone" class="col-md-4 col-lg-3 col-form-label">Nomor
+                                            <label for="telp" class="col-md-4 col-lg-3 col-form-label">Nomor
                                                 Telepon</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="phone" type="text" class="form-control" id="Phone"
-                                                    value="{{ Auth::guard('petugas')->user()->telp }}">
+                                                <input name="telp" type="text"
+                                                    class="form-control @error('telp') is-invalid  @enderror"
+                                                    id="telp" value="{{ Auth::guard('petugas')->user()->telp }}">
+                                                @error('telp')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 
                                         <div class="row mb-3">
-                                            <label for="Email" class="col-md-4 col-lg-3 col-form-label">Email</label>
+                                            <label for="email" class="col-md-4 col-lg-3 col-form-label">Email</label>
                                             <div class="col-md-8 col-lg-9">
-                                                <input name="email" type="email" class="form-control" id="Email"
-                                                    value="{{ Auth::guard('petugas')->user()->email }}">
+                                                <input name="email" type="email"
+                                                    class="form-control @error('email') is-invalid  @enderror"
+                                                    id="email`" value="{{ Auth::guard('petugas')->user()->email }}">
+                                                @error('email')
+                                                    <div class="invalid-feedback">
+                                                        {{ $message }}
+                                                    </div>
+                                                @enderror
                                             </div>
                                         </div>
 

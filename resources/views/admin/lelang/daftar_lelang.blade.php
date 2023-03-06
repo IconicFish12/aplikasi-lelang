@@ -93,7 +93,6 @@
                                     @endif
                                 </td>
                                 <td>
-                                <td>
                                     <div class="d-flex justify-content-center">
                                         <button type="button" class="badge text-bg-warning me-2 getData"
                                             value="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#editModal">

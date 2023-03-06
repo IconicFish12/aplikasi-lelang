@@ -11,6 +11,7 @@ use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
+use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
 {
@@ -110,37 +111,51 @@ class BarangController extends Controller
             if ($request->has('status_lelang')) {
 
                 if ($data['status_lelang'] == 'ditutup') {
-                    $barang->update(['status_lelang' => $data['status_lelang']]);
+                    $barang->update([
+                        'status_lelang' => $data['status_lelang'],
+                        'proses' => 'belum'
+                    ]);
 
-                    $barang->destroy($barang->id);
-
-                    Storage::disk('public_path')->delete($barang->foto);
+                    Lelang::where('barang_id', $barang->id)->delete();
 
                     $flasher->addSuccess("Pelelangan Ditutup, Data terhapus");
 
                     return back();
                 }
 
-                $lelang = Lelang::create([
-                    'barang_id' => $barang->id,
-                    'harga_awal' => $barang->harga_barang,
-                    'tgl_mulai' => $request->tgl_mulai,
-                    'tgl_selesai' => $request->tgl_selesai,
+                $valid_data = Validator::make($data, [
+                    'tgl_mulai' => ['required', 'date'],
+                    'tgl_selesai' => ['required', 'date'],
+                ], [
+                    'tgl_mulai.required' => "input ini harus diisi",
+                    'tgl_mulai.date' => "input ini harus berupa tanggal",
+                    'tgl_selesai.required' => "input ini harus diisi",
+                    'tgl_selesai.date' => "input ini harus berupa tanggal",
                 ]);
 
-                if ($lelang) {
-                    $barang->update([
-                        'status_lelang' => $data['status_lelang'],
-                        'proses' => 'sedang'
+                if(!$valid_data->fails()){
+                    $lelang = Lelang::create([
+                        'barang_id' => $barang->id,
+                        'harga_awal' => $barang->harga_barang,
+                        'tgl_mulai' => $request->tgl_mulai,
+                        'tgl_selesai' => $request->tgl_selesai,
                     ]);
 
-                    $flasher->addSuccess("Pelelangan Dibuka");
+                    if ($lelang) {
+                        $barang->update([
+                            'status_lelang' => $data['status_lelang'],
+                            'proses' => 'sedang'
+                        ]);
 
-                    return back();
+                        $flasher->addSuccess("Pelelangan Dibuka");
+
+                        return back();
+                    }
                 }
+
                 $flasher->addError("Pelelangan Gagal dibuka");
 
-                return back();
+                return back()->withErrors($valid_data->errors())->withInput();
             }
 
             if ($request->hasFile('foto')) {

@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\BackupController;
 use App\Http\Controllers\BaseController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\BarangController;
@@ -103,10 +104,14 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{user:id}', [UserController::class, 'destroy']);
     });
 
+    Route::prefix('backup')->middleware(['auth:petugas', 'petugas'])->group(function(){
+        Route::get('/', [BackupController::class, 'index']);
+    });
+
     //Pegawai Profile
     Route::prefix('/me')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [BaseController::class, 'pegawaiProfile']);
-        Route::put('/update/{id}', [BaseController::class, 'pegawaiProfile']);
+    Route::put('/update', [BaseController::class, 'updateProfile']);
     });
 });
 

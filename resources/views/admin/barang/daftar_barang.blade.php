@@ -131,16 +131,19 @@
                                 <td>@money($item->harga_barang)</td>
                                 <td class="text-break">{{ $item->deskripsi_barang }}</td>
                                 <td>
-                                    <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block " width="150px">
-                                    {{-- @if (!is_null($item->foto) && Storage::disk('public_path')->exists($item->foto))
+                                    @if (!is_null($item->foto) && Storage::disk('public_path')->exists($item->foto))
+                                        <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block "
+                                            width="150px">
+                                    @elseif ($item->foto != null)
                                         <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block "
                                             width="150px">
                                     @else
                                         <i class="bi bi-image"></i>
                                         <span>Image Not Found</span>
-                                    @endif --}}
+                                    @endif
                                 </td>
                                 <td>
+                                    {{-- @dd(auth('petugas')->user()->role === 'petugas') --}}
                                     @if (auth('petugas')->user()->role === 'petugas')
                                         @if ($item->status_lelang == 'ditutup')
                                             <button type="button" name="status_lelang" data-bs-toggle="modal"

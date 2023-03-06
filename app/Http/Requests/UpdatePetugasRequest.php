@@ -26,6 +26,8 @@ class UpdatePetugasRequest extends FormRequest
     {
         return [
             'nama_petugas' => ['required'],
+            'tgl_lahir' => ['required', 'date'],
+            'alamat' => ['required', 'max:50'],
             'email' => ['required', 'email', 'min:4'],
             'telp' => ['required', 'min:4', 'max:15'],
             'role' => ['required']
@@ -41,11 +43,15 @@ class UpdatePetugasRequest extends FormRequest
     {
         return [
             'nama_petugas.required' => "Input ini harus diisi",
+            'tgl_lahir.required' => "Input ini harus diisi",
             'telp.required' => "Input ini harus diisi",
             'email.required' => "Input ini harus diisi",
-            'email.min' => "Panjang Minimal 4 Karakter",
-            'telp.min' => "Panjang minimal 4 Karakter",
+            'alamat.required' => "Input ini harus diisi",
             'telp.max' => "Panjang Maksimal 15 Karakter",
+            'alamat.max' => "Panjang Maksimal 50 Karakter",
+            'email.min' => "Panjang Maksimal 4 Karakter",
+            'telp.min' => "Panjang Maksimal 4 Karakter",
+            
         ];
     }
 }

@@ -6,10 +6,11 @@ use App\Models\Petugas;
 use Illuminate\Http\Request;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Validation\Rules\Password;
 use App\Http\Requests\StorePetugasRequest;
 use App\Http\Requests\UpdatePetugasRequest;
-use Illuminate\Support\Facades\Validator;
 
 class PetugasController extends Controller
 {
@@ -45,12 +46,18 @@ class PetugasController extends Controller
     public function store(StorePetugasRequest $request, FlasherInterface $flasher)
     {
         if ($request->validated()) {
+            $data = $request->all();
+            $data['foto'] = $request->file('foto')->store('/profile', "public_path");
+
             Petugas::create([
-                'nama_petugas' => $request->nama_petugas,
-                'email' => $request->email,
-                'password' => Hash::make($request->password),
-                'telp' => $request->telp,
-                'role' => $request->role,
+                'nama_petugas' => $data['nama_petugas'],
+                'tgl_lahir' => $data['tgl_lahir'],
+                'email' => $data['email'],
+                'foto' => $data['foto'],
+                'password' => Hash::make($data['password']),
+                'telp' => $data['telp'],
+                'role' => $data['role'],
+                'alamat' => $data['alamat'],
             ]);
 
             $flasher->addSuccess('Berhasil Menambah Petugas');
@@ -97,12 +104,32 @@ class PetugasController extends Controller
         $data =  $request->all();
 
         if ($request->validated()) {
-            $petugas->update([
-                'nama_petugas' => $data['nama_petugas'],
-                'email' => $data['email'],
-                'telp' => $data['telp'],
-                'role' => $data['role'],
-            ]);
+
+            if ($request->has('foto') && $request->hasFile('foto')) {
+                if (!is_null($petugas->foto) && Storage::disk("public_path")->exists($petugas->foto)) {
+                    Storage::disk("public_path")->delete($petugas->foto);
+                }
+
+                $valid = Validator::make($request->all(), [
+                    'foto' => ['image', 'mimes:png,jpg,jpeg', 'max:5000'],
+
+                ], [
+                    'foto.image' => "file harus berupa foto",
+                    'foto.mimes' => "format yang diperbolehkan adalah png,jpg,jpeg",
+                    'foto.max' => "Ukuran Maksimal 5 MB",
+                ]);
+
+                if(!$valid->fails()){
+                    $data['foto'] = $request->file('foto')->store('/profile', "public_path");
+
+                    $petugas->update([
+                        'foto' => $data['foto']
+                    ]);
+                }
+                $flasher->addError("Gagal Merubah Data");
+
+                return back()->withErrors($valid->errors());
+            }
 
             if ($request->has('password') && $request->password != null) {
                 $valid = Validator::make($request->all(), [
@@ -122,6 +149,15 @@ class PetugasController extends Controller
                 ]);
             }
 
+            $petugas->update([
+                'nama_petugas' => $data['nama_petugas'],
+                'tgl_lahir' => $data['tgl_lahir'],
+                'email' => $data['email'],
+                'telp' => $data['telp'],
+                'role' => $data['role'],
+                'alamat' => $data['alamat'],
+            ]);
+
             $flasher->addSuccess("Berhasil Merubah Data $request->nama_petugas");
 
             return back();
@@ -137,6 +173,8 @@ class PetugasController extends Controller
     public function destroy(Petugas $petugas, FlasherInterface $flasher)
     {
         if ($petugas->destroy($petugas->id)) {
+            Storage::disk("public_path")->delete($petugas->foto);
+
             $flasher->addSuccess("Berhasil Menghapus Data Petugas Lelang");
 
             return back();

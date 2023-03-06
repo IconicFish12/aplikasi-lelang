@@ -17,12 +17,17 @@ class PetugasFactory extends Factory
      */
     public function definition()
     {
+        $kota = $this->faker->city();
+        $alamat = $this->faker->address();
+
         return [
             'nama_petugas' => $this->faker->name(),
+            'tgl_lahir' => $this->faker->date('Y-m-d'),
+            'alamat' =>$alamat . ', ' . $kota,
             'email' => $this->faker->freeEmail(),
             'password' => Hash::make('Password'),
             'role' => $this->faker->randomElement(['admin', 'petugas']),
-            'telp' => $this->faker->phoneNumber(15),
+            'telp' => $this->faker->phoneNumber(12),
         ];
     }
 }

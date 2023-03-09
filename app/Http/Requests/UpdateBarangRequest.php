@@ -26,6 +26,7 @@ class UpdateBarangRequest extends FormRequest
     {
         return [
             'nama_barang' => [Rule::requiredIf(request()->has("nama_barang"))],
+            'nama_user' => [Rule::requiredIf(request()->has("nama_user"))],
             'tgl_pelelangan' => [Rule::requiredIf(request()->has("tgl_pelelangan")), "date_format:Y-m-d"],
             "kategori_id" => [Rule::requiredIf(request()->has("kategori_id")), 'integer'],
             'harga_barang' => [Rule::requiredIf(request()->has("harga_barang")), "integer"],

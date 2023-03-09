@@ -20,8 +20,8 @@
                                             <div class="card-title">
                                                 {{ $item->barang->nama_barang }}
                                             </div>
-                                            <div class="card-subtitle mb-2 text-muted">
-                                                @money($item->barang->harga_barang)
+                                            <div class="card-subtitle fw-bold">
+                                                Harga Barang : @money($item->barang->harga_barang)
                                             </div>
                                             <p class="card-text">
                                                 {{ $item->barang->deskripsi_barang }}
@@ -31,7 +31,7 @@
                                                     <button type="submit" class="btn btn-sm btn-outline-secondary getData"
                                                         value="{{ $item->barang->id }}" data-bs-toggle="modal"
                                                         data-bs-target="#exampleModal">Penawaran Tertingi</button>
-                                                    <button type="button"
+                                                    <button type="button" value="{{ $item->barang->nama_barang }}"
                                                         class="btn btn-sm btn-outline-secondary">Lainnya</button>
                                                 </div>
                                                 <small
@@ -64,9 +64,9 @@
                                                                                     class="form-label">Nama
                                                                                     Penawar</label>
                                                                                 <input type="text" class="form-control"
-                                                                                    placeholder="Nama Penawar"
+                                                                                    placeholder="Nama Penawar" name="nama_penawar"
                                                                                     id="post_nama" aria-label="Nama Penawar"
-                                                                                    disabled>
+                                                                                    readonly>
                                                                             </div>
                                                                             <div class="col">
                                                                                 <label for="harga_penawaran"
@@ -146,18 +146,6 @@
                                                                                                         readonly>
                                                                                                 </div>
                                                                                             </div>
-                                                                                            <div class="mb-3 row">
-                                                                                                <label for="inputPassword"
-                                                                                                    class="col-lg-4 col-form-label">Jenis
-                                                                                                    Transaksi</label>
-                                                                                                <div class="col-sm-5">
-                                                                                                    <input type="text"
-                                                                                                        class="form-control"
-                                                                                                        id="post_jenis_transaksi"
-                                                                                                        placeholder="Harga Barang"
-                                                                                                        readonly>
-                                                                                                </div>
-                                                                                            </div>
                                                                                         </div>
                                                                                     </div>
                                                                                 </div>
@@ -209,7 +197,7 @@
             });
 
             let getData = e => {
-                console.log(e.currentTarget.value);
+                // console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('admin/daftar-lelang/barang') }}`,
                     method: "GET",
@@ -236,19 +224,7 @@
                                 $("#post_barang").val(resp[0].barang.nama_barang);
                                 $("#post_kategori").val(resp[0].barang.kategori.nama_kategori);
                                 $("#post_harga_barang").val(resp[0].barang.harga_barang);
-                                $("#post_jenis_transaksi").val(resp[1].jenis_transaksi);
 
-                                // $("#test").change(function(){
-                                //     console.log("berubash");
-                                // });
-
-                                resp[2].forEach(element => {
-                                    console.log(element);
-
-                                    $("#nama").val(element.user.nama_lengkap);
-                                    $("#harga").val(element.harga_penawaran);
-
-                                });
 
                             } else {
                                 // console.log("gak ada");
@@ -287,6 +263,10 @@
                         console.log(err);
                     }
                 })
+            }
+
+            let Navigate = e => {
+
             }
 
             $(".getData").on("click", getData);

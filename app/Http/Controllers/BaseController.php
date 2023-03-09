@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Barang;
+use App\Models\History_lelang;
 use App\Models\Lelang;
 use App\Models\Penawaran;
 use App\Models\Petugas;
+use App\Models\User;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -15,7 +18,12 @@ class BaseController extends Controller
     // Admin Logic
     public function adminView()
     {
-        return view('admin.home');
+        return view('admin.home', [
+            'costumer' => User::all()->count(),
+            'barang' => Barang::all()->count(),
+            'lelang' => Lelang::all()->count(),
+            'hasil' => History_lelang::all()->sum('harga_lelang') ?? 0,
+        ]);
     }
 
     public function pegawaiProfile()
@@ -102,6 +110,7 @@ class BaseController extends Controller
 
         return view('web.home', [
             "dataArr" => $mulai,
+            'header' => 'Barang Lelang',
         ]);
     }
 }

@@ -11,6 +11,9 @@ use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreBarangRequest;
 use App\Http\Requests\UpdateBarangRequest;
+use App\Mail\PelelanganDibuka;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Facades\Validator;
 
 class BarangController extends Controller
@@ -47,11 +50,28 @@ class BarangController extends Controller
      */
     public function store(StoreBarangRequest $request, FlasherInterface $flasher)
     {
+        // dd($request->all());
         if ($request->validated()) {
             $data = $request->all();
             $data['foto'] = $request->file('foto')->store('/images', "public_path");
 
-            $barang = Barang::create($data);
+            $user = User::where('nama_lengkap', $data['nama_user'])->first();
+
+            if ($user == null) {
+                $flasher->addError("User Tidak Ditemukan");
+
+                return back()->withInput($data);
+            }
+
+            // dd($request->all());
+            Barang::create([
+                'user_id' => $user->id,
+                'kategori_id' => $data['kategori_id'],
+                'nama_barang' => $data['nama_barang'],
+                'harga_barang' => $data['harga_barang'],
+                'deskripsi_barang' => $data['deskripsi_barang'],
+                'foto' => $data['foto'],
+            ]);
 
             $flasher->addSuccess("Berhasil Menambah Data Barang");
             return back();
@@ -67,7 +87,7 @@ class BarangController extends Controller
     public function show(Barang $barang, Request $request)
     {
         if ($request->has('getData') && $request->getData) {
-            $data = $barang->find($request->data);
+            $data = $barang->with(['user', 'kategori'])->find($request->data);
 
             $penawaran = Penawaran::where('barang_id', $request->data)->first();
             return response()->json([$data, $penawaran], 200);
@@ -133,7 +153,9 @@ class BarangController extends Controller
                     'tgl_selesai.date' => "input ini harus berupa tanggal",
                 ]);
 
-                if(!$valid_data->fails()){
+                if (!$valid_data->fails()) {
+                    $user = User::where('email', $data['email'])->first();
+
                     $lelang = Lelang::create([
                         'barang_id' => $barang->id,
                         'harga_awal' => $barang->harga_barang,
@@ -146,6 +168,8 @@ class BarangController extends Controller
                             'status_lelang' => $data['status_lelang'],
                             'proses' => 'sedang'
                         ]);
+
+                        Mail::to($data['email'])->send(new PelelanganDibuka($user, $lelang));
 
                         $flasher->addSuccess("Pelelangan Dibuka");
 
@@ -165,12 +189,23 @@ class BarangController extends Controller
                 $data['foto'] = $request->file('foto')->store('images', "public_path");
             }
 
-            if ($barang->update($data)) {
-                $flasher->addSuccess("Berhasil Merubah Data Barang");
+            $user = User::where("nama_lengkap", $data['nama_user'])->first();
 
-                return back();
+            if ($user == null) {
+                $flasher->addError("User Tidak Ditemukan");
+
+                return back()->withInput($data);
             }
-            $flasher->addError("Gagal Merubah Data Barang");
+
+            $barang->update([
+                'user_id' => $user->id,
+                'kategori_id' => $data['kategori_id'],
+                'nama_barang' => $data['nama_barang'],
+                'harga_barang' => $data['harga_barang'],
+                'deskripsi_barang' => $data['deskripsi_barang'],
+            ]);
+
+            $flasher->addSuccess("Berhasil Merubah Data Barang");
 
             return back();
         } else {

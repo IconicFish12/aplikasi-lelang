@@ -25,6 +25,7 @@ class StoreBarangRequest extends FormRequest
     {
         return [
             'nama_barang' => ["required"],
+            'nama_user' => ["required"],
             "kategori_id" => ["integer"],
             'harga_barang' => ["required", "integer"],
             "deskripsi_barang" => ["required"],
@@ -41,6 +42,7 @@ class StoreBarangRequest extends FormRequest
     {
         return [
             'nama_barang.required' => 'Nama Barang Harus diisi',
+            'nama_user.required' => 'Nama Barang Harus diisi',
             'harga_barang.required' => 'Harga Barang Harus diisi',
             'deskripsi_barang.required' => 'Deskripsi Barang Harus diisi',
             'foto.required' => 'Foto Barang Harus diisi',

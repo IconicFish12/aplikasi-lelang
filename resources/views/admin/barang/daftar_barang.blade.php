@@ -18,7 +18,7 @@
             <div class="modal-dialog ">
                 <div class="modal-content">
                     <div class="modal-header">
-                        <h5 class="modal-title">Buat Data Barang</h5>
+                        <h5 class="modal-title">Ajukan Pelelangan</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
                     <form action="{{ asset('/admin/daftar-barang') }}" method="post" enctype="multipart/form-data">
@@ -30,6 +30,17 @@
                                     class="form-control @error('nama_barang') is-invalid  @enderror" id="nama_barang"
                                     placeholder="Masukan Nama Barang" value="{{ old('nama_barang') }}">
                                 @error('nama_barang')
+                                    <div class="invalid-feedback">
+                                        {{ $message }}
+                                    </div>
+                                @enderror
+                            </div>
+                            <div class="mb-3">
+                                <label for="nama_user" class="form-label">Nama Pemilik</label>
+                                <input type="text" name="nama_user"
+                                    class="form-control @error('nama_user') is-invalid  @enderror" id="nama_user"
+                                    placeholder="Masukan Nama Pemilik" value="{{ old('nama_user') }}">
+                                @error('nama_user')
                                     <div class="invalid-feedback">
                                         {{ $message }}
                                     </div>
@@ -113,6 +124,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
+                            <th>Pemilik Barang</th>
                             <th>Kategori Barang</th>
                             <th>Harga Barang</th>
                             <th>Deskripsi Barang</th>
@@ -127,11 +139,13 @@
                             <tr>
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_barang }}</td>
+                                <td>{{ $item->user->nama_lengkap }}</td>
                                 <td>{{ $item->kategori->nama_kategori }}</td>
                                 <td>@money($item->harga_barang)</td>
                                 <td class="text-break">{{ $item->deskripsi_barang }}</td>
                                 <td>
-                                    @if (!is_null($item->foto) && Storage::disk('public_path')->exists($item->foto))
+                                    <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block " width="150px">
+                                    {{-- @if (!is_null($item->foto) && Storage::disk('public_path')->exists($item->foto))
                                         <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block "
                                             width="150px">
                                     @elseif ($item->foto != null)
@@ -140,7 +154,7 @@
                                     @else
                                         <i class="bi bi-image"></i>
                                         <span>Image Not Found</span>
-                                    @endif
+                                    @endif --}}
                                 </td>
                                 <td>
                                     {{-- @dd(auth('petugas')->user()->role === 'petugas') --}}
@@ -177,6 +191,11 @@
                                                                         Selesai</label>
                                                                     <input type="date" class="form-control"
                                                                         name="tgl_selesai" id="tgl_selesai">
+                                                                </div>
+                                                                <div class="mb-3">
+                                                                    <label for="email" class="form-label">Email</label>
+                                                                    <input type="email" class="form-control"
+                                                                        name="email" id="post_email">
                                                                 </div>
                                                             </div>
                                                             <div class="modal-footer">
@@ -295,6 +314,7 @@
                         <tr>
                             <th>No</th>
                             <th>Nama Barang</th>
+                            <th>Pemilik Barang</th>
                             <th>Kategori Barang</th>
                             <th>Harga Barang</th>
                             <th>Deskripsi Barang</th>
@@ -325,6 +345,17 @@
                                             id="edit_nama_barang" placeholder="Masukan Nama Barang"
                                             value="{{ old('nama_barang') }}">
                                         @error('nama_barang')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                    </div>
+                                    <div class="mb-3">
+                                        <label for="nama_user" class="form-label">Nama Pemilik</label>
+                                        <input type="text" name="nama_user"
+                                            class="form-control @error('nama_user') is-invalid  @enderror" id="edit_nama_user"
+                                            placeholder="Masukan Nama Pemilik" value="{{ old('nama_user') }}">
+                                        @error('nama_user')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
                                             </div>
@@ -420,6 +451,7 @@
                     success: resp => {
                         $("#post_lelang").attr("action",
                             `{{ asset('admin/daftar-barang/${resp[0].id}') }}`);
+                        $("#post_email").val(resp[0].user.email);
                     },
                     error: err => {
                         console.log(err);
@@ -448,7 +480,6 @@
             }
 
             let getData = e => {
-                console.log(e.currentTarget.value);
                 $.ajax({
                     url: `{{ asset('admin/daftar-barang/show') }}`,
                     method: "POST",
@@ -458,9 +489,11 @@
                     },
                     dataType: "json",
                     success: resp => {
+                        console.log(resp);
                         $("#edit_form").attr("action",
                             `{{ asset('admin/daftar-barang/${resp[0].id}') }}`);
                         $("#edit_nama_barang").val(resp[0].nama_barang);
+                        $("#edit_nama_user").val(resp[0].user.nama_lengkap);
                         $("#edit_kategori_id").val(resp[0].kategori_id);
                         $("#edit_harga_barang").val(resp[0].harga_barang);
                         $("#edit_status_lelangan").val(resp[0].status_lelangan);

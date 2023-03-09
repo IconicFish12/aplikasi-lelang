@@ -17,12 +17,23 @@ class Kategori extends Model
         return $this->hasMany(Barang::class, 'kategori_id');
     }
 
-    public function history_lelang()
+    public function backup_barang()
     {
-        return $this->hasMany(History_lelang::class, 'petugas_id');
+        return $this->hasMany(Backup_barang::class, 'kategori_id');
     }
 
-    public function searsh(string $search)
+    public function history_lelang()
+    {
+        return $this->hasMany(History_lelang::class, 'kategori_id');
+    }
+
+    public function pengajuan_lelang()
+    {
+        return $this->hasMany(Pengajuan_lelang::class, 'kategori_id');
+
+    }
+
+    public function search(string $search)
     {
         # code...
     }

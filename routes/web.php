@@ -11,6 +11,7 @@ use App\Http\Controllers\PetugasController;
 use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\HistoryLelangController;
+use App\Http\Controllers\PengajuanLelangController;
 
 /*
 |--------------------------------------------------------------------------
@@ -104,6 +105,14 @@ Route::prefix('/admin')->group(function () {
         Route::delete('/{user:id}', [UserController::class, 'destroy']);
     });
 
+    Route::prefix('/permohonan-lelang')->middleware(['auth:petugas', 'petugas'])->group(function(){
+        Route::get('/', [PengajuanLelangController::class, 'index']);
+        Route::post('/', [PengajuanLelangController::class, 'store']);
+        Route::post('/show', [PengajuanLelangController::class, 'show']);
+        Route::put('/{pengajuan_lelang:id}', [PengajuanLelangController::class, 'update']);
+        Route::delete('/{pengajuan_lelang:id}', [PengajuanLelangController::class, 'destroy']);
+    });
+
     Route::prefix('backup')->middleware(['auth:petugas', 'petugas'])->group(function(){
         Route::get('/', [BackupController::class, 'index']);
     });
@@ -111,7 +120,7 @@ Route::prefix('/admin')->group(function () {
     //Pegawai Profile
     Route::prefix('/me')->middleware(['auth:petugas', 'petugas'])->group(function () {
         Route::get('/', [BaseController::class, 'pegawaiProfile']);
-    Route::put('/update', [BaseController::class, 'updateProfile']);
+        Route::put('/update', [BaseController::class, 'updateProfile']);
     });
 });
 
@@ -119,10 +128,20 @@ Route::prefix('/admin')->group(function () {
 Route::prefix('/')->group(function () {
     Route::get('/', [BaseController::class, 'webView']);
 
-    Route::prefix('penawaran')->group(function () {
-        Route::get('/', [PenawaranController::class, 'index']);
-        Route::post('/data', [PenawaranController::class, 'getNextPage']);
-        Route::post('/show', [BarangController::class, 'show']);
-        Route::post('/action', [LelangController::class, 'tambah_penawaran'])->middleware('user');
+
+    Route::middleware(['user'])->group(function(){
+        Route::get('/riwayat-saya', [PenawaranController::class, 'index']);
+
+        Route::prefix('penawaran')->group(function () {
+            Route::get('/', [PenawaranController::class, 'index']);
+            Route::post('/show', [BarangController::class, 'show']);
+            Route::post('/action', [LelangController::class, 'tambah_penawaran'])->middleware('user');
+        });
+
+        Route::prefix('/permohonan-lelang')->group(function(){
+            Route::get('/', [PengajuanLelangController::class, 'index']);
+            Route::post('/', [PengajuanLelangController::class, 'tambah_pengajuan']);
+        });
+
     });
 });

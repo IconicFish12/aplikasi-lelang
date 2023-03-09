@@ -2,115 +2,123 @@
 @section('web')
     @if ($dataArr->count())
         <section>
-            <div class="album py-5 bg-light">
-                <div class="container">
+            <div>
 
-                    <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
-                        @foreach ($dataArr as $item)
-                            <div class="col">
-                                <div class="card shadow-sm">
-                                    <img src="{{ asset($item->barang->foto) }}" alt="Gambar">
-                                    <div class="card-body">
-                                        <div class="card-title">
-                                            {{ $item->barang->nama_barang }}
-                                        </div>
-                                        <div class="card-subtitle fw-bold">
-                                            Harga Barang : @money($item->barang->harga_barang)
-                                        </div>
-                                        <div class="card-subtitle fw-bold text-danger">
-                                            <?php
-                                            $penawaranIni = DB::table('tb_penawaran')
-                                                ->where('barang_id', $item->barang->id)
-                                                ->max('harga_penawaran');
-                                            ?>
-                                            Penawaran Tertinggi : @money($penawaranIni)
-                                        </div>
-                                        <div class="card-subtitle mb-2 fw-bold ">
-                                            <?php
-                                            $penawar = DB::table('tb_penawaran')
-                                                ->where('barang_id', $item->barang->id)
-                                                ->orderBy('harga_penawaran', 'DESC')
-                                                ->get();
-                                            // dd($penawar->user_id);
-                                            ?>
-                                            @foreach ($penawar as $i)
-                                                {{-- @dd(is_null($i->user_id)) --}}
-                                                @empty($i->user_id)
-                                                    Nama Penawar : ----
-                                                @else
-                                                    <?php
-                                                    $user = DB::table('tb_masyarakat')->find($i->user_id);
-                                                    ?>
-                                                    Nama Penawar : {{ $user->nama_lengkap }}
-                                                @endempty
-                                            @endforeach
-                                        </div>
-                                        <p class="card-text">
-                                            {{ $item->barang->deskripsi_barang }}
-                                        </p>
-                                        <div class="d-flex justify-content-between align-items-center">
-                                            @if (Auth::guard('web')->check())
-                                                <button type="button" class="btn btn-sm btn-outline-secondary getData"
-                                                    value="{{ $item->barang_id }}" data-bs-toggle="modal"
-                                                    data-bs-target="#exampleModal">Penawaran</button>
-                                                <div class="modal fade" id="exampleModal" tabindex="-1"
-                                                    aria-labelledby="exampleModalLabel" aria-hidden="true">
-                                                    <div class="modal-dialog ">
-                                                        <div class="modal-content">
-                                                            <div class="modal-header">
-                                                                <h1 class="modal-title fs-4" id="exampleModalLabel">Tawar
-                                                                    Barang</h1>
-                                                                <button type="button" class="btn-close"
-                                                                    data-bs-dismiss="modal" aria-label="Close"></button>
-                                                            </div>
-                                                            <form action="" method="post" id="show_form"
-                                                                class="needs-validation" novalidate>
-                                                                @csrf
-                                                                <input type="hidden" name="barang_id" id="show_barang">
-                                                                <input type="hidden" name="penawaran_id"
-                                                                    id="show_penawaran">
-                                                                <input type="hidden" name="user_id"
-                                                                    value="{{ auth('web')->user()->id }}">
-                                                                <div class="modal-body">
-                                                                    <div class="mb-3">
-                                                                        <label for="harga_penawaran"
-                                                                            class="form-label">Harga
-                                                                            Penawaran</label>
-                                                                        <input
-                                                                            type="number"class="form-control @error('harga_penawaran') is-invalid @enderror"
-                                                                            placeholder="Harga Penawaran"
-                                                                            aria-label="Harga Penawaran"
-                                                                            name="harga_penawaran" id="harga_penawaran"
-                                                                            value="{{ old('harga_penawaran') }}">
-                                                                        @error('harga_penawaran')
-                                                                            <div class="invalid-feedback">
-                                                                                {{ $message }}
-                                                                            </div>
-                                                                        @enderror
+                <div class="section-title">
+                    <h2>{{ $header }}</h2>
+                </div>
+
+                <div class="album py-5 bg-light">
+                    <div class="container">
+
+                        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+                            @foreach ($dataArr as $item)
+                                <div class="col">
+                                    <div class="card shadow-sm">
+                                        <img src="{{ asset($item->barang->foto) }}" alt="Gambar">
+                                        <div class="card-body">
+                                            <div class="card-title">
+                                                {{ $item->barang->nama_barang }}
+                                            </div>
+                                            <div class="card-subtitle fw-bold">
+                                                Harga Barang : @money($item->barang->harga_barang)
+                                            </div>
+                                            <div class="card-subtitle fw-bold text-danger">
+                                                <?php
+                                                $penawaranIni = DB::table('tb_penawaran')
+                                                    ->where('barang_id', $item->barang->id)
+                                                    ->max('harga_penawaran');
+                                                ?>
+                                                Penawaran Tertinggi : @money($penawaranIni)
+                                            </div>
+                                            <div class="card-subtitle mb-2 fw-bold ">
+                                                <?php
+                                                $penawar = DB::table('tb_penawaran')
+                                                    ->where('barang_id', $item->barang->id)
+                                                    ->orderBy('harga_penawaran', 'DESC')
+                                                    ->get();
+                                                // dd($penawar->user_id);
+                                                ?>
+                                                @foreach ($penawar as $i)
+                                                    {{-- @dd(is_null($i->user_id)) --}}
+                                                    @empty($i->user_id)
+                                                        Nama Penawar : ----
+                                                    @else
+                                                        <?php
+                                                        $user = DB::table('tb_masyarakat')->find($i->user_id);
+                                                        ?>
+                                                        Nama Penawar : {{ $user->nama_lengkap }}
+                                                    @endempty
+                                                @endforeach
+                                            </div>
+                                            <p class="card-text">
+                                                {{ $item->barang->deskripsi_barang }}
+                                            </p>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                @if (Auth::guard('web')->check())
+                                                    <button type="button" class="btn btn-sm btn-outline-secondary getData"
+                                                        value="{{ $item->barang_id }}" data-bs-toggle="modal"
+                                                        data-bs-target="#exampleModal">Penawaran</button>
+                                                    <div class="modal fade" id="exampleModal" tabindex="-1"
+                                                        aria-labelledby="exampleModalLabel" aria-hidden="true">
+                                                        <div class="modal-dialog ">
+                                                            <div class="modal-content">
+                                                                <div class="modal-header">
+                                                                    <h1 class="modal-title fs-4" id="exampleModalLabel">
+                                                                        Tawar
+                                                                        Barang</h1>
+                                                                    <button type="button" class="btn-close"
+                                                                        data-bs-dismiss="modal" aria-label="Close"></button>
+                                                                </div>
+                                                                <form action="" method="post" id="show_form"
+                                                                    class="needs-validation" novalidate>
+                                                                    @csrf
+                                                                    <input type="hidden" name="barang_id" id="show_barang">
+                                                                    <input type="hidden" name="penawaran_id"
+                                                                        id="show_penawaran">
+                                                                    <input type="hidden" name="user_id"
+                                                                        value="{{ auth('web')->user()->id }}">
+                                                                    <div class="modal-body">
+                                                                        <div class="mb-3">
+                                                                            <label for="harga_penawaran"
+                                                                                class="form-label">Harga
+                                                                                Penawaran</label>
+                                                                            <input
+                                                                                type="number"class="form-control @error('harga_penawaran') is-invalid @enderror"
+                                                                                placeholder="Harga Penawaran"
+                                                                                aria-label="Harga Penawaran"
+                                                                                name="harga_penawaran" id="harga_penawaran"
+                                                                                value="{{ old('harga_penawaran') }}">
+                                                                            @error('harga_penawaran')
+                                                                                <div class="invalid-feedback">
+                                                                                    {{ $message }}
+                                                                                </div>
+                                                                            @enderror
+                                                                        </div>
                                                                     </div>
-                                                                </div>
-                                                                <div class="modal-footer">
-                                                                    <button type="button" class="btn btn-secondary"
-                                                                        data-bs-dismiss="modal">Close</button>
-                                                                    <button type="submit"
-                                                                        class="btn btn-primary">Tawar</button>
-                                                                </div>
-                                                            </form>
+                                                                    <div class="modal-footer">
+                                                                        <button type="button" class="btn btn-secondary"
+                                                                            data-bs-dismiss="modal">Close</button>
+                                                                        <button type="submit"
+                                                                            class="btn btn-primary">Tawar</button>
+                                                                    </div>
+                                                                </form>
+                                                            </div>
                                                         </div>
                                                     </div>
-                                                </div>
-                                            @endif
-                                            <small
-                                                class="text-muted">{{ $item->barang->created_at->diffForHumans() }}</small>
+                                                @endif
+                                                <small
+                                                    class="text-muted">{{ $item->barang->created_at->diffForHumans() }}</small>
+                                            </div>
                                         </div>
                                     </div>
                                 </div>
-                            </div>
-                        @endforeach
-                    </div>
+                            @endforeach
+                        </div>
 
-                    <div class="mt-3">
-                        {{ $dataArr->links() }}
+                        <div class="mt-3">
+                            {{ $dataArr->links() }}
+                        </div>
                     </div>
                 </div>
             </div>

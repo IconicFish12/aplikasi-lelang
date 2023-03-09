@@ -103,6 +103,7 @@
                     <li><a class="nav-link " href="/">Home</a></li>
                     <li><a class="nav-link scrollto" href="#contact">Contact</a></li>
                     @auth('web')
+                        <li><a class="nav-link" href="/permohonan-lelang">Permohonan Lelang</a></li>
                         <li class="dropdown">
                             <a href="#">
                                 <i class="bi bi-chevron-down"></i>
@@ -110,7 +111,7 @@
                             </a>
                             <ul>
                                 <li><a href="#">My Profile</a></li>
-                                <li><a href="#">Penawaran Saya</a></li>
+                                <li><a href="/riwayat-saya">Riwayat Lelang</a></li>
                                 <li><a href="{{ asset('logout') }}">Logout</a></li>
                             </ul>
                         </li>

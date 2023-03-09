@@ -2,33 +2,73 @@
 @section('web')
     <section>
         @if ($dataArr->count())
-            <div class="table-responsive">
-                <table class="table table-striped" cellspacing="0" width="100%">
-                    <thead>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Barang</th>
-                            <th>Harga Penawaran</th>
-                        </tr>
-                    </thead>
-                    @foreach ($dataArr as $item)
-                        <tbody>
-                            <tr>
-                                <td>{{ $loop->iteration }}</td>
-                                <td>{{ $item->barang->nama_barang }}</td>
-                                <td>@money($item->harga_penawaran)</td>
-                            </tr>
-                        </tbody>
-                    @endforeach
-                    <tfoot>
-                        <tr>
-                            <th>No</th>
-                            <th>Nama Barang</th>
-                            <th>Harga Penawaran</th>
-                        </tr>
-                    </tfoot>
-                </table>
-                {{ $dataArr->links() }}
+            <div class="container">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="card-title fw-bold fs-3">
+                            Penawaran {{ Auth::guard('web')->user()->nama_lengkap }}
+                        </div>
+                        <div class="d-flex justify-content-between flex-column flex-md-row my-2">
+                            <form action="{{ asset('/riwayat-saya') }}" method="GET" class="d-block mb-2">
+                                @if (request()->has('search'))
+                                    <div class="form-group">
+                                        <input type="hidden" name="search" class="form-control" value="{{ request('search') }}">
+                                    </div>
+                                @endif
+                                <span class="d-block">Data Per Page</span>
+                                <input type="number" name="paginate" id="paginate" list="paginates" class="form-control"
+                                    value="{{ request('paginate') }}">
+                                <datalist id="paginates">
+                                    <option value="25">25</option>
+                                    <option value="50">50</option>
+                                    <option value="75">75</option>
+                                    <option value="100">100</option>
+                                </datalist>
+                            </form>
+                        </div>
+                        <div class="table-responsive">
+                            <table class="table table-striped" cellspacing="0" width="100%">
+                                <thead>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Barang</th>
+                                        <th>Nama Pembeli</th>
+                                        <th>Petugas Pelelang</th>
+                                        <th>Tanggal Lelang</th>
+                                        <th>Harga Barang</th>
+                                        <th>Harga Lelang</th>
+                                    </tr>
+                                </thead>
+                                @foreach ($dataArr as $item)
+                                    <tbody>
+                                        <tr>
+                                            <td>{{ $loop->iteration }}</td>
+                                            <td>{{ $item->nama_barang }}</td>
+                                            <td>{{ $item->user->nama_lengkap }}</td>
+                                            <td>{{ $item->petugas->nama_petugas }}</td>
+                                            <td>{{ date('d-m-Y', strtotime($item->tgl_lelang)) }}</td>
+                                            <td>@money($item->harga_barang)</td>
+                                            <td>@money($item->harga_lelang)</td>
+                                            <td>
+                                        </tr>
+                                    </tbody>
+                                @endforeach
+                                <tfoot>
+                                    <tr>
+                                        <th>No</th>
+                                        <th>Nama Barang</th>
+                                        <th>Nama Pembeli</th>
+                                        <th>Petugas Pelelang</th>
+                                        <th>Tanggal Lelang</th>
+                                        <th>Harga Barang</th>
+                                        <th>Harga Lelang</th>
+                                    </tr>
+                                </tfoot>
+                            </table>
+                            {{ $dataArr->links() }}
+                        </div>
+                    </div>
+                </div>
             </div>
         @else
             <div class="mt-3 col-md-6 mx-auto">

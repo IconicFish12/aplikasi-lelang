@@ -17,9 +17,9 @@ class HistoryLelangController extends Controller
      */
     public function index()
     {
-        return view('admin.lelang.riwayat_lelang', [
+        return View('admin.lelang.riwayat_lelang', [
             'page_header' => 'Riwayat Pelelangan',
-            'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->paginate(request('paginate') ?? 25)
+            'dataArr' => HistorY_lelang::with(['kategori', 'petugas', 'user'])->paginate(request('paginate') ?? 25)
         ]);
     }
 

@@ -61,6 +61,16 @@ class User extends Authenticatable
         return $this->belongsTo(Penawaran::class, 'user_id');
     }
 
+    public function pengajuan_lelang()
+    {
+        return $this->hasMany(Backup_barang::class, 'user_id');
+    }
+
+    public function barang()
+    {
+        return $this->belongsTo(Barang::class, 'user_id');
+    }
+
     public function searsh(string $search)
     {
         # code...

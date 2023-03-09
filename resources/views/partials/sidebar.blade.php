@@ -50,9 +50,15 @@
                 </li>
                 @if (auth('petugas')->user()->role === 'admin')
                     <li>
-                        <a href="/admin/daftar-lelang">
+                        <a href="/admin/penawaran">
                             <i class="bi bi-circle"></i>
                             <span>Data Penawaran</span>
+                        </a>
+                    </li>
+                    <li>
+                        <a href="/admin/permohonan-lelang">
+                            <i class="bi bi-circle"></i>
+                            <span>Data Permohonan</span>
                         </a>
                     </li>
                 @endif

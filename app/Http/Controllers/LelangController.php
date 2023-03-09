@@ -11,8 +11,12 @@ use Illuminate\Support\Facades\Storage;
 use App\Http\Requests\StoreLelangRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Requests\UpdateLelangRequest;
+use App\Mail\Dilelang;
+use App\Mail\DilelangUser;
 use App\Models\Backup_barang;
 use App\Models\History_lelang;
+use App\Models\User;
+use Illuminate\Support\Facades\Mail;
 
 class LelangController extends Controller
 {
@@ -24,7 +28,7 @@ class LelangController extends Controller
     public function index()
     {
         // dd(Lelang::where('tgl_selesai', '<', now())->get());
-        if(Lelang::where('tgl_selesai', '<', now())->get()){
+        if (Lelang::where('tgl_selesai', '<', now())->get()) {
             $lelang = Lelang::where('tgl_selesai', '<', now())->pluck('barang_id');
 
             $foto = Barang::whereIn('id', $lelang)->pluck('foto');
@@ -47,7 +51,6 @@ class LelangController extends Controller
     public function eksekusi_pelelangan(Request $request, FlasherInterface $flasher)
     {
         $input =  $request->all();
-        $data = Penawaran::where('harga_penawaran', $request->harga_penawaran)->first();
         // dd($input);
 
         $validate =  Validator::make($input, [
@@ -85,7 +88,6 @@ class LelangController extends Controller
 
                 if ($backup && $update) {
                     $lelang = Lelang::findOrFail($input['lelang_id']);
-                    // dd($lelang->petugas_id);
 
                     Storage::disk('public_path')->delete($barang->foto);
 
@@ -99,9 +101,20 @@ class LelangController extends Controller
                         'tgl_lelang' => $lelang->tgl_lelang,
                     ]);
 
+                    $user = User::where('nama_lengkap', $input['nama_penawar'])->first();
+
+                    // Mail Kepada Pemilik Barang
+                    Mail::to($lelang->barang->user->email)->send(new Dilelang($user, $lelang));
+
+                    // Mail Kepada Pemenang Lelang
+                    Mail::to($user->email)->send(new DilelangUser($user, $lelang));
+
+                    Penawaran::where('barang_id', $input['barang_id'])->delete();
+
                     Barang::destroy($barang->id);
 
                     Lelang::destroy($lelang->id);
+
                 }
             }
 
@@ -284,10 +297,6 @@ class LelangController extends Controller
     public function daftar()
     {
         if (request()->has("getData")) {
-            $data = Penawaran::with(["barang.kategori", "user"])
-                ->where("barang_id", request()->get("data"))
-                ->get();
-
             $tertingi = Penawaran::with(["barang.kategori", "user"])
                 ->where("barang_id", request()->get("data"))
                 ->orderBy("harga_penawaran", "DESC")->first();
@@ -295,7 +304,7 @@ class LelangController extends Controller
             $lelang = Lelang::with(['barang.kategori', 'user', 'petugas'])
                 ->where("barang_id", request()->get('data'))->first();
 
-            return response()->json([$tertingi, $lelang, $data], 200);
+            return response()->json([$tertingi, $lelang], 200);
         }
 
         $mulai = Lelang::with(['petugas', 'user', 'barang'])

@@ -2,23 +2,28 @@
 
 namespace App\Mail;
 
+use App\Models\Lelang;
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
 use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
+use Illuminate\Mail\Mailables\Envelope;
+use Illuminate\Contracts\Queue\ShouldQueue;
 
-class SudahDilelang extends Mailable
+class PelelanganDibuka extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $user;
+    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($user, $data)
     {
-        //
+        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -27,7 +32,7 @@ class SudahDilelang extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Sudah Dilelang',
+            subject: 'Pelelangan Dibuka',
         );
     }
 
@@ -36,8 +41,15 @@ class SudahDilelang extends Mailable
      */
     public function content(): Content
     {
+        $data = $this->data;
+
         return new Content(
-            view: 'view.name',
+            markdown: 'admin.mail.dibuka',
+            with: [
+                'user' => $this->user,
+                'data' => $data,
+                'url' => config('app.url'),
+            ]
         );
     }
 

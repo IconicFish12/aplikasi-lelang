@@ -12,10 +12,10 @@
     </div>
     <div>
         @if ($dataArr->count())
-        <button type="button" class="btn btn-primary navigate">
-            <i class='bx bxs-report bx-fw bx-sm'></i>
-            <span>Buat Laporan</span>
-        </button>
+            <button type="button" class="btn btn-primary navigate">
+                <i class='bx bxs-report bx-fw bx-sm'></i>
+                <span>Buat Laporan</span>
+            </button>
             <div class="d-flex justify-content-between flex-column flex-md-row my-2">
                 <form action="{{ asset('admin/riwayat') }}" method="GET" class="d-block mb-2">
                     @if (request()->has('search'))
@@ -41,7 +41,6 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Nama Pembeli</th>
-                            <th>Petugas Pelelang</th>
                             <th>Tanggal Lelang</th>
                             <th>Harga Barang</th>
                             <th>Harga Lelang</th>
@@ -53,7 +52,6 @@
                                 <td>{{ $loop->iteration }}</td>
                                 <td>{{ $item->nama_barang }}</td>
                                 <td>{{ $item->user->nama_lengkap }}</td>
-                                <td>{{ $item->petugas->nama_petugas }}</td>
                                 <td>{{ date('d-m-Y', strtotime($item->tgl_lelang)) }}</td>
                                 <td>@money($item->harga_barang)</td>
                                 <td>@money($item->harga_lelang)</td>
@@ -66,7 +64,6 @@
                             <th>No</th>
                             <th>Nama Barang</th>
                             <th>Nama Pembeli</th>
-                            <th>Petugas Pelelang</th>
                             <th>Tanggal Lelang</th>
                             <th>Harga Barang</th>
                             <th>Harga Lelang</th>

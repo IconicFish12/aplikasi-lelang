@@ -17,6 +17,11 @@ class Barang extends Model
         return $this->belongsTo(Kategori::class);
     }
 
+    public function user()
+    {
+        return $this->belongsTo(User::class);
+    }
+
     public function lelang()
     {
         return $this->hasMany(Lelang::class, 'barang_id');
@@ -35,5 +40,5 @@ class Barang extends Model
     public function searsh(string $search)
     {
         # code...
-    } 
+    }
 }

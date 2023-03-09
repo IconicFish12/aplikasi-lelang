@@ -1,6 +1,7 @@
 <?php
 
 use App\Models\Kategori;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
@@ -24,6 +25,14 @@ return new class extends Migration
             $table->enum('proses', ["belum", "sedang", "sudah"])->default('belum');
             $table->timestamps();
         });
+
+        // $status = DB::select("SELECT 1 FROM pg_type WHERE typname = 'status_backup'");
+        // $proses = DB::select("SELECT 1 FROM pg_type WHERE typname = 'proses_backup'");
+
+        // if (!$status && !$proses) {
+        //     DB::statement("CREATE TYPE status_backup AS ENUM ('ditutup', 'dibuka')");
+        //     DB::statement("CREATE TYPE proses_backup AS ENUM ('belum', 'sedang', 'sudah')");
+        // }
     }
 
     /**
@@ -33,6 +42,9 @@ return new class extends Migration
      */
     public function down()
     {
+        // DB::statement("DROP TYPE IF EXISTS status_backup CASCADE");
+        // DB::statement("DROP TYPE IF EXISTS proses_backup CASCADE");
+
         Schema::dropIfExists('tb_backup_barang');
     }
 };

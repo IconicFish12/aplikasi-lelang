@@ -35,25 +35,25 @@ class DatabaseSeeder extends Seeder
         $data = [
             [
                 'nama_lengkap' => "Ibnu Syawal Aliefian",
-                'email' => 'ibnuSyawal@gmail.com',
+                'email' => 'isyawalaliefian@gmail.com',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941198"
             ],
             [
                 'nama_lengkap' => "Akhmad Alwan Rabbani",
-                'email' => 'AlwanCoding@gmail.com',
+                'email' => 'dragonchoroi@gmail.com',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941194"
             ],
             [
                 'nama_lengkap' => "Muhammad sholeh",
-                'email' => 'VArlotte@gmail.com',
+                'email' => 'alghoffarlutfi@gmail.com',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941192"
             ],
             [
                 'nama_lengkap' => "Muhammad Rezzqi Rabbani",
-                'email' => 'VanStrong@gmail.com',
+                'email' => 'blastergmly@gmail.com',
                 'password' => Hash::make('Password'),
                 'telp' => "082162941193"
             ],

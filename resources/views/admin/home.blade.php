@@ -10,38 +10,100 @@
         </nav>
     </div>
 
-    <div class="table-responsive">
-        <table id="example" class="table table-striped" cellspacing="0" width="100%">
-            <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr>
-                    <td>Tiger Nixon</td>
-                    <td>System Architect</td>
-                    <td>Edinburgh</td>
-                    <td>61</td>
-                    <td>2011-04-25</td>
-                    <td>$320,800</td>
-                </tr>
-            </tbody>
-            <tfoot>
-                <tr>
-                    <th>Name</th>
-                    <th>Position</th>
-                    <th>Office</th>
-                    <th>Age</th>
-                    <th>Start date</th>
-                    <th>Salary</th>
-                </tr>
-            </tfoot>
-        </table>
-    </div>
+    <section class="section dashboard">
+        <!-- Left side columns -->
+        <div class="">
+            <div class="row d-flex">
+
+                <!-- Sales Card -->
+                <div class="col-xl-3 col-md-6 mt-3">
+                    <div class="card info-card sales-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Barang Lelang</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-box2"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ $barang }} Barang</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End Sales Card -->
+
+                <!-- Customers Card -->
+                <div class="col-xl-3 col-md-6 mt-3">
+
+                    <div class="card info-card customers-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Lelang Aktif</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-archive"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ $lelang }} Data</h6>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Customers Card -->
+
+                <!-- Revenue Card -->
+                <div class="col-xl-3 col-md-6 mt-3">
+                    <div class="card info-card revenue-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Total Lelang <span>|  Keseluruhan</span></h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-currency-dollar"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6 class="text-break">@money($hasil)</h6>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+                <!-- End Revenue Card -->
+
+                <!-- Customers Card -->
+                <div class="col-xl-3 col-md-6 mt-3">
+
+                    <div class="card info-card customers-card">
+
+                        <div class="card-body">
+                            <h5 class="card-title">Customer</h5>
+
+                            <div class="d-flex align-items-center">
+                                <div class="card-icon rounded-circle d-flex align-items-center justify-content-center">
+                                    <i class="bi bi-people"></i>
+                                </div>
+                                <div class="ps-3">
+                                    <h6>{{ $costumer }} User</h6>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+
+                </div>
+                <!-- End Customers Card -->
+            </div>
+        </div>
+        <!-- End Left side columns -->
+    </section>
 @endsection

@@ -6,6 +6,7 @@ use App\Models\Penawaran;
 use Illuminate\Http\Request;
 use App\Http\Requests\StorePenawaranRequest;
 use App\Http\Requests\UpdatePenawaranRequest;
+use App\Models\History_lelang;
 use Illuminate\Support\Facades\Auth;
 
 class PenawaranController extends Controller
@@ -17,9 +18,20 @@ class PenawaranController extends Controller
      */
     public function index(Request $request)
     {
-        return view('admin.penawaran.data_penawaran', [
-            'page_header' => "Data Penawaran Kosumen",
-            'dataArr' => Penawaran::with(['barang', 'user'])->paginate(request('paginate') ?? 10)
+
+        if (auth('petugas')->check()) {
+
+            return view('admin.penawaran.data_penawaran', [
+                'page_header' => "Data Penawaran Kosumen",
+                'dataArr' => Penawaran::with(['barang', 'user'])->paginate(request('paginate') ?? 10)
+            ]);
+        }
+
+        $riwayat = History_lelang::with(['kategori', 'petugas', 'user'])
+            ->where('user_id', auth('web')->user()->id)->paginate(request('paginate') ?? 15);
+
+        return view('web.detail_penawaran', [
+            'dataArr' => $riwayat,
         ]);
     }
 
@@ -28,13 +40,8 @@ class PenawaranController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function getNextPage(Request $request)
+    public function getNextPage()
     {
-        if($request->has('showData') && $request->showData){
-            $data = Penawaran::where('barang_id', $request->data)->orderBy('harga_penawaran', 'DESC')->get();
-
-            return response()->json($data, 200);
-        }
     }
 
     /**
@@ -69,8 +76,8 @@ class PenawaranController extends Controller
     {
         return view('web.detail_penawaran', [
             'dataArr' => $penawaran->with(['barang', 'user'])
-            ->where('user_id', Auth::guard('web')->user()->id)
-            ->paginate(15)
+                ->where('user_id', Auth::guard('web')->user()->id)
+                ->paginate(15)
         ]);
     }
 

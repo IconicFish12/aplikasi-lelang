@@ -102,8 +102,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Petugas</th>
-                            <th>Email Petugas</th>
+                            <th>Nama Konsumen</th>
+                            <th>Email Konsumen</th>
                             <th>Nomor Telepon</th>
                             <th>Action</th>
                         </tr>
@@ -116,14 +116,14 @@
                                 <td>{{ $item->email }}</td>
                                 <td>{{ $item->telp }}</td>
                                 <td class="d-flex justify-content-center">
-                                    <button type="button" class="badge text-bg-warning mx-3 getData"
+                                    <button type="button" class="badge text-bg-warning getData"
                                         value="{{ $item->id }}" data-bs-toggle="modal" data-bs-target="#editModal">
                                         <i class="bi bi-pencil-square"></i>
                                     </button>
                                     <form action="{{ asset("/admin/konsumen/$item->id") }}" method="post">
                                         @method('delete')
                                         @csrf
-                                        <button type="submit" class="badge text-bg-danger">
+                                        <button type="submit" class="badge text-bg-danger ms-3">
                                             <i class="bi bi-trash3"></i>
                                         </button>
                                     </form>
@@ -134,8 +134,8 @@
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Nama Petugas</th>
-                            <th>Email Petugas</th>
+                            <th>Nama Konsumen</th>
+                            <th>Email Konsumen</th>
                             <th>Nomor Telepon</th>
                             <th>Action</th>
                         </tr>

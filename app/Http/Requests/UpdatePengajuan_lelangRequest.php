@@ -13,7 +13,7 @@ class UpdatePengajuan_lelangRequest extends FormRequest
      */
     public function authorize()
     {
-        return false;
+        return true;
     }
 
     /**

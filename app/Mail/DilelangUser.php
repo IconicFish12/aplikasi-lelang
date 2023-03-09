@@ -9,16 +9,20 @@ use Illuminate\Mail\Mailables\Content;
 use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class PengajuanLelang extends Mailable
+class DilelangUser extends Mailable
 {
     use Queueable, SerializesModels;
+
+    public $user;
+    public $data;
 
     /**
      * Create a new message instance.
      */
-    public function __construct()
+    public function __construct($user, $data)
     {
-        //
+        $this->user = $user;
+        $this->data = $data;
     }
 
     /**
@@ -27,7 +31,7 @@ class PengajuanLelang extends Mailable
     public function envelope(): Envelope
     {
         return new Envelope(
-            subject: 'Pengajuan Lelang',
+            subject: 'Dilelang User',
         );
     }
 
@@ -37,7 +41,11 @@ class PengajuanLelang extends Mailable
     public function content(): Content
     {
         return new Content(
-            view: 'view.name',
+            markdown: 'admin.mail.dilelang_user',
+            with: [
+                'user' => $this->user,
+                'data' => $this->data,
+            ]
         );
     }
 

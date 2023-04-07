@@ -11,6 +11,7 @@ use Laravel\Sanctum\HasApiTokens;
 class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
+
     protected $table = "tb_masyarakat";
 
     /**
@@ -23,6 +24,7 @@ class User extends Authenticatable
         'email',
         'username',
         'password',
+        'google_id',
         'telp',
     ];
 

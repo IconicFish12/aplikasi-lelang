@@ -50,12 +50,6 @@
                 </li>
                 @if (auth('petugas')->user()->role === 'admin')
                     <li>
-                        <a href="/admin/penawaran">
-                            <i class="bi bi-circle"></i>
-                            <span>Data Penawaran</span>
-                        </a>
-                    </li>
-                    <li>
                         <a href="/admin/permohonan-lelang">
                             <i class="bi bi-circle"></i>
                             <span>Data Permohonan</span>
@@ -82,19 +76,12 @@
                     <li>
                         <a href="/admin/konsumen">
                             <i class="bi bi-circle"></i>
-                            <span>Daftar Konsumen</span>
+                            <span>Daftar Masyarakat</span>
                         </a>
                     </li>
                 </ul>
             </li>
         @endif
-
-        <li class="nav-item">
-            <a class="nav-link collapsed" href="/">
-                <i class="bi bi-filetype-sql"></i>
-                <span>Backup Database</span>
-            </a>
-        </li>
 
     </ul>
 

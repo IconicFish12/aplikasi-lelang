@@ -23,6 +23,6 @@ Aplikasi Lelang
 </x-mail::button>
 
 Hormat Saya<br>
-{{ auth('petugas')->user()->nama_petugas }}
+{{ auth('petugas')->user()->nama_petugas }}<br>
 Petugas Lelang
 </x-mail::message>

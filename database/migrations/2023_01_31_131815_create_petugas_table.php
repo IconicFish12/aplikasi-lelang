@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('email');
             $table->string('password');
             $table->longText('alamat')->nullable();
-            $table->string('foto')->nullable()->nullable();
+            $table->string('foto')->nullable();
             $table->string('telp', 25);
             $table->enum('role', ['admin', 'petugas'])->default('admin');
             $table->timestamp('email_verified_at')->nullable();

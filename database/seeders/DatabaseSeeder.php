@@ -34,12 +34,6 @@ class DatabaseSeeder extends Seeder
 
         $data = [
             [
-                'nama_lengkap' => "Ibnu Syawal Aliefian",
-                'email' => 'isyawalaliefian@gmail.com',
-                'password' => Hash::make('Password'),
-                'telp' => "082162941198"
-            ],
-            [
                 'nama_lengkap' => "Akhmad Alwan Rabbani",
                 'email' => 'dragonchoroi@gmail.com',
                 'password' => Hash::make('Password'),
@@ -60,6 +54,5 @@ class DatabaseSeeder extends Seeder
         ];
 
         User::insert($data);
-
     }
 }

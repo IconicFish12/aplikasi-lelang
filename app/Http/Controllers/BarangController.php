@@ -29,6 +29,7 @@ class BarangController extends Controller
             'page_header' => "Daftar Barang Pelelang",
             'dataArr' => Barang::with('kategori')->paginate(request("paginate") ?? 10),
             'kategori' => Kategori::all(),
+            'user' => User::all(),
         ]);
     }
 
@@ -55,17 +56,8 @@ class BarangController extends Controller
             $data = $request->all();
             $data['foto'] = $request->file('foto')->store('/images', "public_path");
 
-            $user = User::where('nama_lengkap', $data['nama_user'])->first();
-
-            if ($user == null) {
-                $flasher->addError("User Tidak Ditemukan");
-
-                return back()->withInput($data);
-            }
-
-            // dd($request->all());
             Barang::create([
-                'user_id' => $user->id,
+                'user_id' => $data['user_id'],
                 'kategori_id' => $data['kategori_id'],
                 'nama_barang' => $data['nama_barang'],
                 'harga_barang' => $data['harga_barang'],
@@ -74,6 +66,7 @@ class BarangController extends Controller
             ]);
 
             $flasher->addSuccess("Berhasil Menambah Data Barang");
+            
             return back();
         }
     }
@@ -187,18 +180,23 @@ class BarangController extends Controller
                     Storage::disk("public_path")->delete($barang->foto);
                 }
                 $data['foto'] = $request->file('foto')->store('images', "public_path");
-            }
 
-            $user = User::where("nama_lengkap", $data['nama_user'])->first();
+                $barang->update([
+                    'user_id' => $data['user_id'],
+                    'kategori_id' => $data['kategori_id'],
+                    'nama_barang' => $data['nama_barang'],
+                    'harga_barang' => $data['harga_barang'],
+                    'deskripsi_barang' => $data['deskripsi_barang'],
+                    'foto' => $data['foto'],
+                ]);
 
-            if ($user == null) {
-                $flasher->addError("User Tidak Ditemukan");
+                $flasher->addSuccess("Berhasil Merubah Data Barang");
 
-                return back()->withInput($data);
+                return back();
             }
 
             $barang->update([
-                'user_id' => $user->id,
+                'user_id' => $data['user_id'],
                 'kategori_id' => $data['kategori_id'],
                 'nama_barang' => $data['nama_barang'],
                 'harga_barang' => $data['harga_barang'],

@@ -12,6 +12,7 @@ use App\Http\Controllers\KategoriController;
 use App\Http\Controllers\PenawaranController;
 use App\Http\Controllers\HistoryLelangController;
 use App\Http\Controllers\PengajuanLelangController;
+use App\Http\Controllers\SocialiteController;
 
 /*
 |--------------------------------------------------------------------------
@@ -31,26 +32,33 @@ use App\Http\Controllers\PengajuanLelangController;
 
 // Auth Routes
 //Login
-Route::prefix('auth')->name('auth')->group(function () {
-    Route::get('/', [AuthController::class, 'userLoginView']);
-    Route::post('/', [AuthController::class, 'loginAction']);
-})->middleware('guest');
 
-Route::prefix('login')->name('login')->group(function () {
-    Route::get('/', [AuthController::class, 'petugasLoginView']);
-    Route::post('/', [AuthController::class, 'loginAction']);
-})->middleware('guest');
+Route::middleware('guest')->group(function(){
+    Route::prefix('auth')->name('auth')->group(function () {
+        Route::get('/', [AuthController::class, 'userLoginView']);
+        Route::post('/', [AuthController::class, 'loginAction']);
 
-//Register Account
-Route::prefix('register')->name('register')->group(function () {
-    Route::get('/', [AuthController::class, 'userRegisterview']);
-    Route::post('/action', [AuthController::class, 'registerAction']);
-})->middleware('guest');
+        //google login
+        Route::get('/google', [SocialiteController::class, 'googleRedirect']);
+        Route::get('/callback/google', [SocialiteController::class, 'googleHandler']);
+    });
 
-Route::prefix('/registration')->name('registration')->group(function () {
-    Route::get('/', [AuthController::class, 'petugasRegisterview']);
-    Route::post('/action', [AuthController::class, 'registerAction']);
-})->middleware('guest');
+    Route::prefix('login')->name('login')->group(function () {
+        Route::get('/', [AuthController::class, 'petugasLoginView']);
+        Route::post('/', [AuthController::class, 'loginAction']);
+    });
+
+    //Register Account
+    Route::prefix('register')->name('register')->group(function () {
+        Route::get('/', [AuthController::class, 'userRegisterview']);
+        Route::post('/action', [AuthController::class, 'registerAction']);
+    });
+
+    Route::prefix('/registration')->name('registration')->group(function () {
+        Route::get('/', [AuthController::class, 'petugasRegisterview']);
+        Route::post('/action', [AuthController::class, 'registerAction']);
+    });
+});
 
 //Logout
 Route::get('/logout', [AuthController::class, 'logout'])->middleware('auth:petugas,web');
@@ -86,7 +94,7 @@ Route::prefix('/admin')->group(function () {
 
     Route::prefix('riwayat')->middleware(['auth:petugas', 'petugas'])->group(function(){
         Route::get('/', [HistoryLelangController::class, 'index']);
-        Route::get('/generate', [HistoryLelangController::class, 'create_pdf']);
+        Route::post('/generate', [HistoryLelangController::class, 'create_pdf']);
     });
 
     Route::prefix('petugas-lelang')->middleware(['auth:petugas', 'petugas'])->group(function(){
@@ -140,7 +148,9 @@ Route::prefix('/')->group(function () {
 
         Route::prefix('/permohonan-lelang')->group(function(){
             Route::get('/', [PengajuanLelangController::class, 'index']);
+            Route::post('/show', [PengajuanLelangController::class, 'show']);
             Route::post('/', [PengajuanLelangController::class, 'tambah_pengajuan']);
+            Route::post('/', [PengajuanLelangController::class, 'tambah_barang']);
         });
 
     });

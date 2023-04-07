@@ -3,7 +3,7 @@
 namespace App\Models;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
-use Illuminate\Foundation\Auth\Petugas as Authenticatable;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Sanctum\HasApiTokens;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -44,7 +44,7 @@ class Petugas extends Authenticatable
         return $this->hasMany(History_lelang::class, 'petugas_id');
     }
 
-    public function searsh(string $search)
+    public function search(string $search)
     {
         # code...
     }

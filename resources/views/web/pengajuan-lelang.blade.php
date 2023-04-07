@@ -62,8 +62,9 @@
                                             <div class="mb-3">
                                                 <label for="harga_barang" class="form-label">Harga Barang</label>
                                                 <input type="number" name="harga_barang"
-                                                    class="form-control @error('harga_barang') is-invalid  @enderror" id="harga_barang"
-                                                    placeholder="Masukan Harga Barang" value="{{ old('harga_barang') }}">
+                                                    class="form-control @error('harga_barang') is-invalid  @enderror"
+                                                    id="harga_barang" placeholder="Masukan Harga Barang"
+                                                    value="{{ old('harga_barang') }}">
                                                 @error('harga_barang')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -73,8 +74,9 @@
                                             <div class="mb-3">
                                                 <label for="harga_lelang" class="form-label">Perkiraan Harga Lelang</label>
                                                 <input type="number" name="harga_lelang"
-                                                    class="form-control @error('harga_lelang') is-invalid  @enderror" id="harga_lelang"
-                                                    placeholder="Masukan Harga Perkiraan dilelang" value="{{ old('harga_lelang') }}">
+                                                    class="form-control @error('harga_lelang') is-invalid  @enderror"
+                                                    id="harga_lelang" placeholder="Masukan Harga Perkiraan dilelang"
+                                                    value="{{ old('harga_lelang') }}">
                                                 @error('harga_lelang')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -84,8 +86,9 @@
                                             <div class="mb-3">
                                                 <label for="tgl_mulai" class="form-label">Tanggal Mulai Dilelang</label>
                                                 <input type="date" name="tgl_mulai"
-                                                    class="form-control @error('tgl_mulai') is-invalid  @enderror" id="tgl_mulai"
-                                                    placeholder="Masukan Harga Barang" value="{{ old('tgl_mulai') }}">
+                                                    class="form-control @error('tgl_mulai') is-invalid  @enderror"
+                                                    id="tgl_mulai" placeholder="Masukan Harga Barang"
+                                                    value="{{ old('tgl_mulai') }}">
                                                 @error('tgl_mulai')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -95,8 +98,9 @@
                                             <div class="mb-3">
                                                 <label for="tgl_akhir" class="form-label">Tanggal Terakhir Dilelang</label>
                                                 <input type="date" name="tgl_akhir"
-                                                    class="form-control @error('tgl_akhir') is-invalid  @enderror" id="tgl_akhir"
-                                                    placeholder="Masukan Harga Barang" value="{{ old('tgl_akhir') }}">
+                                                    class="form-control @error('tgl_akhir') is-invalid  @enderror"
+                                                    id="tgl_akhir" placeholder="Masukan Harga Barang"
+                                                    value="{{ old('tgl_akhir') }}">
                                                 @error('tgl_akhir')
                                                     <div class="invalid-feedback">
                                                         {{ $message }}
@@ -141,6 +145,7 @@
                                                     <th>Harga Lelang Perkiraan</th>
                                                     <th>Tanggal Lelang Dimulai</th>
                                                     <th>Tanggal Lelang Selesai</th>
+                                                    <th>Action</th>
                                                 </tr>
                                             </thead>
                                             @foreach ($arsip as $item)
@@ -155,6 +160,152 @@
                                                         <td>{{ date('d-m-Y', strtotime($item->lelang_dimulai)) }}</td>
                                                         <td>{{ date('d-m-Y', strtotime($item->lelang_diakhiri)) }}</td>
                                                         <td>
+                                                            <?php
+
+                                                                $barang =  new \App\Models\Barang;
+
+                                                                if($barang->where('nama_barang', $item->nama_barang)->first() != null)
+                                                                {
+                                                                    ?>
+                                                                        <button class="badge text-bg-success PostBarang">
+                                                                            Barang Sudah Ditambahkan
+                                                                        </button>
+                                                                    <?php
+                                                                }else {
+                                                                    ?>
+                                                                        <button type="button"
+                                                                            class="badge text-bg-primary PostBarang"
+                                                                            data-bs-toggle="modal" data-bs-target="#modalBarang"
+                                                                            value="{{ $item->id }}">
+                                                                            Tambah Barang
+                                                                        </button>
+                                                                        <div class="modal fade" id="modalBarang" tabindex="-1">
+                                                                            <div class="modal-dialog ">
+                                                                                <div class="modal-content">
+                                                                                    <div class="modal-header">
+                                                                                        <h5 class="modal-title">Buat Data Barang</h5>
+                                                                                        <button type="button" class="btn-close"
+                                                                                            data-bs-dismiss="modal"
+                                                                                            aria-label="Close"></button>
+                                                                                    </div>
+                                                                                    <form action="" method="post"
+                                                                                        enctype="multipart/form-data"
+                                                                                        id="post_barang">
+                                                                                        @csrf
+                                                                                        <div class="modal-body">
+                                                                                            <div class="mb-3">
+                                                                                                <label for="nama_barang"
+                                                                                                    class="form-label">Nama
+                                                                                                    Barang</label>
+                                                                                                <input type="text"
+                                                                                                    name="nama_barang"
+                                                                                                    class="form-control @error('nama_barang') is-invalid  @enderror"
+                                                                                                    id="post_nama_barang"
+                                                                                                    placeholder="Masukan Nama Barang"
+                                                                                                    value="{{ old('nama_barang') }}">
+                                                                                                @error('nama_barang')
+                                                                                                    <div class="invalid-feedback">
+                                                                                                        {{ $message }}
+                                                                                                    </div>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="nama_pemilik"
+                                                                                                    class="form-label">Nama
+                                                                                                    Pemilik</label>
+                                                                                                <input type="text"
+                                                                                                    name="nama_pemilik"
+                                                                                                    class="form-control @error('nama_pemilik') is-invalid  @enderror"
+                                                                                                    id="post_nama_pemilik"
+                                                                                                    placeholder="Masukan Nama Kategori Barang"
+                                                                                                    value="{{ old('nama_pemilik') }}">
+                                                                                                @error('nama_pemilik')
+                                                                                                    <div class="invalid-feedback">
+                                                                                                        {{ $message }}
+                                                                                                    </div>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="kategori_id"
+                                                                                                    class="form-label">Kategori
+                                                                                                    Barang</label>
+                                                                                                <select
+                                                                                                    class="form-select form-control"
+                                                                                                    name="kategori_id"
+                                                                                                    id="post_kategori_id"
+                                                                                                    aria-label="Default select example">
+                                                                                                    <option selected>-- Pilih Kategori
+                                                                                                        --</option>
+                                                                                                    @foreach ($kategori as $i)
+                                                                                                        <option
+                                                                                                            value="{{ $i->id }}">
+                                                                                                            {{ $i->nama_kategori }}
+                                                                                                        </option>
+                                                                                                    @endforeach
+                                                                                                </select>
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="harga_barang"
+                                                                                                    class="form-label">Harga
+                                                                                                    Barang</label>
+                                                                                                <input type="number"
+                                                                                                    name="harga_barang"
+                                                                                                    class="form-control @error('harga_barang') is-invalid  @enderror"
+                                                                                                    id="post_harga_barang"
+                                                                                                    placeholder="Masukan Harga Barang"
+                                                                                                    value="{{ old('harga_barang') }}">
+                                                                                                @error('harga_barang')
+                                                                                                    <div class="invalid-feedback">
+                                                                                                        {{ $message }}
+                                                                                                    </div>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="deskripsi_barang"
+                                                                                                    class="form-label">Deskripsi
+                                                                                                    Barang</label>
+                                                                                                <textarea name="deskripsi_barang" class="form-control @error('deskripsi_barang') is-invalid  @enderror"
+                                                                                                    id="deskripsi_barang" placeholder="Masukan Deskripsi Barang" value="{{ old('deskripsi_barang') }}"
+                                                                                                    rows="4"></textarea>
+                                                                                                @error('deskripsi_barang')
+                                                                                                    <div class="invalid-feedback">
+                                                                                                        {{ $message }}
+                                                                                                    </div>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div class="mb-3">
+                                                                                                <label for="foto"
+                                                                                                    class="form-label">Foto
+                                                                                                    Barang</label>
+                                                                                                <input type="file" name="foto"
+                                                                                                    class="form-control @error('foto') is-invalid  @enderror"
+                                                                                                    id="foto"
+                                                                                                    placeholder="Masukan Nama Barang"
+                                                                                                    value="{{ old('foto') }}">
+                                                                                                @error('foto')
+                                                                                                    <div class="invalid-feedback">
+                                                                                                        {{ $message }}
+                                                                                                    </div>
+                                                                                                @enderror
+                                                                                            </div>
+                                                                                            <div class="modal-footer">
+                                                                                                <button type="button"
+                                                                                                    class="btn btn-secondary"
+                                                                                                    data-bs-dismiss="modal">Close</button>
+                                                                                                <button type="submit"
+                                                                                                    class="btn btn-primary"
+                                                                                                    data-bs-toggle="modal"
+                                                                                                    data-bs-target="#modalPetugas ">Create</button>
+                                                                                            </div>
+                                                                                        </div>
+                                                                                    </form>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    <?php
+                                                                }
+                                                            ?>
+                                                        </td>
                                                     </tr>
                                                 </tbody>
                                             @endforeach
@@ -167,8 +318,8 @@
                                     </div>
                                 @endif
                             </div>
-                            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel" aria-labelledby="profile-tab"
-                                tabindex="0">
+                            <div class="tab-pane fade" id="profile-tab-pane" role="tabpanel"
+                                aria-labelledby="profile-tab" tabindex="0">
                                 @if ($data_baru->count())
                                     <div class="table-responsive">
                                         <table class="table table-striped" cellspacing="0" width="100%">
@@ -214,4 +365,42 @@
             </div>
         </div>
     </section>
+@endsection
+@section('script')
+    <script>
+        $(document).ready(function() {
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+
+            let getData = e => {
+                $.ajax({
+                    url: `{{ asset('permohonan-lelang/show') }}`,
+                    method: "POST",
+                    data: {
+                        getData: true,
+                        data: e.currentTarget.value
+                    },
+                    dataType: "json",
+                    success: resp => {
+                        console.log(resp);
+                        $("#post_barang").attr("action",
+                            `{{ asset('permohonan-lelang') }}`);
+                        $("#post_nama_barang").val(resp.nama_barang);
+                        $("#post_nama_pemilik").val(resp.user.nama_lengkap);
+                        $("#post_kategori_id").val(resp.kategori_id);
+                        $("#post_harga_barang").val(resp.harga_barang);
+                    },
+                    error: err => {
+                        console.log(err);
+                    }
+                })
+            }
+
+
+            $(".PostBarang").on("click", getData);
+        })
+    </script>
 @endsection

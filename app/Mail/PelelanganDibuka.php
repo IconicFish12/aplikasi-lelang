@@ -41,13 +41,11 @@ class PelelanganDibuka extends Mailable
      */
     public function content(): Content
     {
-        $data = $this->data;
-
         return new Content(
             markdown: 'admin.mail.dibuka',
             with: [
                 'user' => $this->user,
-                'data' => $data,
+                'data' => $this->data,
                 'url' => config('app.url'),
             ]
         );

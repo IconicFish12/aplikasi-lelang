@@ -40,8 +40,8 @@ class BaseController extends Controller
             'nama_petugas' => ['required'],
             'alamat' => ['max:100'],
             'tgl_lahir' => ['date'],
-            'telp' => ['required','min:4', 'max:15'],
-            'email' => ['required','email'],
+            'telp' => ['required', 'min:4', 'max:15'],
+            'email' => ['required', 'email'],
         ], [
             'nama_petugas.required' => "Input ini harus diisi",
             'telp.required' => "Input ini harus diisi",
@@ -52,7 +52,7 @@ class BaseController extends Controller
             'telp.min' => "Panjang Maksimal 4 Karakter",
         ]);
 
-        if(!$validData->fails()){
+        if (!$validData->fails()) {
             $petugas = Petugas::find($data['id']);
 
             if ($request->has('foto') && $request->hasFile('foto')) {
@@ -61,20 +61,28 @@ class BaseController extends Controller
                 }
 
                 $valid = Validator::make($request->all(), [
-                    'foto' => ['image', 'mimes:png,jpg,jpeg', 'max:5000'],
+                    'foto' => ['image', 'mimes:png,jpg,jpeg'],
 
                 ], [
                     'foto.image' => "file harus berupa foto",
                     'foto.mimes' => "format yang diperbolehkan adalah png,jpg,jpeg",
-                    'foto.max' => "Ukuran Maksimal 5 MB",
                 ]);
 
-                if(!$valid->fails()){
+                if (!$valid->fails()) {
                     $data['foto'] = $request->file('foto')->store('/profile', "public_path");
 
                     $petugas->update([
+                        'nama_petugas' => $data['nama_petugas'],
+                        'tgl_lahir' => $data['tgl_lahir'],
+                        'email' => $data['email'],
+                        'telp' => $data['telp'],
+                        'alamat' => $data['alamat'],
                         'foto' => $data['foto']
                     ]);
+
+                    $flasher->addSuccess("Berhasil Merubah Data");
+
+                    return back();
                 }
                 $flasher->addError("Gagal Merubah Data");
 
@@ -97,16 +105,15 @@ class BaseController extends Controller
         $flasher->addError("Gagal Merubah Data");
 
         return back()->withErrors($validData->errors())->withInput();
-
     }
 
     //Web logic
     public function webView()
     {
         $mulai = Lelang::with(['petugas', 'user', 'barang'])
-        ->where('tgl_mulai', '<=', now())
-        ->where('tgl_selesai', '>=', now())
-        ->paginate(9);
+            ->where('tgl_mulai', '<=', now())
+            ->where('tgl_selesai', '>=', now())
+            ->paginate(9);
 
         return view('web.home', [
             "dataArr" => $mulai,

@@ -3,15 +3,16 @@
 namespace App\Http\Controllers;
 
 use App\Models\User;
+use App\Models\Barang;
 use App\Models\Kategori;
 use Illuminate\Http\Request;
 use App\Models\Pengajuan_lelang;
-use Illuminate\Support\Facades\Validator;
-use App\Http\Requests\StorePengajuan_lelangRequest;
-use App\Http\Requests\UpdatePengajuan_lelangRequest;
 use App\Mail\PermohonanDisetujui;
 use Flasher\Prime\FlasherInterface;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Support\Facades\Validator;
+use App\Http\Requests\StorePengajuan_lelangRequest;
+use App\Http\Requests\UpdatePengajuan_lelangRequest;
 
 class PengajuanLelangController extends Controller
 {
@@ -44,12 +45,15 @@ class PengajuanLelangController extends Controller
             ->where('status_pengajuan', '=', 'tidak_setujui')
             ->paginate(15);
 
+        // dd($aktif);
+
 
         return view('web.pengajuan-lelang', [
             'header' => 'Pengajuan Lelang',
             'arsip' => $aktif,
             'data_baru' => $tidak_aktif,
-            'kategori' => Kategori::all()
+            'kategori' => Kategori::all(),
+            'user' => User::all()
         ]);
     }
 
@@ -107,6 +111,10 @@ class PengajuanLelangController extends Controller
 
             return back();
         }
+
+        $flasher->addError('Gagal Menambah Permohonan');
+
+        return back()->withErrors($validData->errors());
     }
 
     /**
@@ -144,7 +152,7 @@ class PengajuanLelangController extends Controller
     public function show(Pengajuan_lelang $pengajuan_lelang, Request $request)
     {
         if ($request->has('getData') && $request->getData) {
-            $data = $pengajuan_lelang->find($request->data);
+            $data = $pengajuan_lelang->with(['user', 'kategori'])->find($request->data);
 
             return response()->json($data, 200);
         }
@@ -156,9 +164,52 @@ class PengajuanLelangController extends Controller
      * @param  \App\Models\Pengajuan_lelang  $pengajuan_lelang
      * @return \Illuminate\Http\Response
      */
-    public function edit(Pengajuan_lelang $pengajuan_lelang)
+    public function tambah_barang(Request $request, FlasherInterface $flasher)
     {
-        //
+        $data = $request->all();
+
+        $validate = Validator::make($data, [
+            'nama_barang' => ["required"],
+            'nama_pemilik' => ["required"],
+            "kategori_id" => ["integer"],
+            'harga_barang' => ["required", "integer"],
+            "deskripsi_barang" => ["required"],
+            "foto" => ["required", "image", "max:10000", "mimes:png,jpg,jpeg"]
+        ], [
+            'nama_barang.required' => 'Nama Barang Harus diisi',
+            'nama_pemilik.required' => 'Nama Barang Harus diisi',
+            'harga_barang.required' => 'Harga Barang Harus diisi',
+            'deskripsi_barang.required' => 'Deskripsi Barang Harus diisi',
+            'foto.required' => 'Foto Barang Harus diisi',
+            'kategori_id' => "Value harus valid",
+            'foto.image' => "File Harus Berupa Gambar",
+            'foto.max' => 'Ukuran File Maksimal 10 MB',
+            'foto.mimes' => 'format yang diper bolehkan png, jpg, dan jpeg',
+            'harga_barang.integer' => 'Harga Barang Harus berupa angka',
+        ]);
+
+        if (!$validate->fails()) {
+            // dd($data);
+            $data['foto'] = $request->file('foto')->store('/images', "public_path");
+
+            $user = User::where('nama_lengkap', $data['nama_pemilik'])->first();
+
+            Barang::create([
+                'user_id' => $user->id,
+                'kategori_id' => $data['kategori_id'],
+                'nama_barang' => $data['nama_barang'],
+                'harga_barang' => $data['harga_barang'],
+                'deskripsi_barang' => $data['deskripsi_barang'],
+                'foto' => $data['foto'],
+            ]);
+
+            $flasher->addSuccess('Berhasil Menambah Barang, jika pelelangan sudah dibuka akan kami kabar  ');
+
+            return back();
+        }
+        $flasher->addError('Gagal Menambah Barang');
+
+        return back()->withErrors($validate->errors());
     }
 
     /**

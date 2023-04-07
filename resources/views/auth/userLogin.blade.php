@@ -23,7 +23,9 @@
                                 <div class="col-12">
                                     <label for="email" class="form-label">Email</label>
                                     <div class="input-group has-validation">
-                                        <input type="text" name="email" class="form-control @error('email') is-invalid @enderror" placeholder="fernando@gmail.com" id="email">
+                                        <input type="text" name="email"
+                                            class="form-control @error('email') is-invalid @enderror"
+                                            placeholder="fernando@gmail.com" id="email">
                                         @error('email')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -34,7 +36,9 @@
 
                                 <div class="col-12">
                                     <label for="password" class="form-label">Password</label>
-                                    <input type="password" name="password" class="form-control @error('password') is-invalid @enderror" id="password" placeholder="password" >
+                                    <input type="password" name="password"
+                                        class="form-control @error('password') is-invalid @enderror" id="password"
+                                        placeholder="password">
                                     @error('password')
                                         <div class="invalid-feedback">
                                             {{ $message }}
@@ -50,9 +54,13 @@
                                     </div>
                                 </div>
                                 <div class="col-12">
-                                    <button class="btn btn-primary w-100" type="submit">Login</button>
+                                    <button class="btn btn-primary w-100 mb-3" type="submit">Login</button>
+
                                 </div>
                             </form>
+                            <a href="{{ asset('/auth/google') }}">
+                                <button class="btn btn-danger w-100">Google</button>
+                            </a>
 
                         </div>
                     </div>

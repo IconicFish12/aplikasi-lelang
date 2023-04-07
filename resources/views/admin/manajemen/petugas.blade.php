@@ -98,8 +98,8 @@
                             </div>
                             <div class="mb-3">
                                 <label for="alamat" class="form-label">Alamat</label>
-                                <textarea name="alamat" class="form-control @error('alamat') is-invalid  @enderror"
-                                    id="alamat" placeholder="Masukan Alamat Petugas" value="{{ old('alamat') }}" rows="4"></textarea>
+                                <textarea name="alamat" class="form-control @error('alamat') is-invalid  @enderror" id="alamat"
+                                    placeholder="Masukan Alamat Petugas" value="{{ old('alamat') }}" rows="4"></textarea>
                                 @error('alamat')
                                     <div class="invalid-feedback">
                                         {{ $message }}
@@ -162,8 +162,8 @@
                                         <img src="{{ asset($item->foto) }}" class="rounded mx-auto d-block"
                                             width="150px">
                                     @else
-                                        <img src="{{ asset('assets/img/logo.png') }}" class="rounded mx-auto d-block"
-                                            width="150px">
+                                        <i class="bi bi-image"></i>
+                                        <span>Image Not Found</span>
                                     @endif
                                 </td>
                                 <td>{{ $item->telp }}</td>
@@ -228,8 +228,9 @@
                                     <div class="mb-3">
                                         <label for="tgl_lahir" class="form-label">Tanggal Lahir</label>
                                         <input type="date" name="tgl_lahir"
-                                            class="form-control @error('tgl_lahir') is-invalid  @enderror" id="edit_tgl_lahir"
-                                            placeholder="Masukan Nama Petugas" value="{{ old('tgl_lahir') }}">
+                                            class="form-control @error('tgl_lahir') is-invalid  @enderror"
+                                            id="edit_tgl_lahir" placeholder="Masukan Nama Petugas"
+                                            value="{{ old('tgl_lahir') }}">
                                         @error('tgl_lahir')
                                             <div class="invalid-feedback">
                                                 {{ $message }}
@@ -294,8 +295,8 @@
                                     </div>
                                     <div class="mb-3">
                                         <label for="alamat" class="form-label">Alamat</label>
-                                        <textarea name="alamat" class="form-control @error('alamat') is-invalid  @enderror"
-                                            id="edit_alamat" placeholder="Masukan Alamat" value="{{ old('alamat') }}" rows="4"></textarea>
+                                        <textarea name="alamat" class="form-control @error('alamat') is-invalid  @enderror" id="edit_alamat"
+                                            placeholder="Masukan Alamat" value="{{ old('alamat') }}" rows="4"></textarea>
                                         @error('alamat')
                                             <div class="invalid-feedback">
                                                 {{ $message }}

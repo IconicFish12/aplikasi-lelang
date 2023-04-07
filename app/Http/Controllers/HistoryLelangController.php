@@ -6,6 +6,7 @@ use App\Models\History_lelang;
 use App\Http\Requests\StoreHistory_lelangRequest;
 use App\Http\Requests\UpdateHistory_lelangRequest;
 use Barryvdh\DomPDF\Facade\Pdf as FacadePdf;
+use Illuminate\Http\Request;
 use PDF;
 
 class HistoryLelangController extends Controller
@@ -28,19 +29,20 @@ class HistoryLelangController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create_pdf()
+    public function create_pdf(Request $request)
     {
-        $pdf = FacadePdf::loadview('admin.lelang.laporan', [
-            'title' => 'Laporan Hasil Pelelangan',
-            'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->get()
-        ]);
-
-        return $pdf->stream('laporan-pelelangan.pdf');
-
-        // return view('admin.lelang.laporan', [
+        // dd(History_lelang::with(['kategori', 'petugas', 'user'])->whereMonth('tgl_lelang', $request->bulan)->get());
+        // $pdf = FacadePdf::loadview('admin.lelang.laporan', [
         //     'title' => 'Laporan Hasil Pelelangan',
-        //     'dataArr' => History_lelang::all()
+        //     'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->whereMonth('tgl_lelang', $request->bulan)->get()
         // ]);
+
+        // return $pdf->stream('laporan-pelelangan.pdf');
+
+        return view('admin.lelang.laporan', [
+            'title' => 'Laporan Hasil Pelelangan',
+            'dataArr' => History_lelang::with(['kategori', 'petugas', 'user'])->whereMonth('tgl_lelang', $request->bulan)->get()
+        ]);
     }
 
     /**

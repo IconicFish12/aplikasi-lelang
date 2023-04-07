@@ -22,7 +22,7 @@ class UserController extends Controller
     public function index()
     {
         return view('admin.manajemen.user', [
-            'page_header' => "Manajemen Konsumen",
+            'page_header' => "Manajemen Masyarakat",
             'dataArr' => User::latest()->paginate(request('paginate') ?? 15)
         ]);
     }

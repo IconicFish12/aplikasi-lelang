@@ -102,8 +102,8 @@
                     <thead>
                         <tr>
                             <th>No</th>
-                            <th>Nama Konsumen</th>
-                            <th>Email Konsumen</th>
+                            <th>Nama </th>
+                            <th>Email </th>
                             <th>Nomor Telepon</th>
                             <th>Action</th>
                         </tr>
@@ -134,8 +134,8 @@
                     <tfoot>
                         <tr>
                             <th>No</th>
-                            <th>Nama Konsumen</th>
-                            <th>Email Konsumen</th>
+                            <th>Nama </th>
+                            <th>Email </th>
                             <th>Nomor Telepon</th>
                             <th>Action</th>
                         </tr>

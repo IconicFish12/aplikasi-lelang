@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('nama_lengkap');
             $table->string('email')->unique();
             $table->string('password');
+            $table->string('google_id')->nullable();
             $table->string('telp', 15);
             $table->timestamp('email_verified_at')->nullable();
             $table->rememberToken();

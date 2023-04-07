@@ -27,16 +27,6 @@ class Lelang extends Model
         return $this->belongsTo(Barang::class, "barang_id");
     }
 
-    public function backup()
-    {
-        return $this->belongsTo(Backup_barang::class, "backup_id");
-    }
-
-    public function history_lelang()
-    {
-        return $this->belongsTo(History_lelang::class, 'lelang_id');
-    }
-
     public function searsh(string $search)
     {
         # code...

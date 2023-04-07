@@ -27,7 +27,7 @@
                             @csrf
                             <div class="mb-3">
                                 <label for="user_id" class="form-label">Nama Pemilik</label>
-                                <select class="form-select form-control" name="user_id" id="edit_user_id"
+                                <select class="form-select form-control" name="user_id" id="user_id"
                                     aria-label="Default select example">
                                     <option selected>-- Pilih User --</option>
                                     @foreach ($user as $i)

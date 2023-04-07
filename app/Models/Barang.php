@@ -27,11 +27,6 @@ class Barang extends Model
         return $this->hasMany(Lelang::class, 'barang_id');
     }
 
-    public function history_lelang()
-    {
-        return $this->belongsTo(History_lelang::class, 'barang_id');
-    }
-
     public function penawaran()
     {
         return $this->belongsTo(Penawaran::class, 'barang_id');

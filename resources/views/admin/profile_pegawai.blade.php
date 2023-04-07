@@ -7,7 +7,11 @@
                 <div class="card">
                     <div class="card-body profile-card pt-4 d-flex flex-column align-items-center">
 
-                        <img src="{{ asset('assets/img/profile-img.jpg') }}" alt="Profile" class="rounded-circle">
+                        @if (!is_null(auth('petugas')->user()->foto) && Storage::disk('public_path')->exists(auth('petugas')->user()->foto))
+                            <img src="{{ asset(auth('petugas')->user()->foto) }}" alt="Profile" class="rounded-circle">
+                        @else
+                            <img src="/assets/img/profile-img.jpg" alt="Profile" class="rounded-circle">
+                        @endif
                         <h2>{{ Auth::guard('petugas')->user()->nama_petugas }}</h2>
                         <h3>{{ Auth::guard('petugas')->user()->role }}</h3>
                         <div class="social-links mt-2">
@@ -140,8 +144,8 @@
                                                 <textarea name="alamat" id="alamat" class="form-control @error('alamat') is-invalid  @enderror" rows="4"
                                                     placeholder="Alamat Petugas">
                                                     @if (Auth::guard('petugas')->user()->alamat != null)
-                                                        {{ Auth::guard('petugas')->user()->alamat }}
-                                                    @endif
+{{ Auth::guard('petugas')->user()->alamat }}
+@endif
                                                 </textarea>
                                                 @error('alamat')
                                                     <div class="invalid-feedback">
